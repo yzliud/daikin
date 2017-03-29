@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkInstallPersonDao">
+    
+	<sql id="dkInstallPersonColumns">
+		a.id AS "id",
+		a.mobile AS "mobile",
+		a.name AS "name",
+		a.open_id AS "openId",
+		a.nick_name AS "nickName",
+		a.sex AS "sex",
+		a.country AS "country",
+		a.province AS "province",
+		a.city AS "city",
+		a.head_img AS "headImg",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="dkInstallPersonJoins">
+	</sql>
+	
+    
+	<select id="get" resultType="DkInstallPerson" >
+		SELECT 
+			<include refid="dkInstallPersonColumns"/>
+		FROM dk_install_person a
+		<include refid="dkInstallPersonJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DkInstallPerson" >
+		SELECT 
+			<include refid="dkInstallPersonColumns"/>
+		FROM dk_install_person a
+		<include refid="dkInstallPersonJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="mobile != null and mobile != ''">
+				AND a.mobile LIKE 
+					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{mobile}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{mobile},'%')</if>
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DkInstallPerson" >
+		SELECT 
+			<include refid="dkInstallPersonColumns"/>
+		FROM dk_install_person a
+		<include refid="dkInstallPersonJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dk_install_person(
+			id,
+			mobile,
+			name,
+			open_id,
+			nick_name,
+			sex,
+			country,
+			province,
+			city,
+			head_img,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{mobile},
+			#{name},
+			#{openId},
+			#{nickName},
+			#{sex},
+			#{country},
+			#{province},
+			#{city},
+			#{headImg},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dk_install_person SET 	
+			mobile = #{mobile},
+			name = #{name},
+			open_id = #{openId},
+			nick_name = #{nickName},
+			sex = #{sex},
+			country = #{country},
+			province = #{province},
+			city = #{city},
+			head_img = #{headImg},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM dk_install_person
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE dk_install_person SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="DkInstallPerson" statementType="STATEMENT">
+		select * FROM dk_install_person  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

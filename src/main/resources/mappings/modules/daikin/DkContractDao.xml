@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkContractDao">
+    
+	<sql id="dkContractColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.contract_number AS "contractNumber",
+		a.mobile AS "mobile",
+		a.telephone AS "telephone",
+		a.address AS "address",
+		a.order_date AS "orderDate",
+		a.member_id AS "memberId",
+		a.total_fee AS "totalFee",
+		a.pay_fee AS "payFee",
+		a.pay_date AS "payDate",
+		a.contract_status AS "contractStatus",
+		a.pay_status AS "payStatus",
+		a.install_status AS "installStatus",
+		a.install_by AS "dkInstallPerson.id",
+		a.sale_by AS "tuser.id",
+		a.remark AS "remark",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		dkInstallPerson.name AS "dkInstallPerson.name",
+		tuser.name AS "tuser.name"
+	</sql>
+	
+	<sql id="dkContractJoins">
+		LEFT JOIN dk_install_person dkInstallPerson ON dkInstallPerson.id = a.install_by
+		LEFT JOIN sys_user tuser ON tuser.id = a.sale_by
+	</sql>
+	
+    
+	<select id="get" resultType="DkContract" >
+		SELECT 
+			<include refid="dkContractColumns"/>
+		FROM dk_contract a
+		<include refid="dkContractJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DkContract" >
+		SELECT 
+			<include refid="dkContractColumns"/>
+		FROM dk_contract a
+		<include refid="dkContractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="contractNumber != null and contractNumber != ''">
+				AND a.contract_number LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractNumber}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractNumber}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractNumber},'%')</if>
+			</if>
+			<if test="mobile != null and mobile != ''">
+				AND a.mobile LIKE 
+					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{mobile}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{mobile},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DkContract" >
+		SELECT 
+			<include refid="dkContractColumns"/>
+		FROM dk_contract a
+		<include refid="dkContractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dk_contract(
+			id,
+			name,
+			contract_number,
+			mobile,
+			telephone,
+			address,
+			order_date,
+			member_id,
+			total_fee,
+			pay_fee,
+			pay_date,
+			contract_status,
+			pay_status,
+			install_status,
+			install_by,
+			sale_by,
+			remark,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{contractNumber},
+			#{mobile},
+			#{telephone},
+			#{address},
+			#{orderDate},
+			#{memberId},
+			#{totalFee},
+			#{payFee},
+			#{payDate},
+			#{contractStatus},
+			#{payStatus},
+			#{installStatus},
+			#{dkInstallPerson.id},
+			#{tuser.id},
+			#{remark},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dk_contract SET 	
+			name = #{name},
+			contract_number = #{contractNumber},
+			mobile = #{mobile},
+			telephone = #{telephone},
+			address = #{address},
+			order_date = #{orderDate},
+			member_id = #{memberId},
+			total_fee = #{totalFee},
+			pay_fee = #{payFee},
+			pay_date = #{payDate},
+			contract_status = #{contractStatus},
+			pay_status = #{payStatus},
+			install_status = #{installStatus},
+			install_by = #{dkInstallPerson.id},
+			sale_by = #{tuser.id},
+			remark = #{remark},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM dk_contract
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE dk_contract SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="DkContract" statementType="STATEMENT">
+		select * FROM dk_contract  where ${propertyName} = '${value}'
+	</select>
+	
+	<select id="findListBydkInstallPerson" resultType="DkInstallPerson">
+		SELECT 
+			*
+		FROM dk_install_person a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+</mapper>
