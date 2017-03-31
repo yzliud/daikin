@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jeeplus.modules.daikin.dao.DkInstallPersonDao">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkWorkerDao">
     
-	<sql id="dkInstallPersonColumns">
+	<sql id="dkWorkerColumns">
 		a.id AS "id",
+		a.sys_user_id AS "sysUserId",
 		a.mobile AS "mobile",
 		a.name AS "name",
 		a.open_id AS "openId",
@@ -12,7 +13,7 @@
 		a.country AS "country",
 		a.province AS "province",
 		a.city AS "city",
-		a.head_img AS "headImg",
+		a.head_img2 AS "headImg2",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -20,23 +21,23 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="dkInstallPersonJoins">
+	<sql id="dkWorkerJoins">
 	</sql>
 	
     
-	<select id="get" resultType="DkInstallPerson" >
+	<select id="get" resultType="DkWorker" >
 		SELECT 
-			<include refid="dkInstallPersonColumns"/>
-		FROM dk_install_person a
-		<include refid="dkInstallPersonJoins"/>
+			<include refid="dkWorkerColumns"/>
+		FROM dk_worker a
+		<include refid="dkWorkerJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="DkInstallPerson" >
+	<select id="findList" resultType="DkWorker" >
 		SELECT 
-			<include refid="dkInstallPersonColumns"/>
-		FROM dk_install_person a
-		<include refid="dkInstallPersonJoins"/>
+			<include refid="dkWorkerColumns"/>
+		FROM dk_worker a
+		<include refid="dkWorkerJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="mobile != null and mobile != ''">
@@ -62,11 +63,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="DkInstallPerson" >
+	<select id="findAllList" resultType="DkWorker" >
 		SELECT 
-			<include refid="dkInstallPersonColumns"/>
-		FROM dk_install_person a
-		<include refid="dkInstallPersonJoins"/>
+			<include refid="dkWorkerColumns"/>
+		FROM dk_worker a
+		<include refid="dkWorkerJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -81,8 +82,9 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO dk_install_person(
+		INSERT INTO dk_worker(
 			id,
+			sys_user_id,
 			mobile,
 			name,
 			open_id,
@@ -91,7 +93,7 @@
 			country,
 			province,
 			city,
-			head_img,
+			head_img2,
 			create_by,
 			create_date,
 			update_by,
@@ -99,6 +101,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{sysUserId},
 			#{mobile},
 			#{name},
 			#{openId},
@@ -107,7 +110,7 @@
 			#{country},
 			#{province},
 			#{city},
-			#{headImg},
+			#{headImg2},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -117,7 +120,8 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE dk_install_person SET 	
+		UPDATE dk_worker SET 	
+			sys_user_id = #{sysUserId},
 			mobile = #{mobile},
 			name = #{name},
 			open_id = #{openId},
@@ -126,7 +130,7 @@
 			country = #{country},
 			province = #{province},
 			city = #{city},
-			head_img = #{headImg},
+			head_img2 = #{headImg2},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}
@@ -135,21 +139,21 @@
 	
 	<!--物理删除-->
 	<update id="delete">
-		DELETE FROM dk_install_person
+		DELETE FROM dk_worker
 		WHERE id = #{id}
 	</update>
 	
 	<!--逻辑删除-->
 	<update id="deleteByLogic">
-		UPDATE dk_install_person SET 
+		UPDATE dk_worker SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 	
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="DkInstallPerson" statementType="STATEMENT">
-		select * FROM dk_install_person  where ${propertyName} = '${value}'
+	<select id="findUniqueByProperty" resultType="DkWorker" statementType="STATEMENT">
+		select * FROM dk_worker  where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

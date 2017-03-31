@@ -10,38 +10,38 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.service.CrudService;
-import com.jeeplus.modules.daikin.entity.DkMember;
-import com.jeeplus.modules.daikin.dao.DkMemberDao;
+import com.jeeplus.modules.daikin.entity.DkWorker;
+import com.jeeplus.modules.daikin.dao.DkWorkerDao;
 
 /**
- * 会员Service
+ * 微信用户Service
  * @author LD
  * @version 2017-03-31
  */
 @Service
 @Transactional(readOnly = true)
-public class DkMemberService extends CrudService<DkMemberDao, DkMember> {
+public class DkWorkerService extends CrudService<DkWorkerDao, DkWorker> {
 
-	public DkMember get(String id) {
+	public DkWorker get(String id) {
 		return super.get(id);
 	}
 	
-	public List<DkMember> findList(DkMember dkMember) {
-		return super.findList(dkMember);
+	public List<DkWorker> findList(DkWorker dkWorker) {
+		return super.findList(dkWorker);
 	}
 	
-	public Page<DkMember> findPage(Page<DkMember> page, DkMember dkMember) {
-		return super.findPage(page, dkMember);
-	}
-	
-	@Transactional(readOnly = false)
-	public void save(DkMember dkMember) {
-		super.save(dkMember);
+	public Page<DkWorker> findPage(Page<DkWorker> page, DkWorker dkWorker) {
+		return super.findPage(page, dkWorker);
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(DkMember dkMember) {
-		super.delete(dkMember);
+	public void save(DkWorker dkWorker) {
+		super.save(dkWorker);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(DkWorker dkWorker) {
+		super.delete(dkWorker);
 	}
 	
 	

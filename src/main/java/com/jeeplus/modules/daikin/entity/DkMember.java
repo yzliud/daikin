@@ -10,19 +10,15 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 会员Entity
  * @author LD
- * @version 2017-03-23
+ * @version 2017-03-31
  */
 public class DkMember extends DataEntity<DkMember> {
 	
 	private static final long serialVersionUID = 1L;
 	private String mobile;		// 手机号
-	private String openId;		// 微信唯一标识
-	private String nickName;		// 昵称
-	private String sex;		// 性别
-	private String country;		// 国家
-	private String province;		// 省
-	private String city;		// 城市
-	private String headImg;		// 头像
+	private String address;		// 联系地址
+	private String name;		// 姓名
+	private String remark;		// 备注
 	
 	public DkMember() {
 		super();
@@ -41,67 +37,31 @@ public class DkMember extends DataEntity<DkMember> {
 		this.mobile = mobile;
 	}
 	
-	@ExcelField(title="微信唯一标识", align=2, sort=2)
-	public String getOpenId() {
-		return openId;
+	@ExcelField(title="联系地址", align=2, sort=2)
+	public String getAddress() {
+		return address;
 	}
 
-	public void setOpenId(String openId) {
-		this.openId = openId;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
-	@ExcelField(title="昵称", align=2, sort=3)
-	public String getNickName() {
-		return nickName;
+	@ExcelField(title="姓名", align=2, sort=3)
+	public String getName() {
+		return name;
 	}
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	@ExcelField(title="性别", dictType="sex", align=2, sort=4)
-	public String getSex() {
-		return sex;
+	@ExcelField(title="备注", align=2, sort=4)
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
-	
-	@ExcelField(title="国家", align=2, sort=5)
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	
-	@ExcelField(title="省", align=2, sort=6)
-	public String getProvince() {
-		return province;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
-	}
-	
-	@ExcelField(title="城市", align=2, sort=7)
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
-	@ExcelField(title="头像", align=2, sort=8)
-	public String getHeadImg() {
-		return headImg;
-	}
-
-	public void setHeadImg(String headImg) {
-		this.headImg = headImg;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 }

@@ -5,13 +5,9 @@
 	<sql id="dkMemberColumns">
 		a.id AS "id",
 		a.mobile AS "mobile",
-		a.open_id AS "openId",
-		a.nick_name AS "nickName",
-		a.sex AS "sex",
-		a.country AS "country",
-		a.province AS "province",
-		a.city AS "city",
-		a.head_img AS "headImg",
+		a.address AS "address",
+		a.name AS "name",
+		a.remark AS "remark",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -39,19 +35,16 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="mobile != null and mobile != ''">
-				AND a.mobile = #{mobile}
+				AND a.mobile LIKE 
+					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{mobile}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{mobile},'%')</if>
 			</if>
-			<if test="nickName != null and nickName != ''">
-				AND a.nick_name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{nickName}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{nickName}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{nickName},'%')</if>
-			</if>
-			<if test="sex != null and sex != ''">
-				AND a.sex LIKE 
-					<if test="dbName == 'oracle'">'%'||#{sex}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{sex}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{sex},'%')</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 		</where>
 		<choose>
@@ -86,13 +79,9 @@
 		INSERT INTO dk_member(
 			id,
 			mobile,
-			open_id,
-			nick_name,
-			sex,
-			country,
-			province,
-			city,
-			head_img,
+			address,
+			name,
+			remark,
 			create_by,
 			create_date,
 			update_by,
@@ -101,13 +90,9 @@
 		) VALUES (
 			#{id},
 			#{mobile},
-			#{openId},
-			#{nickName},
-			#{sex},
-			#{country},
-			#{province},
-			#{city},
-			#{headImg},
+			#{address},
+			#{name},
+			#{remark},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -119,13 +104,9 @@
 	<update id="update">
 		UPDATE dk_member SET 	
 			mobile = #{mobile},
-			open_id = #{openId},
-			nick_name = #{nickName},
-			sex = #{sex},
-			country = #{country},
-			province = #{province},
-			city = #{city},
-			head_img = #{headImg},
+			address = #{address},
+			name = #{name},
+			remark = #{remark},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}

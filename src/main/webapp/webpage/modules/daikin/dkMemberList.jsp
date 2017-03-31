@@ -46,13 +46,8 @@
 		<div class="form-group">
 			<span>手机号：</span>
 				<form:input path="mobile" htmlEscape="false" maxlength="32"  class=" form-control input-sm"/>
-			<span>昵称：</span>
-				<form:input path="nickName" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
-			<span>性别：</span>
-				<form:select path="sex"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+			<span>姓名：</span>
+				<form:input path="name" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
 		 </div>	
 	</form:form>
 	<br/>
@@ -94,12 +89,9 @@
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
 				<th  class="sort-column mobile">手机号</th>
-				<th  class="sort-column nickName">昵称</th>
-				<th  class="sort-column sex">性别</th>
-				<th  class="sort-column country">国家</th>
-				<th  class="sort-column province">省</th>
-				<th  class="sort-column city">城市</th>
-				<th  class="sort-column headImg">头像</th>
+				<th  class="sort-column address">联系地址</th>
+				<th  class="sort-column name">姓名</th>
+				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -111,22 +103,13 @@
 					${dkMember.mobile}
 				</a></td>
 				<td>
-					${dkMember.nickName}
+					${dkMember.address}
 				</td>
 				<td>
-					${fns:getDictLabel(dkMember.sex, 'sex', '')}
+					${dkMember.name}
 				</td>
 				<td>
-					${dkMember.country}
-				</td>
-				<td>
-					${dkMember.province}
-				</td>
-				<td>
-					${dkMember.city}
-				</td>
-				<td>
-					${dkMember.headImg}
+					<fmt:formatDate value="${dkMember.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
 					<shiro:hasPermission name="daikin:dkMember:view">

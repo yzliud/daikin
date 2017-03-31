@@ -46,8 +46,18 @@
 		<div class="form-group">
 			<span>名称：</span>
 				<form:input path="name" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
-			<span>型号：</span>
-				<form:input path="model" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
+			<span>规格：</span>
+				<form:input path="model" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
+			<span>分类：</span>
+				<form:select path="classifyId"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('classify_id')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			<span>商品类型：</span>
+				<form:select path="productType"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 		 </div>	
 	</form:form>
 	<br/>
@@ -89,11 +99,15 @@
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
 				<th  class="sort-column name">名称</th>
-				<th  class="sort-column model">型号</th>
-				<th  class="sort-column descript">描述</th>
-				<th  class="sort-column price">价格</th>
-				<th  class="sort-column inventory">库存</th>
-				<th  class="sort-column updateBy.id">更新人</th>
+				<th  class="sort-column model">规格</th>
+				<th  class="sort-column price">单价</th>
+				<th  class="sort-column stock">库存</th>
+				<th  class="sort-column classifyId">分类</th>
+				<th  class="sort-column power">功率</th>
+				<th  class="sort-column place">产地</th>
+				<th  class="sort-column brandId">品牌</th>
+				<th  class="sort-column unit">单位</th>
+				<th  class="sort-column productType">商品类型</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
@@ -109,16 +123,28 @@
 					${dkProduct.model}
 				</td>
 				<td>
-					${dkProduct.descript}
-				</td>
-				<td>
 					${dkProduct.price}
 				</td>
 				<td>
-					${dkProduct.inventory}
+					${dkProduct.stock}
 				</td>
 				<td>
-					${dkProduct.updateBy.id}
+					${fns:getDictLabel(dkProduct.classifyId, 'classify_id', '')}
+				</td>
+				<td>
+					${dkProduct.power}
+				</td>
+				<td>
+					${dkProduct.place}
+				</td>
+				<td>
+					${fns:getDictLabel(dkProduct.brandId, 'brand_id', '')}
+				</td>
+				<td>
+					${dkProduct.unit}
+				</td>
+				<td>
+					${fns:getDictLabel(dkProduct.productType, 'product_type', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkProduct.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

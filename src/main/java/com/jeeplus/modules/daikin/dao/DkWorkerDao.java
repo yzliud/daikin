@@ -5,15 +5,15 @@ package com.jeeplus.modules.daikin.dao;
 
 import com.jeeplus.common.persistence.CrudDao;
 import com.jeeplus.common.persistence.annotation.MyBatisDao;
-import com.jeeplus.modules.daikin.entity.DkInstallPerson;
+import com.jeeplus.modules.daikin.entity.DkWorker;
 
 /**
- * 安装人员DAO接口
+ * 微信用户DAO接口
  * @author LD
- * @version 2017-03-23
+ * @version 2017-03-31
  */
 @MyBatisDao
-public interface DkInstallPersonDao extends CrudDao<DkInstallPerson> {
+public interface DkWorkerDao extends CrudDao<DkWorker> {
 
 	
 }

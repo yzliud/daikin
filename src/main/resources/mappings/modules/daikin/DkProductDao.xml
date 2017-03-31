@@ -6,11 +6,15 @@
 		a.id AS "id",
 		a.name AS "name",
 		a.model AS "model",
-		a.classify_id AS "classifyId",
-		a.pic_path AS "picPath",
-		a.descript AS "descript",
 		a.price AS "price",
-		a.inventory AS "inventory",
+		a.stock AS "stock",
+		a.classify_id AS "classifyId",
+		a.power AS "power",
+		a.place AS "place",
+		a.brand_id AS "brandId",
+		a.unit AS "unit",
+		a.product_type AS "productType",
+		a.descript AS "descript",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -44,10 +48,13 @@
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 			<if test="model != null and model != ''">
-				AND a.model LIKE 
-					<if test="dbName == 'oracle'">'%'||#{model}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{model}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{model},'%')</if>
+				AND a.model = #{model}
+			</if>
+			<if test="classifyId != null and classifyId != ''">
+				AND a.classify_id = #{classifyId}
+			</if>
+			<if test="productType != null and productType != ''">
+				AND a.product_type = #{productType}
 			</if>
 		</where>
 		<choose>
@@ -83,11 +90,15 @@
 			id,
 			name,
 			model,
-			classify_id,
-			pic_path,
-			descript,
 			price,
-			inventory,
+			stock,
+			classify_id,
+			power,
+			place,
+			brand_id,
+			unit,
+			product_type,
+			descript,
 			create_by,
 			create_date,
 			update_by,
@@ -97,11 +108,15 @@
 			#{id},
 			#{name},
 			#{model},
-			#{classifyId},
-			#{picPath},
-			#{descript},
 			#{price},
-			#{inventory},
+			#{stock},
+			#{classifyId},
+			#{power},
+			#{place},
+			#{brandId},
+			#{unit},
+			#{productType},
+			#{descript},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -114,11 +129,15 @@
 		UPDATE dk_product SET 	
 			name = #{name},
 			model = #{model},
-			classify_id = #{classifyId},
-			pic_path = #{picPath},
-			descript = #{descript},
 			price = #{price},
-			inventory = #{inventory},
+			stock = #{stock},
+			classify_id = #{classifyId},
+			power = #{power},
+			place = #{place},
+			brand_id = #{brandId},
+			unit = #{unit},
+			product_type = #{productType},
+			descript = #{descript},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}

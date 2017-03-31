@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>安装人员管理</title>
+	<title>微信用户管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -13,7 +13,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="ibox">
 	<div class="ibox-title">
-		<h5>安装人员列表 </h5>
+		<h5>微信用户列表 </h5>
 		<div class="ibox-tools">
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
@@ -39,7 +39,7 @@
 	<!--查询条件-->
 	<div class="row">
 	<div class="col-sm-12">
-	<form:form id="searchForm" modelAttribute="dkInstallPerson" action="${ctx}/daikin/dkInstallPerson/" method="post" class="form-inline">
+	<form:form id="searchForm" modelAttribute="dkWorker" action="${ctx}/daikin/dkWorker/" method="post" class="form-inline">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
@@ -58,20 +58,20 @@
 	<div class="row">
 	<div class="col-sm-12">
 		<div class="pull-left">
-			<shiro:hasPermission name="daikin:dkInstallPerson:add">
-				<table:addRow url="${ctx}/daikin/dkInstallPerson/form" title="安装人员"></table:addRow><!-- 增加按钮 -->
+			<shiro:hasPermission name="daikin:dkWorker:add">
+				<table:addRow url="${ctx}/daikin/dkWorker/form" title="微信用户"></table:addRow><!-- 增加按钮 -->
 			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkInstallPerson:edit">
-			    <table:editRow url="${ctx}/daikin/dkInstallPerson/form" title="安装人员" id="contentTable"></table:editRow><!-- 编辑按钮 -->
+			<shiro:hasPermission name="daikin:dkWorker:edit">
+			    <table:editRow url="${ctx}/daikin/dkWorker/form" title="微信用户" id="contentTable"></table:editRow><!-- 编辑按钮 -->
 			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkInstallPerson:del">
-				<table:delRow url="${ctx}/daikin/dkInstallPerson/deleteAll" id="contentTable"></table:delRow><!-- 删除按钮 -->
+			<shiro:hasPermission name="daikin:dkWorker:del">
+				<table:delRow url="${ctx}/daikin/dkWorker/deleteAll" id="contentTable"></table:delRow><!-- 删除按钮 -->
 			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkInstallPerson:import">
-				<table:importExcel url="${ctx}/daikin/dkInstallPerson/import"></table:importExcel><!-- 导入按钮 -->
+			<shiro:hasPermission name="daikin:dkWorker:import">
+				<table:importExcel url="${ctx}/daikin/dkWorker/import"></table:importExcel><!-- 导入按钮 -->
 			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkInstallPerson:export">
-	       		<table:exportExcel url="${ctx}/daikin/dkInstallPerson/export"></table:exportExcel><!-- 导出按钮 -->
+			<shiro:hasPermission name="daikin:dkWorker:export">
+	       		<table:exportExcel url="${ctx}/daikin/dkWorker/export"></table:exportExcel><!-- 导出按钮 -->
 	       	</shiro:hasPermission>
 	       <button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="sortOrRefresh()" title="刷新"><i class="glyphicon glyphicon-repeat"></i> 刷新</button>
 		
@@ -95,47 +95,51 @@
 				<th  class="sort-column country">国家</th>
 				<th  class="sort-column province">省</th>
 				<th  class="sort-column city">城市</th>
-				<th  class="sort-column headImg">头像</th>
+				<th  class="sort-column headImg2">头像</th>
+				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="dkInstallPerson">
+		<c:forEach items="${page.list}" var="dkWorker">
 			<tr>
-				<td> <input type="checkbox" id="${dkInstallPerson.id}" class="i-checks"></td>
-				<td><a  href="#" onclick="openDialogView('查看安装人员', '${ctx}/daikin/dkInstallPerson/form?id=${dkInstallPerson.id}','800px', '500px')">
-					${dkInstallPerson.mobile}
+				<td> <input type="checkbox" id="${dkWorker.id}" class="i-checks"></td>
+				<td><a  href="#" onclick="openDialogView('查看微信用户', '${ctx}/daikin/dkWorker/form?id=${dkWorker.id}','800px', '500px')">
+					${dkWorker.mobile}
 				</a></td>
 				<td>
-					${dkInstallPerson.name}
+					${dkWorker.name}
 				</td>
 				<td>
-					${dkInstallPerson.nickName}
+					${dkWorker.nickName}
 				</td>
 				<td>
-					${fns:getDictLabel(dkInstallPerson.sex, 'sex', '')}
+					${dkWorker.sex}
 				</td>
 				<td>
-					${dkInstallPerson.country}
+					${dkWorker.country}
 				</td>
 				<td>
-					${dkInstallPerson.province}
+					${dkWorker.province}
 				</td>
 				<td>
-					${dkInstallPerson.city}
+					${dkWorker.city}
 				</td>
 				<td>
-					${dkInstallPerson.headImg}
+					${dkWorker.headImg2}
 				</td>
 				<td>
-					<shiro:hasPermission name="daikin:dkInstallPerson:view">
-						<a href="#" onclick="openDialogView('查看安装人员', '${ctx}/daikin/dkInstallPerson/form?id=${dkInstallPerson.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
+					<fmt:formatDate value="${dkWorker.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</td>
+				<td>
+					<shiro:hasPermission name="daikin:dkWorker:view">
+						<a href="#" onclick="openDialogView('查看微信用户', '${ctx}/daikin/dkWorker/form?id=${dkWorker.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
 					</shiro:hasPermission>
-					<shiro:hasPermission name="daikin:dkInstallPerson:edit">
-    					<a href="#" onclick="openDialog('修改安装人员', '${ctx}/daikin/dkInstallPerson/form?id=${dkInstallPerson.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
+					<shiro:hasPermission name="daikin:dkWorker:edit">
+    					<a href="#" onclick="openDialog('修改微信用户', '${ctx}/daikin/dkWorker/form?id=${dkWorker.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
     				</shiro:hasPermission>
-    				<shiro:hasPermission name="daikin:dkInstallPerson:del">
-						<a href="${ctx}/daikin/dkInstallPerson/delete?id=${dkInstallPerson.id}" onclick="return confirmx('确认要删除该安装人员吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
+    				<shiro:hasPermission name="daikin:dkWorker:del">
+						<a href="${ctx}/daikin/dkWorker/delete?id=${dkWorker.id}" onclick="return confirmx('确认要删除该微信用户吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
 					</shiro:hasPermission>
 				</td>
 			</tr>

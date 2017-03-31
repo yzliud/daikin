@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>安装人员管理</title>
+	<title>微信用户管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		var validateForm;
@@ -35,7 +35,7 @@
 	</script>
 </head>
 <body class="hideScroll">
-		<form:form id="inputForm" modelAttribute="dkInstallPerson" action="${ctx}/daikin/dkInstallPerson/save" method="post" class="form-horizontal">
+		<form:form id="inputForm" modelAttribute="dkWorker" action="${ctx}/daikin/dkWorker/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
@@ -57,10 +57,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">性别：</label></td>
 					<td class="width-35">
-						<form:select path="sex" class="form-control ">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
+						<form:input path="sex" htmlEscape="false"    class="form-control "/>
 					</td>
 				</tr>
 				<tr>
@@ -80,7 +77,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">头像：</label></td>
 					<td class="width-35">
-						<form:input path="headImg" htmlEscape="false"    class="form-control "/>
+						<form:input path="headImg2" htmlEscape="false"    class="form-control "/>
 					</td>
 				</tr>
 		 	</tbody>

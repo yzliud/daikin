@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.daikin.web;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jeeplus.modules.daikin.entity.DkContract;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.MyBeanUtils;
@@ -34,9 +37,9 @@ import com.jeeplus.modules.daikin.entity.DkContractPay;
 import com.jeeplus.modules.daikin.service.DkContractPayService;
 
 /**
- * 付款计划Controller
+ * 合同回款记录Controller
  * @author LD
- * @version 2017-03-24
+ * @version 2017-03-31
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkContractPay")
@@ -58,7 +61,7 @@ public class DkContractPayController extends BaseController {
 	}
 	
 	/**
-	 * 付款计划列表页面
+	 * 合同回款记录列表页面
 	 */
 	@RequiresPermissions("daikin:dkContractPay:list")
 	@RequestMapping(value = {"list", ""})
@@ -69,7 +72,7 @@ public class DkContractPayController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑付款计划表单页面
+	 * 查看，增加，编辑合同回款记录表单页面
 	 */
 	@RequiresPermissions(value={"daikin:dkContractPay:view","daikin:dkContractPay:add","daikin:dkContractPay:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
@@ -79,7 +82,7 @@ public class DkContractPayController extends BaseController {
 	}
 
 	/**
-	 * 保存付款计划
+	 * 保存合同回款记录
 	 */
 	@RequiresPermissions(value={"daikin:dkContractPay:add","daikin:dkContractPay:edit"},logical=Logical.OR)
 	@RequestMapping(value = "save")
@@ -94,23 +97,23 @@ public class DkContractPayController extends BaseController {
 		}else{//新增表单保存
 			dkContractPayService.save(dkContractPay);//保存
 		}
-		addMessage(redirectAttributes, "保存付款计划成功");
+		addMessage(redirectAttributes, "保存合同回款记录成功");
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
 	}
 	
 	/**
-	 * 删除付款计划
+	 * 删除合同回款记录
 	 */
 	@RequiresPermissions("daikin:dkContractPay:del")
 	@RequestMapping(value = "delete")
 	public String delete(DkContractPay dkContractPay, RedirectAttributes redirectAttributes) {
 		dkContractPayService.delete(dkContractPay);
-		addMessage(redirectAttributes, "删除付款计划成功");
+		addMessage(redirectAttributes, "删除合同回款记录成功");
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
 	}
 	
 	/**
-	 * 批量删除付款计划
+	 * 批量删除合同回款记录
 	 */
 	@RequiresPermissions("daikin:dkContractPay:del")
 	@RequestMapping(value = "deleteAll")
@@ -119,7 +122,7 @@ public class DkContractPayController extends BaseController {
 		for(String id : idArray){
 			dkContractPayService.delete(dkContractPayService.get(id));
 		}
-		addMessage(redirectAttributes, "删除付款计划成功");
+		addMessage(redirectAttributes, "删除合同回款记录成功");
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
 	}
 	
@@ -130,12 +133,12 @@ public class DkContractPayController extends BaseController {
     @RequestMapping(value = "export", method=RequestMethod.POST)
     public String exportFile(DkContractPay dkContractPay, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "付款计划"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "合同回款记录"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<DkContractPay> page = dkContractPayService.findPage(new Page<DkContractPay>(request, response, -1), dkContractPay);
-    		new ExportExcel("付款计划", DkContractPay.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("合同回款记录", DkContractPay.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导出付款计划记录失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导出合同回款记录记录失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
     }
@@ -164,25 +167,25 @@ public class DkContractPayController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条付款计划记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条合同回款记录记录。");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条付款计划记录"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条合同回款记录记录"+failureMsg);
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入付款计划失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入合同回款记录失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
     }
 	
 	/**
-	 * 下载导入付款计划数据模板
+	 * 下载导入合同回款记录数据模板
 	 */
 	@RequiresPermissions("daikin:dkContractPay:import")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "付款计划数据导入模板.xlsx";
+            String fileName = "合同回款记录数据导入模板.xlsx";
     		List<DkContractPay> list = Lists.newArrayList(); 
-    		new ExportExcel("付款计划数据", DkContractPay.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("合同回款记录数据", DkContractPay.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
@@ -191,6 +194,31 @@ public class DkContractPayController extends BaseController {
     }
 	
 	
+	/**
+	 * 选择合同ID
+	 */
+	@RequestMapping(value = "selectdkContract")
+	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DkContract> page = dkContractPayService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
+		try {
+			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
+			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");
+			searchLabel = URLDecoder.decode(searchLabel, "UTF-8");
+			searchKey = URLDecoder.decode(searchKey, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("labelNames", fieldLabels.split("\\|"));
+		model.addAttribute("labelValues", fieldKeys.split("\\|"));
+		model.addAttribute("fieldLabels", fieldLabels);
+		model.addAttribute("fieldKeys", fieldKeys);
+		model.addAttribute("url", url);
+		model.addAttribute("searchLabel", searchLabel);
+		model.addAttribute("searchKey", searchKey);
+		model.addAttribute("obj", dkContract);
+		model.addAttribute("page", page);
+		return "modules/sys/gridselect";
+	}
 	
 
 }

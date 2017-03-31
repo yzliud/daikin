@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkProductStockRecordDao">
+    
+	<sql id="dkProductStockRecordColumns">
+		a.id AS "id",
+		a.product_id AS "dkProduct.id",
+		a.amount AS "amount",
+		a.operate_time AS "operateTime",
+		a.flag AS "flag",
+		a.operate_by AS "tuser.id",
+		a.contract_num AS "contractNum",
+		a.remark AS "remark",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		tuser.name AS "tuser.name"
+	</sql>
+	
+	<sql id="dkProductStockRecordJoins">
+		LEFT JOIN sys_user tuser ON tuser.id = a.operate_by
+	</sql>
+	
+    
+	<select id="get" resultType="DkProductStockRecord" >
+		SELECT 
+			<include refid="dkProductStockRecordColumns"/>
+		FROM dk_product_stock_record a
+		<include refid="dkProductStockRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DkProductStockRecord" >
+		SELECT 
+			<include refid="dkProductStockRecordColumns"/>
+		FROM dk_product_stock_record a
+		<include refid="dkProductStockRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="dkProduct != null and dkProduct.id != null and dkProduct.id != ''">
+				AND a.product_id = #{dkProduct.id}
+			</if>
+			<if test="beginOperateTime != null and endOperateTime != null and beginOperateTime != '' and endOperateTime != ''">
+				AND a.operate_time BETWEEN #{beginOperateTime} AND #{endOperateTime}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = #{flag}
+			</if>
+			<if test="contractNum != null and contractNum != ''">
+				AND a.contract_num LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractNum}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractNum}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractNum},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DkProductStockRecord" >
+		SELECT 
+			<include refid="dkProductStockRecordColumns"/>
+		FROM dk_product_stock_record a
+		<include refid="dkProductStockRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dk_product_stock_record(
+			id,
+			product_id,
+			amount,
+			operate_time,
+			flag,
+			operate_by,
+			contract_num,
+			remark,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{dkProduct.id},
+			#{amount},
+			#{operateTime},
+			#{flag},
+			#{tuser.id},
+			#{contractNum},
+			#{remark},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dk_product_stock_record SET 	
+			product_id = #{dkProduct.id},
+			amount = #{amount},
+			operate_time = #{operateTime},
+			flag = #{flag},
+			operate_by = #{tuser.id},
+			contract_num = #{contractNum},
+			remark = #{remark},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM dk_product_stock_record
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE dk_product_stock_record SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="DkProductStockRecord" statementType="STATEMENT">
+		select * FROM dk_product_stock_record  where ${propertyName} = '${value}'
+	</select>
+	
+	<select id="findListBydkProduct" resultType="DkProduct">
+		SELECT 
+			*
+		FROM dk_product a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

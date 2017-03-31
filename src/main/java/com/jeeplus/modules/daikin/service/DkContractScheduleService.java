@@ -11,38 +11,38 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.service.CrudService;
-import com.jeeplus.modules.daikin.entity.DkContractPay;
-import com.jeeplus.modules.daikin.dao.DkContractPayDao;
+import com.jeeplus.modules.daikin.entity.DkContractSchedule;
+import com.jeeplus.modules.daikin.dao.DkContractScheduleDao;
 
 /**
- * 合同回款记录Service
+ * 安装进度Service
  * @author LD
  * @version 2017-03-31
  */
 @Service
 @Transactional(readOnly = true)
-public class DkContractPayService extends CrudService<DkContractPayDao, DkContractPay> {
+public class DkContractScheduleService extends CrudService<DkContractScheduleDao, DkContractSchedule> {
 
-	public DkContractPay get(String id) {
+	public DkContractSchedule get(String id) {
 		return super.get(id);
 	}
 	
-	public List<DkContractPay> findList(DkContractPay dkContractPay) {
-		return super.findList(dkContractPay);
+	public List<DkContractSchedule> findList(DkContractSchedule dkContractSchedule) {
+		return super.findList(dkContractSchedule);
 	}
 	
-	public Page<DkContractPay> findPage(Page<DkContractPay> page, DkContractPay dkContractPay) {
-		return super.findPage(page, dkContractPay);
-	}
-	
-	@Transactional(readOnly = false)
-	public void save(DkContractPay dkContractPay) {
-		super.save(dkContractPay);
+	public Page<DkContractSchedule> findPage(Page<DkContractSchedule> page, DkContractSchedule dkContractSchedule) {
+		return super.findPage(page, dkContractSchedule);
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(DkContractPay dkContractPay) {
-		super.delete(dkContractPay);
+	public void save(DkContractSchedule dkContractSchedule) {
+		super.save(dkContractSchedule);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(DkContractSchedule dkContractSchedule) {
+		super.delete(dkContractSchedule);
 	}
 	
 	public Page<DkContract> findPageBydkContract(Page<DkContract> page, DkContract dkContract) {

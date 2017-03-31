@@ -10,7 +10,7 @@ import com.jeeplus.modules.daikin.entity.DkProduct;
 /**
  * 商品DAO接口
  * @author LD
- * @version 2017-03-24
+ * @version 2017-03-31
  */
 @MyBatisDao
 public interface DkProductDao extends CrudDao<DkProduct> {

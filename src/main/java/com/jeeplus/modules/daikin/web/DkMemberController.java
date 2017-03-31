@@ -36,7 +36,7 @@ import com.jeeplus.modules.daikin.service.DkMemberService;
 /**
  * 会员Controller
  * @author LD
- * @version 2017-03-23
+ * @version 2017-03-31
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkMember")

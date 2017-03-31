@@ -3,17 +3,20 @@
  */
 package com.jeeplus.modules.daikin.dao;
 
+import com.jeeplus.modules.daikin.entity.DkContract;
+import java.util.List;
 import com.jeeplus.common.persistence.CrudDao;
 import com.jeeplus.common.persistence.annotation.MyBatisDao;
 import com.jeeplus.modules.daikin.entity.DkContractPay;
 
 /**
- * 付款计划DAO接口
+ * 合同回款记录DAO接口
  * @author LD
- * @version 2017-03-24
+ * @version 2017-03-31
  */
 @MyBatisDao
 public interface DkContractPayDao extends CrudDao<DkContractPay> {
 
+	public List<DkContract> findListBydkContract(DkContract dkContract);
 	
 }

@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jeeplus.modules.daikin.entity.DkInstallPerson;
+import com.jeeplus.modules.daikin.entity.DkQuotation;
+import com.jeeplus.modules.daikin.entity.DkMember;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.MyBeanUtils;
@@ -39,7 +40,7 @@ import com.jeeplus.modules.daikin.service.DkContractService;
 /**
  * 合同Controller
  * @author LD
- * @version 2017-03-23
+ * @version 2017-03-31
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkContract")
@@ -195,11 +196,11 @@ public class DkContractController extends BaseController {
 	
 	
 	/**
-	 * 选择安装人员
+	 * 选择报价单ID
 	 */
-	@RequestMapping(value = "selectdkInstallPerson")
-	public String selectdkInstallPerson(DkInstallPerson dkInstallPerson, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<DkInstallPerson> page = dkContractService.findPageBydkInstallPerson(new Page<DkInstallPerson>(request, response),  dkInstallPerson);
+	@RequestMapping(value = "selectdkQuotation")
+	public String selectdkQuotation(DkQuotation dkQuotation, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DkQuotation> page = dkContractService.findPageBydkQuotation(new Page<DkQuotation>(request, response),  dkQuotation);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
 			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");
@@ -215,7 +216,32 @@ public class DkContractController extends BaseController {
 		model.addAttribute("url", url);
 		model.addAttribute("searchLabel", searchLabel);
 		model.addAttribute("searchKey", searchKey);
-		model.addAttribute("obj", dkInstallPerson);
+		model.addAttribute("obj", dkQuotation);
+		model.addAttribute("page", page);
+		return "modules/sys/gridselect";
+	}
+	/**
+	 * 选择会员ID
+	 */
+	@RequestMapping(value = "selectdkMember")
+	public String selectdkMember(DkMember dkMember, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DkMember> page = dkContractService.findPageBydkMember(new Page<DkMember>(request, response),  dkMember);
+		try {
+			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
+			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");
+			searchLabel = URLDecoder.decode(searchLabel, "UTF-8");
+			searchKey = URLDecoder.decode(searchKey, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("labelNames", fieldLabels.split("\\|"));
+		model.addAttribute("labelValues", fieldKeys.split("\\|"));
+		model.addAttribute("fieldLabels", fieldLabels);
+		model.addAttribute("fieldKeys", fieldKeys);
+		model.addAttribute("url", url);
+		model.addAttribute("searchLabel", searchLabel);
+		model.addAttribute("searchKey", searchKey);
+		model.addAttribute("obj", dkMember);
 		model.addAttribute("page", page);
 		return "modules/sys/gridselect";
 	}

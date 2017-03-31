@@ -46,10 +46,32 @@
 		<div class="form-group">
 			<span>名称：</span>
 				<form:input path="name" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
+			<span>报价单ID：</span>
+				<sys:gridselect url="${ctx}/daikin/dkContract/selectdkQuotation" id="dkQuotation" name="dkQuotation"  value="${dkContract.dkQuotation.id}"  title="选择报价单ID" labelName="dkQuotation.name" 
+					labelValue="${dkContract.dkQuotation.name}" cssClass="form-control required" fieldLabels="名称|姓名|联系方式|地址" fieldKeys="name|memberName|mobile|address" searchLabel="报价单名称" searchKey="name" ></sys:gridselect>
 			<span>合同号：</span>
 				<form:input path="contractNumber" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
-			<span>联系人手机号：</span>
+			<span>联系方式：</span>
 				<form:input path="mobile" htmlEscape="false" maxlength="20"  class=" form-control input-sm"/>
+			<span>会员ID：</span>
+				<sys:gridselect url="${ctx}/daikin/dkContract/selectdkMember" id="dkMember" name="dkMember"  value="${dkContract.dkMember.id}"  title="选择会员ID" labelName="dkMember.name" 
+					labelValue="${dkContract.dkMember.name}" cssClass="form-control required" fieldLabels="姓名|联系方式|联系地址" fieldKeys="name|mobile|address" searchLabel="姓名" searchKey="name" ></sys:gridselect>
+			<span>安装人员：</span>
+				<sys:treeselect id="iuser" name="iuser.id" value="${dkContract.iuser.id}" labelName="iuser.name" labelValue="${dkContract.iuser.name}"
+					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
+			<span>销售人员：</span>
+				<sys:treeselect id="suser" name="suser.id" value="${dkContract.suser.id}" labelName="suser.name" labelValue="${dkContract.suser.name}"
+					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
+			<span>合同类型：</span>
+				<form:select path="productType"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			<span>审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）：</span>
+				<form:select path="reviewStatus"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('review_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 		 </div>	
 	</form:form>
 	<br/>
@@ -91,16 +113,20 @@
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
 				<th  class="sort-column name">名称</th>
+				<th  class="sort-column dkQuotation.id">报价单ID</th>
 				<th  class="sort-column contractNumber">合同号</th>
-				<th  class="sort-column mobile">联系人手机号</th>
-				<th  class="sort-column orderDate">订购时间</th>
+				<th  class="sort-column memberName">顾客名称</th>
+				<th  class="sort-column mobile">联系方式</th>
+				<th  class="sort-column address">联系地址</th>
+				<th  class="sort-column dkMember.id">会员ID</th>
 				<th  class="sort-column totalFee">合同总金额</th>
-				<th  class="sort-column payFee">已支付金额</th>
-				<th  class="sort-column contractStatus">状态(0-已签订；1-进行中；2-已完成)</th>
-				<th  class="sort-column payStatus">支付状态(0-未支付；1-部分支付；2-已支付)</th>
-				<th  class="sort-column installStatus">安装状态(0-未安装；1-进行中；2-已完成)</th>
-				<th  class="sort-column dkInstallPerson.id">安装人员</th>
-				<th  class="sort-column tuser.name">销售人员</th>
+				<th  class="sort-column connectionRatio">连接率</th>
+				<th  class="sort-column iuser.name">安装人员</th>
+				<th  class="sort-column suser.name">销售人员</th>
+				<th  class="sort-column productType">合同类型</th>
+				<th  class="sort-column reviewStatus">审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）</th>
+				<th  class="sort-column ruser.name">审核者</th>
+				<th  class="sort-column reviewTime">审核日期</th>
 				<th  class="sort-column updateDate">update_date</th>
 				<th>操作</th>
 			</tr>
@@ -113,34 +139,46 @@
 					${dkContract.name}
 				</a></td>
 				<td>
+					${dkContract.dkQuotation.name}
+				</td>
+				<td>
 					${dkContract.contractNumber}
+				</td>
+				<td>
+					${dkContract.memberName}
 				</td>
 				<td>
 					${dkContract.mobile}
 				</td>
 				<td>
-					<fmt:formatDate value="${dkContract.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${dkContract.address}
+				</td>
+				<td>
+					${dkContract.dkMember.name}
 				</td>
 				<td>
 					${dkContract.totalFee}
 				</td>
 				<td>
-					${dkContract.payFee}
+					${dkContract.connectionRatio}
 				</td>
 				<td>
-					${fns:getDictLabel(dkContract.contractStatus, 'contract_status', '')}
+					${dkContract.iuser.name}
 				</td>
 				<td>
-					${fns:getDictLabel(dkContract.payStatus, 'pay_status', '')}
+					${dkContract.suser.name}
 				</td>
 				<td>
-					${fns:getDictLabel(dkContract.installStatus, 'install_status', '')}
+					${fns:getDictLabel(dkContract.productType, 'product_type', '')}
 				</td>
 				<td>
-					${dkContract.dkInstallPerson.name}
+					${fns:getDictLabel(dkContract.reviewStatus, 'review_status', '')}
 				</td>
 				<td>
-					${dkContract.tuser.name}
+					${dkContract.ruser.name}
+				</td>
+				<td>
+					${dkContract.reviewTime}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkContract.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

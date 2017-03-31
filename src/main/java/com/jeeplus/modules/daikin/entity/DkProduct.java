@@ -12,18 +12,22 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 商品Entity
  * @author LD
- * @version 2017-03-24
+ * @version 2017-03-31
  */
 public class DkProduct extends DataEntity<DkProduct> {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;		// 名称
-	private String model;		// 型号
+	private String model;		// 规格
+	private Double price;		// 单价
+	private Double stock;		// 库存
 	private String classifyId;		// 分类
-	private String picPath;		// 图片
+	private Double power;		// 功率
+	private String place;		// 产地
+	private String brandId;		// 品牌
+	private String unit;		// 单位
+	private String productType;		// 商品类型
 	private String descript;		// 描述
-	private Double price;		// 价格
-	private Double inventory;		// 库存
 	
 	public DkProduct() {
 		super();
@@ -42,7 +46,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.name = name;
 	}
 	
-	@ExcelField(title="型号", align=2, sort=2)
+	@ExcelField(title="规格", align=2, sort=2)
 	public String getModel() {
 		return model;
 	}
@@ -51,36 +55,9 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.model = model;
 	}
 	
-	@ExcelField(title="分类", align=2, sort=3)
-	public String getClassifyId() {
-		return classifyId;
-	}
-
-	public void setClassifyId(String classifyId) {
-		this.classifyId = classifyId;
-	}
-	
-	@ExcelField(title="图片", align=2, sort=4)
-	public String getPicPath() {
-		return picPath;
-	}
-
-	public void setPicPath(String picPath) {
-		this.picPath = picPath;
-	}
-	
-	@ExcelField(title="描述", align=2, sort=5)
-	public String getDescript() {
-		return descript;
-	}
-
-	public void setDescript(String descript) {
-		this.descript = descript;
-	}
-	
-	@Min(value=0,message="价格的最小值不能小于0")
-	@Max(value=500000,message="价格的最大值不能超过500000")
-	@ExcelField(title="价格", align=2, sort=6)
+	@Min(value=0,message="单价的最小值不能小于0")
+	@Max(value=100000,message="单价的最大值不能超过100000")
+	@ExcelField(title="单价", align=2, sort=3)
 	public Double getPrice() {
 		return price;
 	}
@@ -90,14 +67,77 @@ public class DkProduct extends DataEntity<DkProduct> {
 	}
 	
 	@Min(value=0,message="库存的最小值不能小于0")
-	@Max(value=10000,message="库存的最大值不能超过10000")
-	@ExcelField(title="库存", align=2, sort=7)
-	public Double getInventory() {
-		return inventory;
+	@Max(value=100000,message="库存的最大值不能超过100000")
+	@ExcelField(title="库存", align=2, sort=4)
+	public Double getStock() {
+		return stock;
 	}
 
-	public void setInventory(Double inventory) {
-		this.inventory = inventory;
+	public void setStock(Double stock) {
+		this.stock = stock;
+	}
+	
+	@ExcelField(title="分类", dictType="classify_id", align=2, sort=5)
+	public String getClassifyId() {
+		return classifyId;
+	}
+
+	public void setClassifyId(String classifyId) {
+		this.classifyId = classifyId;
+	}
+	
+	@ExcelField(title="功率", align=2, sort=6)
+	public Double getPower() {
+		return power;
+	}
+
+	public void setPower(Double power) {
+		this.power = power;
+	}
+	
+	@ExcelField(title="产地", align=2, sort=7)
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+	
+	@ExcelField(title="品牌", dictType="brand_id", align=2, sort=8)
+	public String getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(String brandId) {
+		this.brandId = brandId;
+	}
+	
+	@ExcelField(title="单位", align=2, sort=9)
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	
+	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=10)
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+	
+	@ExcelField(title="描述", align=2, sort=11)
+	public String getDescript() {
+		return descript;
+	}
+
+	public void setDescript(String descript) {
+		this.descript = descript;
 	}
 	
 }

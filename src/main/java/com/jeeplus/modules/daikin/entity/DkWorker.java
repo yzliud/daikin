@@ -8,32 +8,42 @@ import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
- * 安装人员Entity
+ * 微信用户Entity
  * @author LD
- * @version 2017-03-23
+ * @version 2017-03-31
  */
-public class DkInstallPerson extends DataEntity<DkInstallPerson> {
+public class DkWorker extends DataEntity<DkWorker> {
 	
 	private static final long serialVersionUID = 1L;
+	private String sysUserId;		// 用户
 	private String mobile;		// 手机号
 	private String name;		// 姓名
-	private String openId;		// open_id
+	private String openId;		// 微信唯一标识
 	private String nickName;		// 昵称
 	private String sex;		// 性别
 	private String country;		// 国家
 	private String province;		// 省
 	private String city;		// 城市
-	private String headImg;		// 头像
+	private String headImg2;		// 头像
 	
-	public DkInstallPerson() {
+	public DkWorker() {
 		super();
 	}
 
-	public DkInstallPerson(String id){
+	public DkWorker(String id){
 		super(id);
 	}
 
-	@ExcelField(title="手机号", align=2, sort=1)
+	@ExcelField(title="用户", align=2, sort=1)
+	public String getSysUserId() {
+		return sysUserId;
+	}
+
+	public void setSysUserId(String sysUserId) {
+		this.sysUserId = sysUserId;
+	}
+	
+	@ExcelField(title="手机号", align=2, sort=2)
 	public String getMobile() {
 		return mobile;
 	}
@@ -42,7 +52,7 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.mobile = mobile;
 	}
 	
-	@ExcelField(title="姓名", align=2, sort=2)
+	@ExcelField(title="姓名", align=2, sort=3)
 	public String getName() {
 		return name;
 	}
@@ -51,7 +61,7 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.name = name;
 	}
 	
-	@ExcelField(title="open_id", align=2, sort=3)
+	@ExcelField(title="微信唯一标识", align=2, sort=4)
 	public String getOpenId() {
 		return openId;
 	}
@@ -60,7 +70,7 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.openId = openId;
 	}
 	
-	@ExcelField(title="昵称", align=2, sort=4)
+	@ExcelField(title="昵称", align=2, sort=5)
 	public String getNickName() {
 		return nickName;
 	}
@@ -69,7 +79,7 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.nickName = nickName;
 	}
 	
-	@ExcelField(title="性别", dictType="sex", align=2, sort=5)
+	@ExcelField(title="性别", align=2, sort=6)
 	public String getSex() {
 		return sex;
 	}
@@ -78,7 +88,7 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.sex = sex;
 	}
 	
-	@ExcelField(title="国家", align=2, sort=6)
+	@ExcelField(title="国家", align=2, sort=7)
 	public String getCountry() {
 		return country;
 	}
@@ -87,7 +97,7 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.country = country;
 	}
 	
-	@ExcelField(title="省", align=2, sort=7)
+	@ExcelField(title="省", align=2, sort=8)
 	public String getProvince() {
 		return province;
 	}
@@ -96,7 +106,7 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.province = province;
 	}
 	
-	@ExcelField(title="城市", align=2, sort=8)
+	@ExcelField(title="城市", align=2, sort=9)
 	public String getCity() {
 		return city;
 	}
@@ -105,13 +115,13 @@ public class DkInstallPerson extends DataEntity<DkInstallPerson> {
 		this.city = city;
 	}
 	
-	@ExcelField(title="头像", align=2, sort=9)
-	public String getHeadImg() {
-		return headImg;
+	@ExcelField(title="头像", align=2, sort=10)
+	public String getHeadImg2() {
+		return headImg2;
 	}
 
-	public void setHeadImg(String headImg) {
-		this.headImg = headImg;
+	public void setHeadImg2(String headImg2) {
+		this.headImg2 = headImg2;
 	}
 	
 }

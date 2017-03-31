@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jeeplus.modules.daikin.dao.DkContractPayDao">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkContractScheduleDao">
     
-	<sql id="dkContractPayColumns">
+	<sql id="dkContractScheduleColumns">
 		a.id AS "id",
 		a.contract_id AS "dkContract.id",
-		a.pay_date AS "payDate",
-		a.pay_fee AS "payFee",
-		a.review_status AS "reviewStatus",
-		a.review_by AS "reviewBy",
-		a.remark AS "remark",
+		a.descript AS "descript",
+		a.submit_date AS "submitDate",
+		a.pic AS "pic",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -18,34 +16,31 @@
 		dkContract.contract_number AS "dkContract.contract_number"
 	</sql>
 	
-	<sql id="dkContractPayJoins">
+	<sql id="dkContractScheduleJoins">
 		LEFT JOIN dk_contract dkContract ON dkContract.id = a.contract_id
 	</sql>
 	
     
-	<select id="get" resultType="DkContractPay" >
+	<select id="get" resultType="DkContractSchedule" >
 		SELECT 
-			<include refid="dkContractPayColumns"/>
-		FROM dk_contract_pay a
-		<include refid="dkContractPayJoins"/>
+			<include refid="dkContractScheduleColumns"/>
+		FROM dk_contract_schedule a
+		<include refid="dkContractScheduleJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="DkContractPay" >
+	<select id="findList" resultType="DkContractSchedule" >
 		SELECT 
-			<include refid="dkContractPayColumns"/>
-		FROM dk_contract_pay a
-		<include refid="dkContractPayJoins"/>
+			<include refid="dkContractScheduleColumns"/>
+		FROM dk_contract_schedule a
+		<include refid="dkContractScheduleJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="dkContract != null and dkContract.id != null and dkContract.id != ''">
 				AND a.contract_id = #{dkContract.id}
 			</if>
-			<if test="beginPayDate != null and endPayDate != null and beginPayDate != '' and endPayDate != ''">
-				AND a.pay_date BETWEEN #{beginPayDate} AND #{endPayDate}
-			</if>
-			<if test="reviewStatus != null and reviewStatus != ''">
-				AND a.review_status = #{reviewStatus}
+			<if test="beginSubmitDate != null and endSubmitDate != null and beginSubmitDate != '' and endSubmitDate != ''">
+				AND a.submit_date BETWEEN #{beginSubmitDate} AND #{endSubmitDate}
 			</if>
 		</where>
 		<choose>
@@ -58,11 +53,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="DkContractPay" >
+	<select id="findAllList" resultType="DkContractSchedule" >
 		SELECT 
-			<include refid="dkContractPayColumns"/>
-		FROM dk_contract_pay a
-		<include refid="dkContractPayJoins"/>
+			<include refid="dkContractScheduleColumns"/>
+		FROM dk_contract_schedule a
+		<include refid="dkContractScheduleJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -77,14 +72,12 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO dk_contract_pay(
+		INSERT INTO dk_contract_schedule(
 			id,
 			contract_id,
-			pay_date,
-			pay_fee,
-			review_status,
-			review_by,
-			remark,
+			descript,
+			submit_date,
+			pic,
 			create_by,
 			create_date,
 			update_by,
@@ -93,11 +86,9 @@
 		) VALUES (
 			#{id},
 			#{dkContract.id},
-			#{payDate},
-			#{payFee},
-			#{reviewStatus},
-			#{reviewBy},
-			#{remark},
+			#{descript},
+			#{submitDate},
+			#{pic},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -107,13 +98,11 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE dk_contract_pay SET 	
+		UPDATE dk_contract_schedule SET 	
 			contract_id = #{dkContract.id},
-			pay_date = #{payDate},
-			pay_fee = #{payFee},
-			review_status = #{reviewStatus},
-			review_by = #{reviewBy},
-			remark = #{remark},
+			descript = #{descript},
+			submit_date = #{submitDate},
+			pic = #{pic},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}
@@ -122,21 +111,21 @@
 	
 	<!--物理删除-->
 	<update id="delete">
-		DELETE FROM dk_contract_pay
+		DELETE FROM dk_contract_schedule
 		WHERE id = #{id}
 	</update>
 	
 	<!--逻辑删除-->
 	<update id="deleteByLogic">
-		UPDATE dk_contract_pay SET 
+		UPDATE dk_contract_schedule SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 	
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="DkContractPay" statementType="STATEMENT">
-		select * FROM dk_contract_pay  where ${propertyName} = '${value}'
+	<select id="findUniqueByProperty" resultType="DkContractSchedule" statementType="STATEMENT">
+		select * FROM dk_contract_schedule  where ${propertyName} = '${value}'
 	</select>
 	
 	<select id="findListBydkContract" resultType="DkContract">
