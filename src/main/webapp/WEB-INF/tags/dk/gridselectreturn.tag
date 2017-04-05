@@ -27,7 +27,6 @@ function searchGrid${id}(){
 	    	 var iframeWin = layero.find('iframe')[0].contentWindow; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
 	    	 
 	    	 var item = iframeWin.getSelectedItem();
-	    	 alert(iframeWin);
 
 	    	 if(item == "-1"){
 		    	 return;

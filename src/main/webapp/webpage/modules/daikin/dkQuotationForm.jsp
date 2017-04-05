@@ -72,10 +72,12 @@
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>名称：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>会员：</label></td>
 					<td class="width-35">
-						<form:input path="name" htmlEscape="false"    class="form-control required"/>
+						<dk:gridselectreturn url="${ctx}/daikin/dkQuotation/selectdkMember" id="dkMember" name="dkMember.id"  value="${dkQuotation.dkMember.id}"  title="选择会员" labelName="dkMember.name" 
+						 labelValue="${dkQuotation.dkMember.name}" cssClass="form-control required" fieldLabels="姓名|联系方式|联系地址" fieldKeys="name|mobile|address" searchLabel="姓名" searchKey="name" ></dk:gridselectreturn>
 					</td>
+					
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>顾客名称：</label></td>
 					<td class="width-35">
 						<form:input path="memberName" htmlEscape="false"    class="form-control required"/>
@@ -92,10 +94,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>会员：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>名称：</label></td>
 					<td class="width-35">
-						<dk:gridselectreturn url="${ctx}/daikin/dkQuotation/selectdkMember" id="dkMember" name="dkMember.id"  value="${dkQuotation.dkMember.id}"  title="选择会员" labelName="dkMember.name" 
-						 labelValue="${dkQuotation.dkMember.name}" cssClass="form-control required" fieldLabels="姓名|联系方式|联系地址" fieldKeys="name|mobile|address" searchLabel="姓名" searchKey="name" ></dk:gridselectreturn>
+						<form:input path="name" htmlEscape="false"    class="form-control required"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同总金额：</label></td>
 					<td class="width-35">
