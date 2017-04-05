@@ -6,6 +6,7 @@
 <%@ taglib prefix="fns" uri="/WEB-INF/tlds/fns.tld" %>
 <%@ taglib prefix="echarts" uri="/WEB-INF/tlds/echarts.tld" %>
 <%@ taglib prefix="sys" tagdir="/WEB-INF/tags/sys" %>
+<%@ taglib prefix="dk" tagdir="/WEB-INF/tags/dk" %>
 <%@ taglib prefix="table" tagdir="/WEB-INF/tags/table" %>
 <%@ taglib prefix="t" uri="/menu-tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}${fns:getAdminPath()}"/>

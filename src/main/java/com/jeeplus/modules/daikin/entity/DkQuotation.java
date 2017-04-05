@@ -6,6 +6,8 @@ package com.jeeplus.modules.daikin.entity;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import javax.validation.constraints.NotNull;
 import com.jeeplus.modules.sys.entity.User;
+import java.util.List;
+import com.google.common.collect.Lists;
 
 import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
@@ -13,7 +15,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 报价单Entity
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-05
  */
 public class DkQuotation extends DataEntity<DkQuotation> {
 	
@@ -30,6 +32,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
 	private User ruser;		// 审核者
 	private String remark;		// 备注
+	private List<DkQuotationProduct> dkQuotationProductList = Lists.newArrayList();		// 子表列表
 	
 	public DkQuotation() {
 		super();
@@ -149,4 +152,11 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.remark = remark;
 	}
 	
+	public List<DkQuotationProduct> getDkQuotationProductList() {
+		return dkQuotationProductList;
+	}
+
+	public void setDkQuotationProductList(List<DkQuotationProduct> dkQuotationProductList) {
+		this.dkQuotationProductList = dkQuotationProductList;
+	}
 }

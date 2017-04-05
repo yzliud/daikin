@@ -36,7 +36,7 @@ import com.jeeplus.modules.daikin.service.DkProductService;
 /**
  * 商品Controller
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-05
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkProduct")

@@ -44,10 +44,12 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 		<div class="form-group">
-			<span>手机号：</span>
-				<form:input path="mobile" htmlEscape="false" maxlength="32"  class=" form-control input-sm"/>
 			<span>姓名：</span>
 				<form:input path="name" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
+			<span>手机号：</span>
+				<form:input path="mobile" htmlEscape="false" maxlength="32"  class=" form-control input-sm"/>
+			<span>联系地址：</span>
+				<form:input path="address" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
 		 </div>	
 	</form:form>
 	<br/>
@@ -88,9 +90,9 @@
 		<thead>
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
+				<th  class="sort-column name">姓名</th>
 				<th  class="sort-column mobile">手机号</th>
 				<th  class="sort-column address">联系地址</th>
-				<th  class="sort-column name">姓名</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
@@ -100,13 +102,13 @@
 			<tr>
 				<td> <input type="checkbox" id="${dkMember.id}" class="i-checks"></td>
 				<td><a  href="#" onclick="openDialogView('查看会员', '${ctx}/daikin/dkMember/form?id=${dkMember.id}','800px', '500px')">
-					${dkMember.mobile}
+					${dkMember.name}
 				</a></td>
 				<td>
-					${dkMember.address}
+					${dkMember.mobile}
 				</td>
 				<td>
-					${dkMember.name}
+					${dkMember.address}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkMember.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

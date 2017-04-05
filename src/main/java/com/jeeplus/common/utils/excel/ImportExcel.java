@@ -21,7 +21,6 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -31,8 +30,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
+import com.jeeplus.common.utils.DkUtil;
 import com.jeeplus.common.utils.Reflections;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
@@ -345,6 +346,8 @@ public class ImportExcel {
 							val = UserUtils.getByOfficeName(val.toString());
 						}else if (valType == Area.class){
 							val = UserUtils.getByAreaName(val.toString());
+						}else if (valType == DkProduct.class){//商品处理
+							val = DkUtil.getByDkProductName(val.toString());
 						}else{
 							if (ef.fieldType() != Class.class){
 								val = ef.fieldType().getMethod("getValue", String.class).invoke(null, val.toString());

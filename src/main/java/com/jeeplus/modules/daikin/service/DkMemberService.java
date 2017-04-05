@@ -16,7 +16,7 @@ import com.jeeplus.modules.daikin.dao.DkMemberDao;
 /**
  * 会员Service
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-01
  */
 @Service
 @Transactional(readOnly = true)

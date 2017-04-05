@@ -39,7 +39,7 @@ import com.jeeplus.modules.daikin.service.DkProductStockRecordService;
 /**
  * 商品进销存Controller
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-05
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkProductStockRecord")

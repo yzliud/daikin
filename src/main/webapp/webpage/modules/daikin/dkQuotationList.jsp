@@ -46,6 +46,8 @@
 		<div class="form-group">
 			<span>名称：</span>
 				<form:input path="name" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
+			<span>顾客名称：</span>
+				<form:input path="memberName" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
 			<span>联系人手机号：</span>
 				<form:input path="mobile" htmlEscape="false" maxlength="20"  class=" form-control input-sm"/>
 			<span>商品类型：</span>
@@ -97,6 +99,7 @@
 				<th  class="sort-column memberName">顾客名称</th>
 				<th  class="sort-column mobile">联系人手机号</th>
 				<th  class="sort-column address">联系地址</th>
+				<th  class="sort-column dkMember.id">会员ID</th>
 				<th  class="sort-column totalFee">合同总金额</th>
 				<th  class="sort-column productType">商品类型</th>
 				<th  class="sort-column tuser.name">销售人员</th>
@@ -122,6 +125,9 @@
 				</td>
 				<td>
 					${dkQuotation.address}
+				</td>
+				<td>
+					${dkQuotation.dkMember.name}
 				</td>
 				<td>
 					${dkQuotation.totalFee}

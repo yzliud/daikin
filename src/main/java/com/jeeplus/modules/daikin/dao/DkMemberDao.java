@@ -10,7 +10,7 @@ import com.jeeplus.modules.daikin.entity.DkMember;
 /**
  * 会员DAO接口
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-01
  */
 @MyBatisDao
 public interface DkMemberDao extends CrudDao<DkMember> {

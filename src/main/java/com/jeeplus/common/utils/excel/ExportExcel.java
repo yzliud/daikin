@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -339,9 +340,11 @@ public class ExportExcel {
 			} else if (val instanceof Float) {
 				cell.setCellValue((Float) val);
 			} else if (val instanceof Date) {
-				DataFormat format = wb.createDataFormat();
+				/*DataFormat format = wb.createDataFormat();
 	            style.setDataFormat(format.getFormat("yyyy-MM-dd"));
-				cell.setCellValue((Date) val);
+				cell.setCellValue((Date) val);*/
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				cell.setCellValue(sdf.format(val));
 			} else {
 				if (fieldType != Class.class){
 					cell.setCellValue((String)fieldType.getMethod("setValue", Object.class).invoke(null, val));

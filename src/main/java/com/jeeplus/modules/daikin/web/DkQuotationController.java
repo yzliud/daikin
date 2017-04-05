@@ -39,7 +39,7 @@ import com.jeeplus.modules.daikin.service.DkQuotationService;
 /**
  * 报价单Controller
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-05
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkQuotation")
@@ -217,7 +217,7 @@ public class DkQuotationController extends BaseController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("obj", dkMember);
 		model.addAttribute("page", page);
-		return "modules/sys/gridselect";
+		return "modules/daikin/gridselect_return";
 	}
 	
 

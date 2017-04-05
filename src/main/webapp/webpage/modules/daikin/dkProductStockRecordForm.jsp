@@ -45,13 +45,17 @@
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">商品ID：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>商品ID：</label></td>
 					<td class="width-35">
-						<form:input path="dkProduct.id" htmlEscape="false"    class="form-control "/>
+						<sys:gridselect url="${ctx}/daikin/dkProductStockRecord/selectdkProduct" id="dkProduct" name="dkProduct.id"  value="${dkProductStockRecord.dkProduct.id}"  title="选择商品ID" labelName="dkProduct.name" 
+						 labelValue="${dkProductStockRecord.dkProduct.name}" cssClass="form-control required" fieldLabels="名称|型号" fieldKeys="name|model" searchLabel="商品名称" searchKey="name" ></sys:gridselect>
 					</td>
-					<td class="width-15 active"><label class="pull-right">数量：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>标识(0-入库 1-出库)：</label></td>
 					<td class="width-35">
-						<form:input path="amount" htmlEscape="false"    class="form-control "/>
+						<form:select path="flag" class="form-control required">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('stock_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
 					</td>
 				</tr>
 				<tr>
@@ -60,12 +64,9 @@
 						<input id="operateTime" name="operateTime" type="text" maxlength="20" class="laydate-icon form-control layer-date "
 							value="<fmt:formatDate value="${dkProductStockRecord.operateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
 					</td>
-					<td class="width-15 active"><label class="pull-right">标识(0-入库 1-出库)：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>数量：</label></td>
 					<td class="width-35">
-						<form:select path="flag" class="form-control ">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('stock_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
+						<form:input path="amount" htmlEscape="false" maxlength="5"    class="form-control required digits"/>
 					</td>
 				</tr>
 				<tr>
@@ -74,19 +75,21 @@
 						<sys:treeselect id="tuser" name="tuser.id" value="${dkProductStockRecord.tuser.id}" labelName="tuser.name" labelValue="${dkProductStockRecord.tuser.name}"
 							title="用户" url="/sys/office/treeData?type=3" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
 					</td>
+					<td class="width-15 active"><label class="pull-right">库存数量：</label></td>
+					<td class="width-35">
+						<form:input path="stockAmount" htmlEscape="false"    class="form-control "/>
+					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right">合同号：</label></td>
 					<td class="width-35">
 						<form:input path="contractNum" htmlEscape="false"    class="form-control "/>
 					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right">备注：</label></td>
 					<td class="width-35">
 						<form:input path="remark" htmlEscape="false"    class="form-control "/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
-		  		</tr>
+				</tr>
 		 	</tbody>
 		</table>
 	</form:form>

@@ -5,10 +5,11 @@
 	<sql id="dkProductStockRecordColumns">
 		a.id AS "id",
 		a.product_id AS "dkProduct.id",
-		a.amount AS "amount",
-		a.operate_time AS "operateTime",
 		a.flag AS "flag",
+		a.operate_time AS "operateTime",
+		a.amount AS "amount",
 		a.operate_by AS "tuser.id",
+		a.stock_amount AS "stockAmount",
 		a.contract_num AS "contractNum",
 		a.remark AS "remark",
 		a.create_by AS "createBy.id",
@@ -16,10 +17,12 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.del_flag AS "delFlag",
+		dkProduct.name AS "dkProduct.name",
 		tuser.name AS "tuser.name"
 	</sql>
 	
 	<sql id="dkProductStockRecordJoins">
+		LEFT JOIN dk_product dkProduct ON dkProduct.id = a.product_id
 		LEFT JOIN sys_user tuser ON tuser.id = a.operate_by
 	</sql>
 	
@@ -42,11 +45,11 @@
 			<if test="dkProduct != null and dkProduct.id != null and dkProduct.id != ''">
 				AND a.product_id = #{dkProduct.id}
 			</if>
-			<if test="beginOperateTime != null and endOperateTime != null and beginOperateTime != '' and endOperateTime != ''">
-				AND a.operate_time BETWEEN #{beginOperateTime} AND #{endOperateTime}
-			</if>
 			<if test="flag != null and flag != ''">
 				AND a.flag = #{flag}
+			</if>
+			<if test="beginOperateTime != null and endOperateTime != null and beginOperateTime != '' and endOperateTime != ''">
+				AND a.operate_time BETWEEN #{beginOperateTime} AND #{endOperateTime}
 			</if>
 			<if test="contractNum != null and contractNum != ''">
 				AND a.contract_num LIKE 
@@ -87,10 +90,11 @@
 		INSERT INTO dk_product_stock_record(
 			id,
 			product_id,
-			amount,
-			operate_time,
 			flag,
+			operate_time,
+			amount,
 			operate_by,
+			stock_amount,
 			contract_num,
 			remark,
 			create_by,
@@ -101,10 +105,11 @@
 		) VALUES (
 			#{id},
 			#{dkProduct.id},
-			#{amount},
-			#{operateTime},
 			#{flag},
+			#{operateTime},
+			#{amount},
 			#{tuser.id},
+			#{stockAmount},
 			#{contractNum},
 			#{remark},
 			#{createBy.id},
@@ -118,10 +123,11 @@
 	<update id="update">
 		UPDATE dk_product_stock_record SET 	
 			product_id = #{dkProduct.id},
-			amount = #{amount},
-			operate_time = #{operateTime},
 			flag = #{flag},
+			operate_time = #{operateTime},
+			amount = #{amount},
 			operate_by = #{tuser.id},
+			stock_amount = #{stockAmount},
 			contract_num = #{contractNum},
 			remark = #{remark},
 			update_by = #{updateBy.id},

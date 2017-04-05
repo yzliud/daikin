@@ -54,6 +54,9 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			<if test="memberName != null and memberName != ''">
+				AND a.member_name = #{memberName}
+			</if>
 			<if test="mobile != null and mobile != ''">
 				AND a.mobile LIKE 
 					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>

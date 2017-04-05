@@ -44,19 +44,24 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 		<div class="form-group">
-			<span>名称：</span>
-				<form:input path="name" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
-			<span>规格：</span>
-				<form:input path="model" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
+			<span>商品类型：</span>
+				<form:select path="productType"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			<span>分类：</span>
 				<form:select path="classifyId"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('classify_id')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-			<span>商品类型：</span>
-				<form:select path="productType"  class="form-control m-b">
+			<span>名称：</span>
+				<form:input path="name" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
+			<span>规格：</span>
+				<form:input path="model" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
+			<span>品牌：</span>
+				<form:select path="brandId"  class="form-control m-b">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('brand_id')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 		 </div>	
 	</form:form>
@@ -98,16 +103,16 @@
 		<thead>
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
+				<th  class="sort-column productType">商品类型</th>
+				<th  class="sort-column classifyId">分类</th>
 				<th  class="sort-column name">名称</th>
 				<th  class="sort-column model">规格</th>
 				<th  class="sort-column price">单价</th>
 				<th  class="sort-column stock">库存</th>
-				<th  class="sort-column classifyId">分类</th>
 				<th  class="sort-column power">功率</th>
 				<th  class="sort-column place">产地</th>
 				<th  class="sort-column brandId">品牌</th>
 				<th  class="sort-column unit">单位</th>
-				<th  class="sort-column productType">商品类型</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
@@ -117,8 +122,14 @@
 			<tr>
 				<td> <input type="checkbox" id="${dkProduct.id}" class="i-checks"></td>
 				<td><a  href="#" onclick="openDialogView('查看商品', '${ctx}/daikin/dkProduct/form?id=${dkProduct.id}','800px', '500px')">
-					${dkProduct.name}
+					${fns:getDictLabel(dkProduct.productType, 'product_type', '')}
 				</a></td>
+				<td>
+					${fns:getDictLabel(dkProduct.classifyId, 'classify_id', '')}
+				</td>
+				<td>
+					${dkProduct.name}
+				</td>
 				<td>
 					${dkProduct.model}
 				</td>
@@ -127,9 +138,6 @@
 				</td>
 				<td>
 					${dkProduct.stock}
-				</td>
-				<td>
-					${fns:getDictLabel(dkProduct.classifyId, 'classify_id', '')}
 				</td>
 				<td>
 					${dkProduct.power}
@@ -142,9 +150,6 @@
 				</td>
 				<td>
 					${dkProduct.unit}
-				</td>
-				<td>
-					${fns:getDictLabel(dkProduct.productType, 'product_type', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkProduct.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

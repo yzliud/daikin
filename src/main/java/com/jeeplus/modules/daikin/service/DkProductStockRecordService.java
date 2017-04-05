@@ -17,7 +17,7 @@ import com.jeeplus.modules.daikin.dao.DkProductStockRecordDao;
 /**
  * 商品进销存Service
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-05
  */
 @Service
 @Transactional(readOnly = true)

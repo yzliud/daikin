@@ -41,23 +41,27 @@
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">手机号：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>姓名：</label></td>
 					<td class="width-35">
-						<form:input path="mobile" htmlEscape="false" maxlength="20"  minlength="1"   class="form-control "/>
+						<form:input path="name" htmlEscape="false" maxlength="20"  minlength="1"   class="form-control required"/>
 					</td>
-					<td class="width-15 active"><label class="pull-right">联系地址：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>手机号：</label></td>
 					<td class="width-35">
-						<form:input path="address" htmlEscape="false"    class="form-control "/>
+						<form:input path="mobile" htmlEscape="false" maxlength="20"  minlength="1"   class="form-control required"/>
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">姓名：</label></td>
-					<td class="width-35">
-						<form:input path="name" htmlEscape="false" maxlength="20"  minlength="1"   class="form-control "/>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>联系地址：</label></td>
+					<td class="width-35" colspan=3>
+						<form:input path="address" htmlEscape="false" maxlength="100"  minlength="1"   class="form-control required"/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
-		  		</tr>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-35" colspan=3>
+						<form:input path="remark" htmlEscape="false" maxlength="200"    class="form-control "/>
+					</td>
+				</tr>
 		 	</tbody>
 		</table>
 	</form:form>

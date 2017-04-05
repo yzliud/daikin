@@ -4,9 +4,9 @@
     
 	<sql id="dkMemberColumns">
 		a.id AS "id",
+		a.name AS "name",
 		a.mobile AS "mobile",
 		a.address AS "address",
-		a.name AS "name",
 		a.remark AS "remark",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -16,6 +16,8 @@
 	</sql>
 	
 	<sql id="dkMemberJoins">
+		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
+		LEFT JOIN sys_user updateBy ON updateBy.id = a.update_by
 	</sql>
 	
     
@@ -34,17 +36,23 @@
 		<include refid="dkMemberJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
 			<if test="mobile != null and mobile != ''">
 				AND a.mobile LIKE 
 					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{mobile}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{mobile},'%')</if>
 			</if>
-			<if test="name != null and name != ''">
-				AND a.name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			<if test="address != null and address != ''">
+				AND a.address LIKE 
+					<if test="dbName == 'oracle'">'%'||#{address}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{address}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{address},'%')</if>
 			</if>
 		</where>
 		<choose>
@@ -78,9 +86,9 @@
 	<insert id="insert">
 		INSERT INTO dk_member(
 			id,
+			name,
 			mobile,
 			address,
-			name,
 			remark,
 			create_by,
 			create_date,
@@ -89,9 +97,9 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{name},
 			#{mobile},
 			#{address},
-			#{name},
 			#{remark},
 			#{createBy.id},
 			#{createDate},
@@ -103,9 +111,9 @@
 	
 	<update id="update">
 		UPDATE dk_member SET 	
+			name = #{name},
 			mobile = #{mobile},
 			address = #{address},
-			name = #{name},
 			remark = #{remark},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}

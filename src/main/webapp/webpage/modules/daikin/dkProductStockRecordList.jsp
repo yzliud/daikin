@@ -55,17 +55,18 @@
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 		<div class="form-group">
 			<span>商品ID：</span>
-				<form:input path="dkProduct.id" htmlEscape="false" maxlength="32"  class=" form-control input-sm"/>
-			<span>操作时间：</span>
-				<input id="beginOperateTime" name="beginOperateTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
-					value="<fmt:formatDate value="${dkProductStockRecord.beginOperateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/> - 
-				<input id="endOperateTime" name="endOperateTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
-					value="<fmt:formatDate value="${dkProductStockRecord.endOperateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
+				<sys:gridselect url="${ctx}/daikin/dkProductStockRecord/selectdkProduct" id="dkProduct" name="dkProduct"  value="${dkProductStockRecord.dkProduct.id}"  title="选择商品ID" labelName="dkProduct.name" 
+					labelValue="${dkProductStockRecord.dkProduct.name}" cssClass="form-control required" fieldLabels="名称|型号" fieldKeys="name|model" searchLabel="商品名称" searchKey="name" ></sys:gridselect>
 			<span>标识(0-入库 1-出库)：</span>
 				<form:select path="flag"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('stock_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
+			<span>操作时间：</span>
+				<input id="beginOperateTime" name="beginOperateTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkProductStockRecord.beginOperateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/> - 
+				<input id="endOperateTime" name="endOperateTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkProductStockRecord.endOperateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
 			<span>合同号：</span>
 				<form:input path="contractNum" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
 		 </div>	
@@ -109,10 +110,11 @@
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
 				<th  class="sort-column dkProduct.id">商品ID</th>
-				<th  class="sort-column amount">数量</th>
-				<th  class="sort-column operateTime">操作时间</th>
 				<th  class="sort-column flag">标识(0-入库 1-出库)</th>
+				<th  class="sort-column operateTime">操作时间</th>
+				<th  class="sort-column amount">数量</th>
 				<th  class="sort-column tuser.name">操作者</th>
+				<th  class="sort-column stockAmount">库存数量</th>
 				<th  class="sort-column contractNum">合同号</th>
 				<th  class="sort-column remark">备注</th>
 				<th>操作</th>
@@ -123,19 +125,22 @@
 			<tr>
 				<td> <input type="checkbox" id="${dkProductStockRecord.id}" class="i-checks"></td>
 				<td><a  href="#" onclick="openDialogView('查看商品进销存', '${ctx}/daikin/dkProductStockRecord/form?id=${dkProductStockRecord.id}','800px', '500px')">
-					${dkProductStockRecord.dkProduct.id}
+					${dkProductStockRecord.dkProduct.name}
 				</a></td>
 				<td>
-					${dkProductStockRecord.amount}
+					${fns:getDictLabel(dkProductStockRecord.flag, 'stock_flag', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkProductStockRecord.operateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${fns:getDictLabel(dkProductStockRecord.flag, 'stock_flag', '')}
+					${dkProductStockRecord.amount}
 				</td>
 				<td>
 					${dkProductStockRecord.tuser.name}
+				</td>
+				<td>
+					${dkProductStockRecord.stockAmount}
 				</td>
 				<td>
 					${dkProductStockRecord.contractNum}
