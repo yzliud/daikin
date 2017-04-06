@@ -66,7 +66,9 @@
 	<div class="col-sm-12">
 		<div class="pull-left">
 			<shiro:hasPermission name="daikin:dkQuotation:add">
-				<table:addRow url="${ctx}/daikin/dkQuotation/form" title="报价单"></table:addRow><!-- 增加按钮 -->
+				<!--<table:addRow url="${ctx}/daikin/dkQuotation/form" title="报价单"></table:addRow> 增加按钮 -->
+				
+				<button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" onclick="choise()" title="添加"><i class="fa fa-plus"></i> ${label==null?'添加':label}</button>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="daikin:dkQuotation:edit">
 			    <table:editRow url="${ctx}/daikin/dkQuotation/form" title="报价单" id="contentTable"></table:editRow><!-- 编辑按钮 -->
@@ -174,4 +176,23 @@
 	</div>
 </div>
 </body>
+<script type="text/javascript">
+function choise() {
+    //询问框
+    layer.confirm('选择合同类型', {
+        btn: ['空调','地暖'] //按钮
+    }, function(){
+        layer.msg('的确很重要', {icon: 1});
+        openDialog("新增报价单","${ctx}/daikin/dkQuotation/form?productType=1","${width==null?'800px':width}", "${height==null?'500px':height}","${target}");
+    }, function(){
+        layer.msg('也可以这样', {
+            time: 2000, //2s后自动关闭
+            btn: ['明白了', '知道了']
+        });
+        openDialog("新增报价单","${ctx}/daikin/dkQuotation/form?productType=2","${width==null?'800px':width}", "${height==null?'500px':height}","${target}");
+    });
+}
+
+
+</script>
 </html>

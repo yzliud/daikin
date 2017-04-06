@@ -153,20 +153,26 @@
 				<thead>
 					<tr>
 						<th class="hide"></th>
-						<th>商品ID</th>
+						<c:if test="true">
+							<th>楼层</th>
+							<th>位置</th>
+							<th>需求面积</th>
+						</c:if>
+						
+						<th>商品</th>
 						<th>名称</th>
 						<th>规格</th>
+						<th>分类</th>
+						<c:if test="true">
+							<th>品牌</th>
+							<th>产地</th>
+							<th>单位</th>
+						</c:if>
 						<th>单价</th>
 						<th>数量</th>
 						<th>总价</th>
-						<th>分类</th>
 						<th>功率</th>
-						<th>产地</th>
-						<th>品牌</th>
-						<th>单位</th>
-						<th>位置</th>
-						<th>楼层</th>
-						<th>需求面积</th>
+						
 						<th>描述</th>
 						<th width="10">&nbsp;</th>
 					</tr>
@@ -180,7 +186,28 @@
 						<input id="dkQuotationProductList{{idx}}_id" name="dkQuotationProductList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
 						<input id="dkQuotationProductList{{idx}}_delFlag" name="dkQuotationProductList[{{idx}}].delFlag" type="hidden" value="0"/>
 					</td>
+
+
+					<td>
+						<input id="dkQuotationProductList{{idx}}_floor" name="dkQuotationProductList[{{idx}}].floor" type="text" value="{{row.floor}}"    class="form-control "/>
+					</td>
+
+					<td>
+						<input id="dkQuotationProductList{{idx}}_position" name="dkQuotationProductList[{{idx}}].position" type="text" value="{{row.position}}" maxlength="10"    class="form-control "/>
+					</td>
 					
+					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_demandArea" name="dkQuotationProductList[{{idx}}].demandArea" type="text" value="{{row.demandArea}}" maxlength="8"    class="form-control  number"/>
+					</td>
+
+
+					<td>
+						<sys:gridselect url="${ctx}/daikin/dkProductStockRecord/selectdkProduct" 
+                            id="dkProduct" name="dkProduct.id"  value="${dkProductStockRecord.dkProduct.id}"  title="选择商品" labelName="dkProduct.name" 
+						    labelValue="${dkProductStockRecord.dkProduct.name}" cssClass="form-control required" fieldLabels="名称|型号"
+                          fieldKeys="name|model" searchLabel="商品名称" searchKey="name" ></sys:gridselect>
+					</td>
 					
 					
 					<td>
@@ -190,6 +217,29 @@
 					
 					<td>
 						<input id="dkQuotationProductList{{idx}}_model" name="dkQuotationProductList[{{idx}}].model" type="text" value="{{row.model}}"    class="form-control "/>
+					</td>
+
+					<td>
+						<select id="dkQuotationProductList{{idx}}_classifyId" name="dkQuotationProductList[{{idx}}].classifyId" data-value="{{row.classifyId}}" class="form-control m-b  ">
+							<option value=""></option>
+							<c:forEach items="${fns:getDictList('classify_id')}" var="dict">
+								<option value="${dict.value}">${dict.label}</option>
+							</c:forEach>
+						</select>
+					</td>
+
+					<td>
+						<input id="dkQuotationProductList{{idx}}_place" name="dkQuotationProductList[{{idx}}].place" type="text" value="{{row.place}}" maxlength="20"    class="form-control "/>
+					</td>
+					
+					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_brandId" name="dkQuotationProductList[{{idx}}].brandId" type="text" value="{{row.brandId}}" maxlength="20"    class="form-control "/>
+					</td>
+					
+					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_unit" name="dkQuotationProductList[{{idx}}].unit" type="text" value="{{row.unit}}" maxlength="10"    class="form-control "/>
 					</td>
 					
 					
@@ -209,47 +259,7 @@
 					
 					
 					<td>
-						<select id="dkQuotationProductList{{idx}}_classifyId" name="dkQuotationProductList[{{idx}}].classifyId" data-value="{{row.classifyId}}" class="form-control m-b  ">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('classify_id')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
-					</td>
-					
-					
-					<td>
 						<input id="dkQuotationProductList{{idx}}_power" name="dkQuotationProductList[{{idx}}].power" type="text" value="{{row.power}}" maxlength="10"    class="form-control  number"/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_place" name="dkQuotationProductList[{{idx}}].place" type="text" value="{{row.place}}" maxlength="20"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_brandId" name="dkQuotationProductList[{{idx}}].brandId" type="text" value="{{row.brandId}}" maxlength="20"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_unit" name="dkQuotationProductList[{{idx}}].unit" type="text" value="{{row.unit}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_position" name="dkQuotationProductList[{{idx}}].position" type="text" value="{{row.position}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_floor" name="dkQuotationProductList[{{idx}}].floor" type="text" value="{{row.floor}}"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_demandArea" name="dkQuotationProductList[{{idx}}].demandArea" type="text" value="{{row.demandArea}}" maxlength="8"    class="form-control  number"/>
 					</td>
 					
 					
@@ -262,6 +272,8 @@
 					</td>
 				</tr>//-->
 			</script>
+			
+			
 			<script type="text/javascript">
 				var dkQuotationProductRowIdx = 0, dkQuotationProductTpl = $("#dkQuotationProductTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
 				$(document).ready(function() {

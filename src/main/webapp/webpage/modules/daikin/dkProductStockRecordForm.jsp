@@ -45,12 +45,12 @@
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>商品ID：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>商品：</label></td>
 					<td class="width-35">
 						<sys:gridselect url="${ctx}/daikin/dkProductStockRecord/selectdkProduct" id="dkProduct" name="dkProduct.id"  value="${dkProductStockRecord.dkProduct.id}"  title="选择商品ID" labelName="dkProduct.name" 
 						 labelValue="${dkProductStockRecord.dkProduct.name}" cssClass="form-control required" fieldLabels="名称|型号" fieldKeys="name|model" searchLabel="商品名称" searchKey="name" ></sys:gridselect>
 					</td>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>标识(0-入库 1-出库)：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>标识：</label></td>
 					<td class="width-35">
 						<form:select path="flag" class="form-control required">
 							<form:option value="" label=""/>
