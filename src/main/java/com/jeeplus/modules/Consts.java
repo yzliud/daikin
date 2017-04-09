@@ -15,4 +15,9 @@ public class Consts {
 	//是否有审核记录(0-没有；1-有)
 	public final static String IsReview_0 = "0";
 	public final static String IsReview_1 = "1";
+	
+	//记录类型（0-报价单 1-合同 2-合同到款）
+	public final static String RecordType_0 = "0";
+	public final static String RecordType_1 = "1";
+	public final static String RecordType_2 = "2";
 }

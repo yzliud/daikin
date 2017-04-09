@@ -15,6 +15,7 @@
 		a.connection_ratio AS "connectionRatio",
 		a.review_status AS "reviewStatus",
 		a.review_by AS "ruser.id",
+		a.is_review AS "isReview",
 		a.remark AS "remark",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -168,7 +169,7 @@
 			review_status = #{reviewStatus},
 			<if test="isReview != null and isReview != ''">
 			is_review = #{isReview},
-			review_by = #{reviewBy},
+			review_by = #{ruser.id},
 			</if>
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}

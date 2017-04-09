@@ -35,7 +35,7 @@
 	<!--查询条件-->
 	<div class="row">
 	<div class="col-sm-12">
-	<form:form id="searchForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/" method="post" class="form-inline">
+	<form:form id="searchForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/checkPass" method="post" class="form-inline">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
@@ -137,7 +137,7 @@
 						<a href="#" onclick="openDialogView('查看报价单', '${ctx}/daikin/dkQuotation/detail?id=${dkQuotation.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="daikin:dkQuotation:view">
-						<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkQuotation/form?id=${dkQuotation.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
+						<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkQuotation.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
 					</shiro:hasPermission>
 				</td>
 			</tr>

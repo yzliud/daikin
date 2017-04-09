@@ -268,7 +268,11 @@ public class DkQuotationController extends BaseController {
 	 */
 	@RequestMapping(value = "checkQuotation")
 	public String checkQuotation(DkQuotation dkQuotation, RedirectAttributes redirectAttributes) {
-		addMessage(redirectAttributes, "审核报价单成功");
+		if(dkQuotation.getReviewStatus().equals(Consts.ReviewStatus_2)){
+			addMessage(redirectAttributes, "该报价单已驳回");
+		}else{
+			addMessage(redirectAttributes, "该报价单审核通过");
+		}
 		dkQuotation.setIsReview(Consts.IsReview_1);
 		dkQuotationService.updateReviewStatus(dkQuotation);
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkQuotation/uncheck";

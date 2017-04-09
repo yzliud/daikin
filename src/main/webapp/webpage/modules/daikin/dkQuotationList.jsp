@@ -163,10 +163,13 @@
     					</c:if>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="daikin:dkQuotation:del">
-    					<c:if test="${dkQuotation.reviewStatus == '0' || dkQuotation.reviewStatus == '2'}">
+    					<c:if test="${dkQuotation.reviewStatus == '0' && dkQuotation.isReview != 1}">
 						<a href="${ctx}/daikin/dkQuotation/delete?id=${dkQuotation.id}" onclick="return confirmx('确认要删除该报价单吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
 						</c:if>
 					</shiro:hasPermission>
+					<c:if test="${ dkQuotation.isReview == 1}">
+					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkQuotation.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
+					</c:if>
 				</td>
 			</tr>
 		</c:forEach>

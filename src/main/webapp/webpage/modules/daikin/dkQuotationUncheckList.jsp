@@ -34,7 +34,7 @@
 	<!--查询条件-->
 	<div class="row">
 	<div class="col-sm-12">
-	<form:form id="searchForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/" method="post" class="form-inline">
+	<form:form id="searchForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/uncheck" method="post" class="form-inline">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
@@ -178,10 +178,11 @@
 	        maxmin: true, //开启最大化最小化按钮
 		    content: url ,
 		    btn: ['通过','驳回', '关闭'],
-		    yes: function(index, layero){
-		    	 alert( $('#remark').val());
+		    btn1: function(index, layero){
+		    	 
 		    	 var body = top.layer.getChildFrame('body', index);
 		         var iframeWin = layero.find('iframe')[0]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+		         body.find('#reviewStatus').val("9");
 		         var inputForm = body.find('#inputForm');
 		         var top_iframe;
 		         if(target){
@@ -190,17 +191,18 @@
 		        	 top_iframe = top.getActiveTab().attr("name");//获取当前active的tab的iframe 
 		         }
 		         inputForm.attr("target",top_iframe);//表单提交成功后，从服务器返回的url在当前tab中展示
-		         
 		        if(iframeWin.contentWindow.doSubmit() ){
-		        	// top.layer.close(index);//关闭对话框。
 		        	  setTimeout(function(){top.layer.close(index)}, 100);//延时0.1秒，对应360 7.1版本bug
+		        	  return true;
+		        }else{
+		        	 return false;
 		         }
 				
 			  },
-			  cancel: function(index){ 
-				 alert( $('#remark').val());
+			  btn2: function(index, layero){ 
 				  var body = top.layer.getChildFrame('body', index);
 			         var iframeWin = layero.find('iframe')[0]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+			         body.find('#reviewStatus').val("2");
 			         var inputForm = body.find('#inputForm');
 			         var top_iframe;
 			         if(target){
@@ -209,14 +211,18 @@
 			        	 top_iframe = top.getActiveTab().attr("name");//获取当前active的tab的iframe 
 			         }
 			         inputForm.attr("target",top_iframe);//表单提交成功后，从服务器返回的url在当前tab中展示
-			         
 			        if(iframeWin.contentWindow.doSubmit() ){
 			        	// top.layer.close(index);//关闭对话框。
 			        	  setTimeout(function(){top.layer.close(index)}, 100);//延时0.1秒，对应360 7.1版本bug
+			        	  return true;
+			         }else{
+			        	 return false;
 			         }
 		       },
-		       close: function(index){ 
+		       btn3: function(index, layero){ 
+		    	   
 		       },
+		       
 		}); 	
 		
 	}

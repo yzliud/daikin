@@ -14,12 +14,15 @@ import com.jeeplus.common.service.CrudService;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
+import com.jeeplus.modules.daikin.dao.DkAuditRecordDao;
 import com.jeeplus.modules.daikin.dao.DkProductDao;
 import com.jeeplus.modules.daikin.dao.DkQuotationDao;
+import com.jeeplus.modules.daikin.entity.DkAuditRecord;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.jeeplus.modules.daikin.entity.DkQuotationProduct;
 import com.jeeplus.modules.daikin.dao.DkQuotationProductDao;
+import com.jeeplus.modules.sys.utils.UserUtils;
 
 /**
  * 报价单Service
@@ -35,6 +38,9 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 	
 	@Autowired
 	private DkProductDao dkProductDao;
+	
+	@Autowired
+	private DkAuditRecordDao dkAuditRecordDao;
 	
 	public DkQuotation get(String id) {
 		DkQuotation dkQuotation = super.get(id);
@@ -98,8 +104,16 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 	@Transactional(readOnly = false)
 	public void updateReviewStatus(DkQuotation dkQuotation) {
 		if(dkQuotation.getIsReview() != null && dkQuotation.getIsReview().equals(Consts.IsReview_1)){
-			
+			DkAuditRecord dkAuditRecord = new DkAuditRecord();
+			dkAuditRecord.setRecordId(dkQuotation.getId());
+			dkAuditRecord.setRecordType(Consts.RecordType_0);
+			dkAuditRecord.setReviewStatus(dkQuotation.getReviewStatus());
+			dkAuditRecord.setRemark(dkQuotation.getRemark());
+			dkAuditRecord.setTuser(UserUtils.getUser());
+			dkAuditRecord.preInsert();
+			dkAuditRecordDao.insert(dkAuditRecord);
 		}
+		dkQuotation.setRuser(UserUtils.getUser());
 		dao.updateReviewStatus(dkQuotation);
 	}
 	

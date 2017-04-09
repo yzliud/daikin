@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkAuditRecordDao">
+    
+	<sql id="dkAuditRecordColumns">
+		a.id AS "id",
+		a.record_id AS "recordId",
+		a.record_type AS "recordType",
+		a.review_status AS "reviewStatus",
+		a.review_by AS "tuser.id",
+		a.remark AS "remark",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		tuser.name AS "tuser.name"
+	</sql>
+	
+	<sql id="dkAuditRecordJoins">
+		LEFT JOIN sys_user tuser ON tuser.id = a.review_by
+	</sql>
+	
+    
+	<select id="get" resultType="DkAuditRecord" >
+		SELECT 
+			<include refid="dkAuditRecordColumns"/>
+		FROM dk_audit_record a
+		<include refid="dkAuditRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DkAuditRecord" >
+		SELECT 
+			<include refid="dkAuditRecordColumns"/>
+		FROM dk_audit_record a
+		<include refid="dkAuditRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="recordId != null and recordId != ''">
+				AND a.record_id = #{recordId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DkAuditRecord" >
+		SELECT 
+			<include refid="dkAuditRecordColumns"/>
+		FROM dk_audit_record a
+		<include refid="dkAuditRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dk_audit_record(
+			id,
+			record_id,
+			record_type,
+			review_status,
+			review_by,
+			remark,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{recordId},
+			#{recordType},
+			#{reviewStatus},
+			#{tuser.id},
+			#{remark},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dk_audit_record SET 	
+			record_id = #{recordId},
+			record_type = #{recordType},
+			review_status = #{reviewStatus},
+			review_by = #{tuser.id},
+			remark = #{remark},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM dk_audit_record
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE dk_audit_record SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="DkAuditRecord" statementType="STATEMENT">
+		select * FROM dk_audit_record  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
