@@ -15,7 +15,39 @@
 		  return false;
 		}
 		$(document).ready(function() {
+			
+			jQuery.validator.addMethod("checkDkProductName", function(value, element) {
+				 var checkFlag = 0;
+				 $.ajax({
+			 			url:'${ctx}/daikin/dkProduct/checkDkProductName',
+			 			dataType:'json',
+			 			async:false,
+			 			data:{
+			 				id:$('#id').val(),
+			 				name:$('#name').val()
+						},
+			 			type:'post',
+			 			success:function(data){
+			 				if(data.rtnCode == '0'){
+			 					checkFlag = 1;
+			 				}
+			 			}
+				    });
+				    if(checkFlag == 1){
+				      return true;
+				    }else{
+				      return false;
+				    }
+				 }, "该名称已存在,请修改");
+			
+			
 			validateForm = $("#inputForm").validate({
+				rules: {
+					 name:{
+						 checkDkProductName: true
+			            }
+			        },
+			        
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
 					form.submit();
@@ -59,7 +91,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>名称：</label></td>
 					<td class="width-35">
-						<form:input path="name" htmlEscape="false" maxlength="100"  minlength="1"   class="form-control required"/>
+						<form:input path="name" htmlEscape="false" maxlength="100"  minlength="1"   class="form-control required "/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">规格：</label></td>
 					<td class="width-35">
@@ -73,7 +105,13 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>库存：</label></td>
 					<td class="width-35">
-						<form:input path="stock" htmlEscape="false"   max="100000"  min="0" class="form-control required digits"/>
+						<c:if test="${not empty dkProduct.name}">
+						<form:input path="stock" htmlEscape="false"   max="100000"  min="0" class="form-control required digits" readonly="true"/>
+						</c:if>
+						<c:if test="${ empty dkProduct.name}">
+						<form:input path="stock" htmlEscape="false"   max="100000"  min="0" class="form-control required digits" />
+						</c:if>
+						
 					</td>
 				</tr>
 				<tr>

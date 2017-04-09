@@ -15,6 +15,8 @@ import com.jeeplus.modules.daikin.entity.DkProduct;
 @MyBatisDao
 public interface DkProductDao extends CrudDao<DkProduct> {
 
-	public DkProduct getByName(String name);
+	public DkProduct getByName(DkProduct dkProduct);
 	
+	public void updateProductStock(DkProduct dkProduct);
+		
 }

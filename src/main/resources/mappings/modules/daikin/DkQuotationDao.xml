@@ -30,6 +30,7 @@
 		LEFT JOIN dk_member dkMember ON dkMember.id = a.member_id
 		LEFT JOIN sys_user tuser ON tuser.id = a.sale_by
 		LEFT JOIN sys_user ruser ON ruser.id = a.review_by
+		LEFT JOIN sys_office o ON o.id = tuser.office_id
 	</sql>
 	
     
@@ -55,7 +56,10 @@
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 			<if test="memberName != null and memberName != ''">
-				AND a.member_name = #{memberName}
+				AND a.member_name LIKE concat('%',#{memberName},'%')
+			</if>
+			<if test="reviewStatus != null and reviewStatus != ''">
+				AND a.review_status = #{reviewStatus}
 			</if>
 			<if test="mobile != null and mobile != ''">
 				AND a.mobile LIKE 
@@ -66,6 +70,9 @@
 			<if test="productType != null and productType != ''">
 				AND a.product_type = #{productType}
 			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -151,6 +158,18 @@
 			review_status = #{reviewStatus},
 			review_by = #{ruser.id},
 			remark = #{remark},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateReviewStatus">
+		UPDATE dk_quotation SET 	
+			review_status = #{reviewStatus},
+			<if test="isReview != null and isReview != ''">
+			is_review = #{isReview},
+			review_by = #{reviewBy},
+			</if>
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}

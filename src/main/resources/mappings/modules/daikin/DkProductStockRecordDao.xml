@@ -106,7 +106,7 @@
 			#{id},
 			#{dkProduct.id},
 			#{flag},
-			#{operateTime},
+			NOW(),
 			#{amount},
 			#{tuser.id},
 			#{stockAmount},
@@ -124,7 +124,7 @@
 		UPDATE dk_product_stock_record SET 	
 			product_id = #{dkProduct.id},
 			flag = #{flag},
-			operate_time = #{operateTime},
+			operate_time = NOW(),
 			amount = #{amount},
 			operate_by = #{tuser.id},
 			stock_amount = #{stockAmount},

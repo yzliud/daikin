@@ -18,7 +18,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 public class DkQuotationProduct extends DataEntity<DkQuotationProduct> {
 	
 	private static final long serialVersionUID = 1L;
-	private DkQuotation quotationId;		// 报价单ID 父类
+	private String quotationId;		// 报价单ID 父类
 	private String productId;		// 商品ID
 	private String name;		// 名称
 	private String model;		// 规格
@@ -44,15 +44,15 @@ public class DkQuotationProduct extends DataEntity<DkQuotationProduct> {
 		super(id);
 	}
 
-	public DkQuotationProduct(DkQuotation quotationId){
-		this.quotationId = quotationId;
+	public DkQuotationProduct(DkQuotation quotation){
+		this.quotationId = quotation.getId();
 	}
 
-	public DkQuotation getQuotationId() {
+	public String getQuotationId() {
 		return quotationId;
 	}
 
-	public void setQuotationId(DkQuotation quotationId) {
+	public void setQuotationId(String quotationId) {
 		this.quotationId = quotationId;
 	}
 	

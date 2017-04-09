@@ -32,6 +32,8 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
 	private User ruser;		// 审核者
 	private String remark;		// 备注
+	private String isReview;    //是否有审核记录(0-没有；1-有)
+
 	private List<DkQuotationProduct> dkQuotationProductList = Lists.newArrayList();		// 子表列表
 	
 	public DkQuotation() {
@@ -150,6 +152,14 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	
+	public String getIsReview() {
+		return isReview;
+	}
+
+	public void setIsReview(String isReview) {
+		this.isReview = isReview;
 	}
 	
 	public List<DkQuotationProduct> getDkQuotationProductList() {

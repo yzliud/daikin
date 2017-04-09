@@ -54,21 +54,19 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 		<div class="form-group">
-			<span>商品ID：</span>
+			<span>商品：</span>
 				<sys:gridselect url="${ctx}/daikin/dkProductStockRecord/selectdkProduct" id="dkProduct" name="dkProduct"  value="${dkProductStockRecord.dkProduct.id}"  title="选择商品ID" labelName="dkProduct.name" 
 					labelValue="${dkProductStockRecord.dkProduct.name}" cssClass="form-control required" fieldLabels="名称|型号" fieldKeys="name|model" searchLabel="商品名称" searchKey="name" ></sys:gridselect>
-			<span>标识(0-入库 1-出库)：</span>
+			<span>标识：</span>
 				<form:select path="flag"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('stock_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			<span>操作时间：</span>
 				<input id="beginOperateTime" name="beginOperateTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
-					value="<fmt:formatDate value="${dkProductStockRecord.beginOperateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/> - 
+					value="<fmt:formatDate value="${dkProductStockRecord.beginOperateTime}" pattern="yyyy-MM-dd"/>"/> - 
 				<input id="endOperateTime" name="endOperateTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
-					value="<fmt:formatDate value="${dkProductStockRecord.endOperateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
-			<span>合同号：</span>
-				<form:input path="contractNum" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
+					value="<fmt:formatDate value="${dkProductStockRecord.endOperateTime}" pattern="yyyy-MM-dd"/>"/>
 		 </div>	
 	</form:form>
 	<br/>
@@ -108,22 +106,20 @@
 	<table id="contentTable" class="table table-striped table-bordered table-hover table-condensed dataTables-example dataTable">
 		<thead>
 			<tr>
-				<th> <input type="checkbox" class="i-checks"></th>
-				<th  class="sort-column dkProduct.id">商品ID</th>
-				<th  class="sort-column flag">标识(0-入库 1-出库)</th>
+				<!--<th> <input type="checkbox" class="i-checks"></th>-->
+				<th  class="sort-column dkProduct.id">商品</th>
+				<th  class="sort-column flag">标识</th>
 				<th  class="sort-column operateTime">操作时间</th>
 				<th  class="sort-column amount">数量</th>
 				<th  class="sort-column tuser.name">操作者</th>
 				<th  class="sort-column stockAmount">库存数量</th>
-				<th  class="sort-column contractNum">合同号</th>
 				<th  class="sort-column remark">备注</th>
-				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="dkProductStockRecord">
 			<tr>
-				<td> <input type="checkbox" id="${dkProductStockRecord.id}" class="i-checks"></td>
+				<!--  <td> <input type="checkbox" id="${dkProductStockRecord.id}" class="i-checks"></td>-->
 				<td><a  href="#" onclick="openDialogView('查看商品进销存', '${ctx}/daikin/dkProductStockRecord/form?id=${dkProductStockRecord.id}','800px', '500px')">
 					${dkProductStockRecord.dkProduct.name}
 				</a></td>
@@ -143,12 +139,9 @@
 					${dkProductStockRecord.stockAmount}
 				</td>
 				<td>
-					${dkProductStockRecord.contractNum}
-				</td>
-				<td>
 					${dkProductStockRecord.remark}
 				</td>
-				<td>
+				<!--  <td>
 					<shiro:hasPermission name="daikin:dkProductStockRecord:view">
 						<a href="#" onclick="openDialogView('查看商品进销存', '${ctx}/daikin/dkProductStockRecord/form?id=${dkProductStockRecord.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
 					</shiro:hasPermission>
@@ -158,7 +151,7 @@
     				<shiro:hasPermission name="daikin:dkProductStockRecord:del">
 						<a href="${ctx}/daikin/dkProductStockRecord/delete?id=${dkProductStockRecord.id}" onclick="return confirmx('确认要删除该商品进销存吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
 					</shiro:hasPermission>
-				</td>
+				</td>-->
 			</tr>
 		</c:forEach>
 		</tbody>

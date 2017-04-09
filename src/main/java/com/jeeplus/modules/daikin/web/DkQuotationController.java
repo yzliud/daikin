@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
@@ -69,6 +70,30 @@ public class DkQuotationController extends BaseController {
 		Page<DkQuotation> page = dkQuotationService.findPage(new Page<DkQuotation>(request, response), dkQuotation); 
 		model.addAttribute("page", page);
 		return "modules/daikin/dkQuotationList";
+	}
+	
+	/**
+	 * 未审核列表
+	 */
+	@RequiresPermissions("daikin:dkQuotation:uncheck")
+	@RequestMapping(value = {"uncheck"})
+	public String uncheck(DkQuotation dkQuotation, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkQuotation.setReviewStatus(Consts.ReviewStatus_1);
+		Page<DkQuotation> page = dkQuotationService.findPage(new Page<DkQuotation>(request, response), dkQuotation); 
+		model.addAttribute("page", page);
+		return "modules/daikin/dkQuotationUncheckList";
+	}
+	
+	/**
+	 * 审核通过列表
+	 */
+	@RequiresPermissions("daikin:dkQuotation:checkPass")
+	@RequestMapping(value = {"checkPass"})
+	public String checkPass(DkQuotation dkQuotation, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkQuotation.setReviewStatus(Consts.ReviewStatus_9);
+		Page<DkQuotation> page = dkQuotationService.findPage(new Page<DkQuotation>(request, response), dkQuotation); 
+		model.addAttribute("page", page);
+		return "modules/daikin/dkQuotationCheckPassList";
 	}
 
 	/**
@@ -217,8 +242,36 @@ public class DkQuotationController extends BaseController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("obj", dkMember);
 		model.addAttribute("page", page);
-		return "modules/daikin/gridselect_return";
+		return "modules/daikin/gridMember";
 	}
 	
+	@RequestMapping(value = "updateReviewStatus")
+	public String updateReviewStatus(DkQuotation dkQuotation, RedirectAttributes redirectAttributes) {
+		dkQuotationService.updateReviewStatus(dkQuotation);
+		addMessage(redirectAttributes, "审核提交成功");
+		return "redirect:"+Global.getAdminPath()+"/daikin/dkQuotation/?repage";
+	}
+
+	/**
+	 * 查看，增加，编辑报价单表单页面
+	 */
+	@RequiresPermissions(value={"daikin:dkQuotation:view","daikin:dkQuotation:add","daikin:dkQuotation:edit"},logical=Logical.OR)
+	@RequestMapping(value = "detail")
+	public String detail(DkQuotation dkQuotation, String checkType, Model model) {
+		model.addAttribute("dkQuotation", dkQuotation);
+		model.addAttribute("checkType", checkType);
+		return "modules/daikin/dkQuotationDetail";
+	}
+	
+	/**
+	 * 查看，增加，编辑报价单表单页面
+	 */
+	@RequestMapping(value = "checkQuotation")
+	public String checkQuotation(DkQuotation dkQuotation, RedirectAttributes redirectAttributes) {
+		addMessage(redirectAttributes, "审核报价单成功");
+		dkQuotation.setIsReview(Consts.IsReview_1);
+		dkQuotationService.updateReviewStatus(dkQuotation);
+		return "redirect:"+Global.getAdminPath()+"/daikin/dkQuotation/uncheck";
+	}
 
 }

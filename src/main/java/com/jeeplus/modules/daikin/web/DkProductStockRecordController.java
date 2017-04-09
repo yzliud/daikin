@@ -153,13 +153,37 @@ public class DkProductStockRecordController extends BaseController {
 		try {
 			int successNum = 0;
 			int failureNum = 0;
+			String rtnMsg = "";
+			String rowMsg = "";
+			int size = 2 ;
 			StringBuilder failureMsg = new StringBuilder();
 			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<DkProductStockRecord> list = ei.getDataList(DkProductStockRecord.class);
 			for (DkProductStockRecord dkProductStockRecord : list){
+				size++;
+				rowMsg = "";
 				try{
-					dkProductStockRecordService.save(dkProductStockRecord);
-					successNum++;
+					if(dkProductStockRecord == null || dkProductStockRecord.getDkProduct() == null || dkProductStockRecord.getDkProduct().getId() == null
+							|| dkProductStockRecord.getDkProduct().getId().equals("")){
+						rowMsg = rowMsg + " 商品";
+					}
+					if(dkProductStockRecord == null || dkProductStockRecord.getFlag() == null 
+							|| dkProductStockRecord.getFlag().equals("")){
+						rowMsg = rowMsg + " 标识";
+					}
+					if(dkProductStockRecord == null || dkProductStockRecord.getAmount() == null 
+							|| dkProductStockRecord.getAmount() < 1 ){
+						rowMsg = rowMsg + " 数量";
+					}
+					if(!rowMsg.equals("")){
+						rtnMsg = rtnMsg + "第"+size+"行"+rowMsg+" 数据有误";
+					}
+					if(rowMsg.equals("") ){
+						dkProductStockRecordService.save(dkProductStockRecord);
+						successNum++;
+					}else{
+						failureNum++;
+					}
 				}catch(ConstraintViolationException ex){
 					failureNum++;
 				}catch (Exception ex) {

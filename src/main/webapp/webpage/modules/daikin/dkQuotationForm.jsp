@@ -68,14 +68,15 @@
 <body class="hideScroll">
 	<form:form id="inputForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="reviewStatus"/>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>会员：</label></td>
 					<td class="width-35">
-						<dk:gridselectreturn url="${ctx}/daikin/dkQuotation/selectdkMember" id="dkMember" name="dkMember.id"  value="${dkQuotation.dkMember.id}"  title="选择会员" labelName="dkMember.name" 
-						 labelValue="${dkQuotation.dkMember.name}" cssClass="form-control required" fieldLabels="姓名|联系方式|联系地址" fieldKeys="name|mobile|address" searchLabel="姓名" searchKey="name" ></dk:gridselectreturn>
+						<dk:gridMember url="${ctx}/daikin/dkQuotation/selectdkMember" id="dkMember" name="dkMember.id"  value="${dkQuotation.dkMember.id}"  title="选择会员" labelName="dkMember.name" 
+						 labelValue="${dkQuotation.dkMember.name}" cssClass="form-control required" fieldLabels="姓名|联系方式|联系地址" fieldKeys="name|mobile|address" searchLabel="姓名" searchKey="name" ></dk:gridMember>
 					</td>
 					
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>顾客名称：</label></td>
@@ -100,7 +101,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同总金额：</label></td>
 					<td class="width-35">
-						<form:input path="totalFee" htmlEscape="false"    class="form-control required number"/>
+						<form:input path="totalFee" htmlEscape="false"    class="form-control required number" readonly="true"/>
 					</td>
 				</tr>
 				<tr>
@@ -113,8 +114,14 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">销售人员：</label></td>
 					<td class="width-35">
+						<c:if test="${dkQuotation.tuser.id == null  }">
+							<sys:treeselect id="tuser" name="tuser.id" value="${fns:getUser().id}" labelName="tuser.name" labelValue="${fns:getUser().name}"
+								title="用户" url="/sys/office/treeData?type=3" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
+						</c:if>
+						<c:if test="${dkQuotation.tuser.id != null  }">
 						<sys:treeselect id="tuser" name="tuser.id" value="${dkQuotation.tuser.id}" labelName="tuser.name" labelValue="${dkQuotation.tuser.name}"
 							title="用户" url="/sys/office/treeData?type=3" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
+						</c:if>
 					</td>
 				</tr>
 				<tr>
@@ -122,21 +129,12 @@
 					<td class="width-35">
 						<form:input path="connectionRatio" htmlEscape="false"    class="form-control  number"/>
 					</td>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>审核状态：</label></td>
-					<td class="width-35">
-						<form:select path="reviewStatus" class="form-control required">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('review_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
-					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">备注：</label></td>
-					<td class="width-35">
-						<form:textarea path="remark" htmlEscape="false" rows="4"    class="form-control "/>
+					<td class="width-35" colspan = 3>
+						<form:input path="remark" htmlEscape="false"     class="form-control "/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
 		  		</tr>
 		 	</tbody>
 		</table>
@@ -148,31 +146,21 @@
             </ul>
             <div class="tab-content">
 				<div id="tab-1" class="tab-pane active">
-			<a class="btn btn-white btn-sm" onclick="addRow('#dkQuotationProductList', dkQuotationProductRowIdx, dkQuotationProductTpl);dkQuotationProductRowIdx = dkQuotationProductRowIdx + 1;" title="新增"><i class="fa fa-plus"></i> 新增</a>
+			<a class="btn btn-white btn-sm" onclick="checkType();" title="新增"><i class="fa fa-plus"></i> 新增</a>
 			<table id="contentTable" class="table table-striped table-bordered table-condensed">
 				<thead>
 					<tr>
 						<th class="hide"></th>
-						<c:if test="true">
-							<th>楼层</th>
-							<th>位置</th>
-							<th>需求面积</th>
-						</c:if>
 						
 						<th>商品</th>
-						<th>名称</th>
-						<th>规格</th>
-						<th>分类</th>
-						<c:if test="true">
-							<th>品牌</th>
-							<th>产地</th>
-							<th>单位</th>
-						</c:if>
+
 						<th>单价</th>
 						<th>数量</th>
 						<th>总价</th>
 						<th>功率</th>
-						
+						<th width="100">楼层</th>
+						<th>位置</th>
+						<th>需求面积</th>
 						<th>描述</th>
 						<th width="10">&nbsp;</th>
 					</tr>
@@ -187,9 +175,40 @@
 						<input id="dkQuotationProductList{{idx}}_delFlag" name="dkQuotationProductList[{{idx}}].delFlag" type="hidden" value="0"/>
 					</td>
 
+					<td>
+						<dk:gridProduct url="${ctx}/daikin/dkCommon/selectdkProduct" 
+                            id="dkQuotationProductList{{idx}}_productId" name="dkQuotationProductList[{{idx}}].productId"  value="{{row.productId}}"  title="选择商品" labelName="dkProduct.name" 
+						    labelValue="{{row.name}}" cssClass="form-control required" fieldLabels="名称|型号|单价|功率"
+                          fieldKeys="name|model|price|power" searchLabel="商品名称" searchKey="name" rowkeys="{{idx}}"></dk:gridProduct>
+					</td>
+					
 
 					<td>
-						<input id="dkQuotationProductList{{idx}}_floor" name="dkQuotationProductList[{{idx}}].floor" type="text" value="{{row.floor}}"    class="form-control "/>
+						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="100000"  min="1" onchange="" class="form-control required number"/>
+					</td>
+					
+					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_amount" name="dkQuotationProductList[{{idx}}].amount" type="text" value="{{row.amount}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="1000"  min="1" class="form-control required digits"/>
+					</td>
+					
+					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_totalPrice" readonly name="dkQuotationProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="1000000"  min="1" class="form-control  number"/>
+					</td>
+					
+					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_power" name="dkQuotationProductList[{{idx}}].power" type="text" value="{{row.power}}" maxlength="10"    class="form-control  number"/>
+					</td>
+					
+					<td>
+						<select id="dkQuotationProductList{{idx}}_floor" name="dkQuotationProductList[{{idx}}].floor" data-value="{{row.floor}}" class="form-control m-b  ">
+							<option value=""></option>
+							<c:forEach items="${fns:getDictList('floor')}" var="dict">
+								<option value="${dict.value}">${dict.label}</option>
+							</c:forEach>
+						</select>
 					</td>
 
 					<td>
@@ -201,74 +220,12 @@
 						<input id="dkQuotationProductList{{idx}}_demandArea" name="dkQuotationProductList[{{idx}}].demandArea" type="text" value="{{row.demandArea}}" maxlength="8"    class="form-control  number"/>
 					</td>
 
-
-					<td>
-						<sys:gridselect url="${ctx}/daikin/dkProductStockRecord/selectdkProduct" 
-                            id="dkProduct" name="dkProduct.id"  value="${dkProductStockRecord.dkProduct.id}"  title="选择商品" labelName="dkProduct.name" 
-						    labelValue="${dkProductStockRecord.dkProduct.name}" cssClass="form-control required" fieldLabels="名称|型号"
-                          fieldKeys="name|model" searchLabel="商品名称" searchKey="name" ></sys:gridselect>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_name" name="dkQuotationProductList[{{idx}}].name" type="text" value="{{row.name}}"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_model" name="dkQuotationProductList[{{idx}}].model" type="text" value="{{row.model}}"    class="form-control "/>
-					</td>
-
-					<td>
-						<select id="dkQuotationProductList{{idx}}_classifyId" name="dkQuotationProductList[{{idx}}].classifyId" data-value="{{row.classifyId}}" class="form-control m-b  ">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('classify_id')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
-					</td>
-
-					<td>
-						<input id="dkQuotationProductList{{idx}}_place" name="dkQuotationProductList[{{idx}}].place" type="text" value="{{row.place}}" maxlength="20"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_brandId" name="dkQuotationProductList[{{idx}}].brandId" type="text" value="{{row.brandId}}" maxlength="20"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_unit" name="dkQuotationProductList[{{idx}}].unit" type="text" value="{{row.unit}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}"   max="100000"  min="1" class="form-control required number"/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_amount" name="dkQuotationProductList[{{idx}}].amount" type="text" value="{{row.amount}}"   max="1000"  min="1" class="form-control required digits"/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_totalPrice" name="dkQuotationProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="1000000"  min="1" class="form-control  number"/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_power" name="dkQuotationProductList[{{idx}}].power" type="text" value="{{row.power}}" maxlength="10"    class="form-control  number"/>
-					</td>
-					
-					
 					<td>
 						<input id="dkQuotationProductList{{idx}}_descript" name="dkQuotationProductList[{{idx}}].descript" type="text" value="{{row.descript}}" maxlength="100"    class="form-control "/>
 					</td>
 					
 					<td class="text-center" width="10">
-						{{#delBtn}}<span class="close" onclick="delRow(this, '#dkQuotationProductList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+						{{#delBtn}}<span class="close" onclick="delRow_rewrite(this, '#dkQuotationProductList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
 					</td>
 				</tr>//-->
 			</script>
@@ -284,6 +241,49 @@
 					}
 				});
 			</script>
+			
+			<script type="text/javascript">
+				function checkType(){
+					if(typeof($('#productType').val()) == "undefined" || $('#productType').val() == ''){
+						layer.alert('请先选择报价单类型', {
+							  icon: 2,
+							  skin: 'layer-ext-moon' 
+							})
+					}else{
+						addRow('#dkQuotationProductList', dkQuotationProductRowIdx, dkQuotationProductTpl);
+						dkQuotationProductRowIdx = dkQuotationProductRowIdx + 1;
+					}
+				}
+				
+				function delRow_rewrite(str,strvalue){
+					//设置总价
+					var sum=0;
+					$("input[id$='_totalPrice']").each(function(){
+						if($(this).val()!=""){
+							sum = parseFloat(sum) + parseFloat($(this).val());
+						}
+					})
+					$("#totalFee").val(sum);
+					delRow(str, strvalue);
+				}
+				
+				function priceChange(idstr){
+					var num1 = $('#'+idstr+'_price').val();
+					var num2 = $('#'+idstr+'_amount').val();
+					var num3 = num1 * num2 * 10000 / 10000;
+					$('#'+idstr+'_totalPrice').val(num3);
+					
+					//设置总价
+					var sum=0;
+					$("input[id$='_totalPrice']").each(function(){
+						if($(this).val()!=""){
+							sum = parseFloat(sum) + parseFloat($(this).val());
+						}
+					})
+					$("#totalFee").val(sum);
+				}
+			</script>
+			
 			</div>
 		</div>
 		</div>

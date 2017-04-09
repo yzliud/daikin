@@ -19,4 +19,6 @@ public interface DkQuotationDao extends CrudDao<DkQuotation> {
 
 	public List<DkMember> findListBydkMember(DkMember dkMember);
 	
+	public void updateReviewStatus(DkQuotation dkQuotation);
+	
 }

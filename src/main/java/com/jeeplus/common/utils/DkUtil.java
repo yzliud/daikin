@@ -10,8 +10,8 @@ public class DkUtil {
 	/**
 	 * 导出Excel使用，根据名字转换为id
 	 */
-	public static DkProduct getByDkProductName(String name){
-		DkProduct dp = dkProductDao.getByName(name);
+	public static DkProduct getByDkProductName(DkProduct dkProduct){
+		DkProduct dp = dkProductDao.getByName(dkProduct);
 		if(dp != null){
 			return dp;
 		}else{

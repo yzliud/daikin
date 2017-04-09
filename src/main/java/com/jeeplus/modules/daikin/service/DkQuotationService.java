@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.service.CrudService;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
+import com.jeeplus.modules.daikin.dao.DkProductDao;
 import com.jeeplus.modules.daikin.dao.DkQuotationDao;
-
 import com.jeeplus.modules.daikin.entity.DkMember;
-
+import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.jeeplus.modules.daikin.entity.DkQuotationProduct;
 import com.jeeplus.modules.daikin.dao.DkQuotationProductDao;
 
@@ -32,6 +33,9 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 	@Autowired
 	private DkQuotationProductDao dkQuotationProductDao;
 	
+	@Autowired
+	private DkProductDao dkProductDao;
+	
 	public DkQuotation get(String id) {
 		DkQuotation dkQuotation = super.get(id);
 		dkQuotation.setDkQuotationProductList(dkQuotationProductDao.findList(new DkQuotationProduct(dkQuotation)));
@@ -43,19 +47,30 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 	}
 	
 	public Page<DkQuotation> findPage(Page<DkQuotation> page, DkQuotation dkQuotation) {
+		dkQuotation.getSqlMap().put("dsf", dataScopeFilter(dkQuotation.getCurrentUser(), "o", "tuser"));
 		return super.findPage(page, dkQuotation);
 	}
 	
 	@Transactional(readOnly = false)
 	public void save(DkQuotation dkQuotation) {
+		dkQuotation.setReviewStatus(Consts.ReviewStatus_0);
 		super.save(dkQuotation);
 		for (DkQuotationProduct dkQuotationProduct : dkQuotation.getDkQuotationProductList()){
 			if (dkQuotationProduct.getId() == null){
 				continue;
 			}
+			DkProduct dkProduct = dkProductDao.get(dkQuotationProduct.getProductId());
+			dkQuotationProduct.setBrandId(dkProduct.getBrandId());
+			dkQuotationProduct.setClassifyId(dkProduct.getClassifyId());
+			dkQuotationProduct.setModel(dkProduct.getModel());
+			dkQuotationProduct.setName(dkProduct.getName());
+			dkQuotationProduct.setPlace(dkProduct.getPlace());
+			dkQuotationProduct.setUnit(dkProduct.getUnit());
+			dkQuotationProduct.setProductType(dkProduct.getProductType());
+			
 			if (DkQuotationProduct.DEL_FLAG_NORMAL.equals(dkQuotationProduct.getDelFlag())){
 				if (StringUtils.isBlank(dkQuotationProduct.getId())){
-					dkQuotationProduct.setQuotationId(dkQuotation);
+					dkQuotationProduct.setQuotationId(dkQuotation.getId());
 					dkQuotationProduct.preInsert();
 					dkQuotationProductDao.insert(dkQuotationProduct);
 				}else{
@@ -78,6 +93,14 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 		dkMember.setPage(page);
 		page.setList(dao.findListBydkMember(dkMember));
 		return page;
+	}
+	
+	@Transactional(readOnly = false)
+	public void updateReviewStatus(DkQuotation dkQuotation) {
+		if(dkQuotation.getIsReview() != null && dkQuotation.getIsReview().equals(Consts.IsReview_1)){
+			
+		}
+		dao.updateReviewStatus(dkQuotation);
 	}
 	
 }
