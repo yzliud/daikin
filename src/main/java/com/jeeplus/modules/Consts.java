@@ -20,4 +20,8 @@ public class Consts {
 	public final static String RecordType_0 = "0";
 	public final static String RecordType_1 = "1";
 	public final static String RecordType_2 = "2";
+	
+	//合同类型(0-主合同；1-增补合同)
+	public final static String ContractFlag_0 = "0";
+	public final static String ContractFlag_1 = "1";
 }

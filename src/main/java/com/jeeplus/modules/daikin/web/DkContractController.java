@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jeeplus.modules.Consts;
+import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.google.common.collect.Lists;
@@ -34,13 +36,12 @@ import com.jeeplus.common.web.BaseController;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
-import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.service.DkContractService;
 
 /**
  * 合同Controller
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-09
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkContract")
@@ -196,10 +197,36 @@ public class DkContractController extends BaseController {
 	
 	
 	/**
+	 * 选择主合同ID
+	 */
+	@RequestMapping(value = "selectparent")
+	public String selectparent(DkContract parent, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DkContract> page = dkContractService.findPageByparent(new Page<DkContract>(request, response),  parent);
+		try {
+			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
+			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");
+			searchLabel = URLDecoder.decode(searchLabel, "UTF-8");
+			searchKey = URLDecoder.decode(searchKey, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("labelNames", fieldLabels.split("\\|"));
+		model.addAttribute("labelValues", fieldKeys.split("\\|"));
+		model.addAttribute("fieldLabels", fieldLabels);
+		model.addAttribute("fieldKeys", fieldKeys);
+		model.addAttribute("url", url);
+		model.addAttribute("searchLabel", searchLabel);
+		model.addAttribute("searchKey", searchKey);
+		model.addAttribute("obj", parent);
+		model.addAttribute("page", page);
+		return "modules/sys/gridselect";
+	}
+	/**
 	 * 选择报价单ID
 	 */
 	@RequestMapping(value = "selectdkQuotation")
 	public String selectdkQuotation(DkQuotation dkQuotation, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkQuotation.setReviewStatus(Consts.ReviewStatus_9);
 		Page<DkQuotation> page = dkContractService.findPageBydkQuotation(new Page<DkQuotation>(request, response),  dkQuotation);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
@@ -244,6 +271,33 @@ public class DkContractController extends BaseController {
 		model.addAttribute("obj", dkMember);
 		model.addAttribute("page", page);
 		return "modules/sys/gridselect";
+	}
+	
+	/**
+	 * 保存合同
+	 */
+	@RequiresPermissions(value={"daikin:dkContract:add"})
+	@RequestMapping(value = "add")
+	public String add(DkContract dkContract, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		/*if (!beanValidator(model, dkContract)){
+			return form(dkContract, model);
+		}*/
+		
+		dkContractService.add(dkContract);//保存
+		
+		addMessage(redirectAttributes, "新增合同成功");
+		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/?repage";
+	}
+	
+	/**
+	 * 查看，增加，编辑合同表单页面
+	 */
+	@RequiresPermissions(value={"daikin:dkContract:add"})
+	@RequestMapping(value = "forwardAdd")
+	public String forwardAdd(DkContract dkContract, Model model) {
+		dkContract.setContractFlag(Consts.ContractFlag_0);
+		model.addAttribute("dkContract", dkContract);
+		return "modules/daikin/dkContractAdd";
 	}
 	
 
