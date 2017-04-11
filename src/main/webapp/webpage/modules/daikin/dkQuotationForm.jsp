@@ -151,9 +151,7 @@
 				<thead>
 					<tr>
 						<th class="hide"></th>
-						
 						<th>商品</th>
-
 						<th>单价</th>
 						<th>数量</th>
 						<th>总价</th>

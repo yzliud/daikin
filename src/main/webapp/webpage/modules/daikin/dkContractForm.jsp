@@ -76,21 +76,21 @@
 					<td class="width-35">
 						<form:input path="name" htmlEscape="false"    class="form-control required"/>
 					</td>
-					<td class="width-15 active"><label class="pull-right">主合同ID：</label></td>
+					<td class="width-15 active"><label class="pull-right">主合同：</label></td>
 					<td class="width-35">
 						<sys:gridselect url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同ID" labelName="parent.name" 
 						 labelValue="${dkContract.parent.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">合同类型(0-主合同；1-增补合同)：</label></td>
+					<td class="width-15 active"><label class="pull-right">合同类型：</label></td>
 					<td class="width-35">
 						<form:select path="contractFlag" class="form-control ">
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('contract_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</td>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>报价单ID：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>报价单：</label></td>
 					<td class="width-35">
 						<sys:gridselect url="${ctx}/daikin/dkContract/selectdkQuotation" id="dkQuotation" name="dkQuotation.id"  value="${dkContract.dkQuotation.id}"  title="选择报价单ID" labelName="dkQuotation.name" 
 						 labelValue="${dkContract.dkQuotation.name}" cssClass="form-control required" fieldLabels="名称|顾客姓名|联系方式|联系地址|金额" fieldKeys="name|memberName|mobile|address|totalFee" searchLabel="名称" searchKey="name" ></sys:gridselect>
@@ -117,7 +117,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">会员ID：</label></td>
+					<td class="width-15 active"><label class="pull-right">会员：</label></td>
 					<td class="width-35">
 						<sys:gridselect url="${ctx}/daikin/dkContract/selectdkMember" id="dkMember" name="dkMember.id"  value="${dkContract.dkMember.id}"  title="选择会员ID" labelName="dkMember.name" 
 						 labelValue="${dkContract.dkMember.name}" cssClass="form-control required" fieldLabels="姓名|联系方式|联系电话" fieldKeys="name|mobile|address" searchLabel="姓名" searchKey="name" ></sys:gridselect>
@@ -125,16 +125,6 @@
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同金额：</label></td>
 					<td class="width-35">
 						<form:input path="contractFee" htmlEscape="false"    class="form-control required number"/>
-					</td>
-				</tr>
-				<tr>
-					<td class="width-15 active"><label class="pull-right">合同总金额（包含增补合同）：</label></td>
-					<td class="width-35">
-						<form:input path="totalFee" htmlEscape="false"    class="form-control "/>
-					</td>
-					<td class="width-15 active"><label class="pull-right">已到账金额：</label></td>
-					<td class="width-35">
-						<form:input path="arriveFee" htmlEscape="false"    class="form-control "/>
 					</td>
 				</tr>
 				<tr>
@@ -163,20 +153,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）：</label></td>
-					<td class="width-35">
-						<form:select path="reviewStatus" class="form-control ">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('review_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
-					</td>
-					<td class="width-15 active"><label class="pull-right">审核者：</label></td>
-					<td class="width-35">
-						<sys:treeselect id="reviewUser" name="reviewUser.id" value="${dkContract.reviewUser.id}" labelName="reviewUser.name" labelValue="${dkContract.reviewUser.name}"
-							title="用户" url="/sys/office/treeData?type=3" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
-					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right">备注：</label></td>
 					<td class="width-35">
 						<form:input path="remark" htmlEscape="false"    class="form-control "/>
@@ -199,19 +175,14 @@
 				<thead>
 					<tr>
 						<th class="hide"></th>
-						<th>商品ID</th>
-						<th>名称</th>
-						<th>规格</th>
+						
+						<th>商品</th>
 						<th>单价</th>
 						<th>数量</th>
 						<th>总价</th>
-						<th>分类</th>
 						<th>功率</th>
-						<th>产地</th>
-						<th>品牌</th>
-						<th>单位</th>
+						<th width="100">楼层</th>
 						<th>位置</th>
-						<th>楼层</th>
 						<th>需求面积</th>
 						<th>描述</th>
 						<th width="10">&nbsp;</th>
@@ -226,75 +197,33 @@
 						<input id="dkContractProductList{{idx}}_id" name="dkContractProductList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
 						<input id="dkContractProductList{{idx}}_delFlag" name="dkContractProductList[{{idx}}].delFlag" type="hidden" value="0"/>
 					</td>
+
+					<td>
+						<dk:gridProduct url="${ctx}/daikin/dkCommon/selectdkProduct" 
+                            id="dkContractProductList{{idx}}_productId" name="dkContractProductList[{{idx}}].productId"  value="{{row.productId}}"  title="选择商品" labelName="dkProduct.name" 
+						    labelValue="{{row.name}}" cssClass="form-control required" fieldLabels="名称|型号|单价|功率"
+                          fieldKeys="name|model|price|power" searchLabel="商品名称" searchKey="name" rowkeys="{{idx}}"></dk:gridProduct>
+					</td>	
 					
-					
-					
-					<td  class="max-width-250">
-						<sys:treeselect id="dkContractProductList{{idx}}_suser" name="dkContractProductList[{{idx}}].suser.id" value="{{row.suser.id}}" labelName="dkContractProductList{{idx}}.suser.name" labelValue="{{row.suser.name}}"
-							title="用户" url="/sys/office/treeData?type=3" cssClass="form-control  " allowClear="true" notAllowSelectParent="true"/>
+					<td>
+						<input id="dkContractProductList{{idx}}_price" name="dkContractProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkContractProductList{{idx}}');"  max="1000000"  min="1" class="form-control required number"/>
 					</td>
 					
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_model" name="dkContractProductList[{{idx}}].model" type="text" value="{{row.model}}"    class="form-control "/>
+						<input id="dkContractProductList{{idx}}_amount" name="dkContractProductList[{{idx}}].amount" type="text" value="{{row.amount}}" onchange="priceChange('dkContractProductList{{idx}}');"   max="1000"  min="1" class="form-control required digits"/>
 					</td>
 					
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_price" name="dkContractProductList[{{idx}}].price" type="text" value="{{row.price}}"   max="1000000"  min="1" class="form-control required number"/>
-					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_amount" name="dkContractProductList[{{idx}}].amount" type="text" value="{{row.amount}}"   max="1000"  min="1" class="form-control required digits"/>
-					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_totalPrice" name="dkContractProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="10000000"  min="1" class="form-control required number"/>
-					</td>
-					
-					
-					<td>
-						<select id="dkContractProductList{{idx}}_classifyId" name="dkContractProductList[{{idx}}].classifyId" data-value="{{row.classifyId}}" class="form-control m-b  ">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('classify_id')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
+						<input id="dkContractProductList{{idx}}_totalPrice" name="dkContractProductList[{{idx}}].totalPrice" readonly type="text" value="{{row.totalPrice}}"   max="10000000"  min="1" class="form-control required number"/>
 					</td>
 					
 					
 					<td>
 						<input id="dkContractProductList{{idx}}_power" name="dkContractProductList[{{idx}}].power" type="text" value="{{row.power}}" maxlength="10"    class="form-control  number"/>
 					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_place" name="dkContractProductList[{{idx}}].place" type="text" value="{{row.place}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<select id="dkContractProductList{{idx}}_brandId" name="dkContractProductList[{{idx}}].brandId" data-value="{{row.brandId}}" class="form-control m-b  ">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('brand_id')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
-					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_unit" name="dkContractProductList[{{idx}}].unit" type="text" value="{{row.unit}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_position" name="dkContractProductList[{{idx}}].position" type="text" value="{{row.position}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
+
 					<td>
 						<select id="dkContractProductList{{idx}}_floor" name="dkContractProductList[{{idx}}].floor" data-value="{{row.floor}}" class="form-control m-b  ">
 							<option value=""></option>
@@ -302,6 +231,11 @@
 								<option value="${dict.value}">${dict.label}</option>
 							</c:forEach>
 						</select>
+					</td>
+					
+					
+					<td>
+						<input id="dkContractProductList{{idx}}_position" name="dkContractProductList[{{idx}}].position" type="text" value="{{row.position}}" maxlength="10"    class="form-control "/>
 					</td>
 					
 					
@@ -328,6 +262,37 @@
 						dkContractProductRowIdx = dkContractProductRowIdx + 1;
 					}
 				});
+			</script>
+			
+			<script type="text/javascript">
+				
+				function delRow_rewrite(str,strvalue){
+					//设置总价
+					var sum=0;
+					$("input[id$='_totalPrice']").each(function(){
+						if($(this).val()!=""){
+							sum = parseFloat(sum) + parseFloat($(this).val());
+						}
+					})
+					$("#totalFee").val(sum);
+					delRow(str, strvalue);
+				}
+				
+				function priceChange(idstr){
+					var num1 = $('#'+idstr+'_price').val();
+					var num2 = $('#'+idstr+'_amount').val();
+					var num3 = num1 * num2 * 10000 / 10000;
+					$('#'+idstr+'_totalPrice').val(num3);
+					
+					//设置总价
+					var sum=0;
+					$("input[id$='_totalPrice']").each(function(){
+						if($(this).val()!=""){
+							sum = parseFloat(sum) + parseFloat($(this).val());
+						}
+					})
+					$("#totalFee").val(sum);
+				}
 			</script>
 			</div>
 		</div>

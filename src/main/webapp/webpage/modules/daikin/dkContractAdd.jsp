@@ -15,7 +15,25 @@
 		  return false;
 		}
 		$(document).ready(function() {
+			
+			jQuery.validator.addMethod("checkSel", function(value, element) {
+				
+				 if($("#contractFlag").val() == '1' && $("#parentName").val() == ''){
+					return false;
+				 }else{
+				    return true;
+				 }
+			
+			}, "请选择后面的主合同");
+			
+			
 			validateForm = $("#inputForm").validate({
+				rules: {
+					contractNumber:{
+						 checkSel: true
+			            }
+			        },
+			        
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
 					form.submit();
@@ -63,10 +81,10 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同号：</label></td>
 					<td class="width-35">
-						<form:input path="contractNumber" htmlEscape="false"    class="form-control required"/>
+						<form:input path="contractNumber" htmlEscape="false"    class="form-control"/>
 					</td>
-					<td class="width-15 active" id="td_contract"><label class="pull-right">主合同：</label></td>
-					<td class="width-35">
+					<td class="width-15 active" name="td_contract"><label class="pull-right">主合同：</label></td>
+					<td class="width-35" name="td_contract">
 						<sys:gridselect url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同ID" labelName="parent.name" 
 						 labelValue="${dkContract.parent.name}" cssClass="form-control" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 					</td>
@@ -78,11 +96,14 @@
 		
 	</form:form>
 <script type="text/javascript">
+selChange();
 function selChange(){
 	if($("#contractFlag").val() == '0'){
-		$("#td_contract").hidden();
+		$("*[name='td_contract']").hide();
+		 $("#contractNumber").removeAttr("readonly"); 
 	}else{
-		$("#td_contract").show();
+		$("*[name='td_contract']").show();
+		$("#contractNumber").attr("readonly",true);
 	}
 }
 </script>

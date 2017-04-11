@@ -40,34 +40,33 @@
 		<div class="form-group">
 			<span>名称：</span>
 				<form:input path="name" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
-			<span>主合同：</span>
-				<sys:gridselect url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent"  value="${dkContract.parent.id}"  title="选择主合同ID" labelName="parent.name" 
-					labelValue="${dkContract.parent.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 			<span>合同类型：</span>
 				<form:select path="contractFlag"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('contract_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
+			<span>合同号：</span>
+				<form:input path="contractNumber" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
+			<span>商品类型：</span>
+				<form:select path="productType"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				<br>
 			<span>报价单：</span>
 				<sys:gridselect url="${ctx}/daikin/dkContract/selectdkQuotation" id="dkQuotation" name="dkQuotation"  value="${dkContract.dkQuotation.id}"  title="选择报价单ID" labelName="dkQuotation.name" 
 					labelValue="${dkContract.dkQuotation.name}" cssClass="form-control required" fieldLabels="名称|顾客姓名|联系方式|联系地址|金额" fieldKeys="name|memberName|mobile|address|totalFee" searchLabel="名称" searchKey="name" ></sys:gridselect>
-			<span>合同号：</span>
-				<form:input path="contractNumber" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
-			<span>顾客名称：</span>
-				<form:input path="memberName" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
-			<span>联系方式：</span>
-				<form:input path="mobile" htmlEscape="false" maxlength="20"  class=" form-control input-sm"/>
 			<span>安装人员：</span>
 				<sys:treeselect id="installUser" name="installUser.id" value="${dkContract.installUser.id}" labelName="installUser.name" labelValue="${dkContract.installUser.name}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
 			<span>销售人员：</span>
 				<sys:treeselect id="saleUser" name="saleUser.id" value="${dkContract.saleUser.id}" labelName="saleUser.name" labelValue="${dkContract.saleUser.name}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
-			<span>商品类型：</span>
-				<form:select path="productType"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+			<br>
+			<span>顾客名称：</span>
+				<form:input path="memberName" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
+			<span>联系方式：</span>
+				<form:input path="mobile" htmlEscape="false" maxlength="20"  class=" form-control input-sm"/>
 			<span>审核状态：</span>
 				<form:select path="reviewStatus"  class="form-control m-b">
 					<form:option value="" label=""/>
@@ -114,13 +113,11 @@
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
 				<th  class="sort-column name">名称</th>
-				<th  class="sort-column parent.id">主合同</th>
 				<th  class="sort-column contractFlag">合同类型</th>
 				<th  class="sort-column dkQuotation.id">报价单</th>
 				<th  class="sort-column contractNumber">合同号</th>
 				<th  class="sort-column memberName">顾客名称</th>
 				<th  class="sort-column mobile">联系方式</th>
-				<th  class="sort-column address">联系地址</th>
 				<th  class="sort-column contractFee">合同金额</th>
 				<th  class="sort-column totalFee">合同总金额</th>
 				<th  class="sort-column arriveFee">已到账金额</th>
@@ -141,9 +138,6 @@
 					${dkContract.name}
 				</a></td>
 				<td>
-					${dkContract.parent.name}
-				</td>
-				<td>
 					${fns:getDictLabel(dkContract.contractFlag, 'contract_flag', '')}
 				</td>
 				<td>
@@ -157,9 +151,6 @@
 				</td>
 				<td>
 					${dkContract.mobile}
-				</td>
-				<td>
-					${dkContract.address}
 				</td>
 				<td>
 					${dkContract.contractFee}
@@ -188,16 +179,26 @@
 				<td>
 					<fmt:formatDate value="${dkContract.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td>
-					<shiro:hasPermission name="daikin:dkContract:view">
-						<a href="#" onclick="openDialogView('查看合同', '${ctx}/daikin/dkContract/form?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
+				<td>				
+					<shiro:hasPermission name="daikin:dkQuotation:view">
+						<a href="#" onclick="openDialogView('查看合同', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
 					</shiro:hasPermission>
-					<shiro:hasPermission name="daikin:dkContract:edit">
+					<shiro:hasPermission name="daikin:dkQuotation:edit">
+						<c:if test="${dkQuotation.reviewStatus == '0' || dkQuotation.reviewStatus == '2'}">
     					<a href="#" onclick="openDialog('修改合同', '${ctx}/daikin/dkContract/form?id=${dkContract.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
+    					</c:if>
+    					<c:if test="${dkQuotation.reviewStatus == '0' }">
+						<a href="#" onclick="openDialogView('合同提交审核', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 提交审核</a>
+    					</c:if>
     				</shiro:hasPermission>
-    				<shiro:hasPermission name="daikin:dkContract:del">
+    				<shiro:hasPermission name="daikin:dkQuotation:del">
+    					<c:if test="${dkQuotation.reviewStatus == '0' && dkQuotation.isReview != 1}">
 						<a href="${ctx}/daikin/dkContract/delete?id=${dkContract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
+						</c:if>
 					</shiro:hasPermission>
+					<c:if test="${ dkQuotation.isReview == 1}">
+					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
+					</c:if>
 				</td>
 			</tr>
 		</c:forEach>

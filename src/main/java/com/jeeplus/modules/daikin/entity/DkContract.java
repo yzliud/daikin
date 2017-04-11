@@ -40,6 +40,7 @@ public class DkContract extends DataEntity<DkContract> {
 	private User installUser;		// 安装人员
 	private User saleUser;		// 销售人员
 	private String productType;		// 商品类型
+	private String contractStatus;   //合同状态（0-未签订、1-已签订、2、安装中、3-已完工  9-已完结）
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
 	private User reviewUser;		// 审核者
 	private Date reviewTime;		// 审核日期
@@ -242,6 +243,14 @@ public class DkContract extends DataEntity<DkContract> {
 	@ExcelField(title="备注", align=2, sort=21)
 	public String getRemark() {
 		return remark;
+	}
+	
+	public String getContractStatus() {
+		return contractStatus;
+	}
+
+	public void setContractStatus(String contractStatus) {
+		this.contractStatus = contractStatus;
 	}
 
 	public void setRemark(String remark) {
