@@ -5,18 +5,15 @@ package com.jeeplus.modules.daikin.dao;
 
 import com.jeeplus.common.persistence.CrudDao;
 import com.jeeplus.common.persistence.annotation.MyBatisDao;
-import com.jeeplus.modules.daikin.entity.DkProduct;
+import com.jeeplus.modules.daikin.entity.DkAuditRecord;
 
 /**
- * 商品DAO接口
+ * 审核记录DAO接口
  * @author LD
- * @version 2017-04-05
+ * @version 2017-04-09
  */
 @MyBatisDao
-public interface DkProductDao extends CrudDao<DkProduct> {
+public interface DkAuditRecordDao extends CrudDao<DkAuditRecord> {
 
-	public DkProduct getByName(DkProduct dkProduct);
 	
-	public void updateProductStock(DkProduct dkProduct);
-		
 }

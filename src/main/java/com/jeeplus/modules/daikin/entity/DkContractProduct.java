@@ -5,6 +5,7 @@ package com.jeeplus.modules.daikin.entity;
 
 import com.jeeplus.modules.daikin.entity.DkProduct;
 import javax.validation.constraints.NotNull;
+import com.jeeplus.modules.sys.entity.User;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
 
@@ -14,14 +15,14 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 合同Entity
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-09
  */
 public class DkContractProduct extends DataEntity<DkContractProduct> {
 	
 	private static final long serialVersionUID = 1L;
-	private DkContract contractId;		// 合同ID 父类
+	private String contractId;		// 合同ID 父类
 	private DkProduct dkProduct;		// 商品ID
-	private String name;		// 名称
+	private User suser;		// 名称
 	private String model;		// 规格
 	private Double price;		// 单价
 	private Integer amount;		// 数量
@@ -44,16 +45,16 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	public DkContractProduct(String id){
 		super(id);
 	}
-
-	public DkContractProduct(DkContract contractId){
-		this.contractId = contractId;
+	
+	public DkContractProduct(DkContract dkContract){
+		this.contractId = dkContract.getId();
 	}
 
-	public DkContract getContractId() {
+	public String getContractId() {
 		return contractId;
 	}
 
-	public void setContractId(DkContract contractId) {
+	public void setContractId(String contractId) {
 		this.contractId = contractId;
 	}
 	
@@ -67,13 +68,13 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.dkProduct = dkProduct;
 	}
 	
-	@ExcelField(title="名称", align=2, sort=3)
-	public String getName() {
-		return name;
+	@ExcelField(title="名称", fieldType=User.class, value="suser.name", align=2, sort=3)
+	public User getSuser() {
+		return suser;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSuser(User suser) {
+		this.suser = suser;
 	}
 	
 	@ExcelField(title="规格", align=2, sort=4)

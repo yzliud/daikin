@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.daikin.web;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -150,13 +152,39 @@ public class DkProductController extends BaseController {
 		try {
 			int successNum = 0;
 			int failureNum = 0;
+			String rtnMsg = "";
+			String rowMsg = "";
 			StringBuilder failureMsg = new StringBuilder();
 			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<DkProduct> list = ei.getDataList(DkProduct.class);
+			int size = 2 ;
 			for (DkProduct dkProduct : list){
+				size++;
+				rowMsg = "";
 				try{
-					dkProductService.save(dkProduct);
-					successNum++;
+					if(dkProduct == null || dkProduct.getProductType() == null || ("").equals(dkProduct.getProductType())){
+						rowMsg = rowMsg + " 类型";
+					}
+					if(dkProduct == null || dkProduct.getName() == null || ("").equals(dkProduct.getName())){
+						rowMsg = rowMsg + " 名称";
+					}
+					if(dkProduct == null || dkProduct.getPrice() == null || ("").equals(dkProduct.getPrice()) || !StringUtils.isNumeric(dkProduct.getPrice()+"")){
+						rowMsg = rowMsg + " 价格";
+					}
+					if(!rowMsg.equals("")){
+						rtnMsg = rtnMsg + "第"+size+"行"+rowMsg+" 数据有误";
+					}
+					if(rowMsg.equals("") ){
+						DkProduct dp = dkProductService.getByName(dkProduct);
+						if(dp == null){
+							dkProductService.save(dkProduct);
+							successNum++;
+						}else{
+							failureNum++;
+						}
+					}else{
+						failureNum++;
+					}
 				}catch(ConstraintViolationException ex){
 					failureNum++;
 				}catch (Exception ex) {
@@ -164,7 +192,7 @@ public class DkProductController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条商品记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条商品记录。"+rtnMsg);
 			}
 			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条商品记录"+failureMsg);
 		} catch (Exception e) {
@@ -188,6 +216,26 @@ public class DkProductController extends BaseController {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkProduct/?repage";
+    }
+	
+    @RequestMapping(value = "checkDkProductName")
+    public String checkDkProductName(DkProduct dkProduct, HttpServletResponse response) throws UnsupportedEncodingException, IOException  {
+    	DkProduct dp = dkProductService.getByName(dkProduct);
+    	String result = "";
+		
+		if(dp == null){
+			result = "{\"rtnCode\":0}";
+		}else{
+			result = "{\"rtnCode\":500}";
+		}
+		
+		response.reset();
+		response.setContentType("text/plain; charset=UTF-8");
+		response.setCharacterEncoding("utf-8");
+		response.getOutputStream().write(result.getBytes("utf-8"));
+		response.getOutputStream().flush();
+
+		return null;
     }
 	
 	

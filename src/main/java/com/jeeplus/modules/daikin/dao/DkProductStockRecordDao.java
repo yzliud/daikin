@@ -18,5 +18,5 @@ import com.jeeplus.modules.daikin.entity.DkProductStockRecord;
 public interface DkProductStockRecordDao extends CrudDao<DkProductStockRecord> {
 
 	public List<DkProduct> findListBydkProduct(DkProduct dkProduct);
-	
+
 }

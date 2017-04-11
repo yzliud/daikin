@@ -24,7 +24,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 	private String name;		// 名称
 	private String model;		// 规格
 	private Double price;		// 单价
-	private Double stock;		// 库存
+	private int stock;		// 库存
 	private Double power;		// 功率
 	private String place;		// 产地
 	private String brandId;		// 品牌
@@ -92,11 +92,11 @@ public class DkProduct extends DataEntity<DkProduct> {
 	@Min(value=0,message="库存的最小值不能小于0")
 	@Max(value=100000,message="库存的最大值不能超过100000")
 	@ExcelField(title="库存", align=2, sort=6)
-	public Double getStock() {
+	public int getStock() {
 		return stock;
 	}
 
-	public void setStock(Double stock) {
+	public void setStock(int stock) {
 		this.stock = stock;
 	}
 	

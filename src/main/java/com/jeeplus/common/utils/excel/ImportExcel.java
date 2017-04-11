@@ -347,7 +347,9 @@ public class ImportExcel {
 						}else if (valType == Area.class){
 							val = UserUtils.getByAreaName(val.toString());
 						}else if (valType == DkProduct.class){//商品处理
-							val = DkUtil.getByDkProductName(val.toString());
+							DkProduct dkProduct = new DkProduct();
+							dkProduct.setName(val.toString());
+							val = DkUtil.getByDkProductName(dkProduct);
 						}else{
 							if (ef.fieldType() != Class.class){
 								val = ef.fieldType().getMethod("getValue", String.class).invoke(null, val.toString());

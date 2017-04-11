@@ -3,9 +3,13 @@
  */
 package com.jeeplus.modules.daikin.entity;
 
+import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
+import javax.validation.constraints.NotNull;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.sys.entity.User;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.List;
 import com.google.common.collect.Lists;
 
@@ -15,26 +19,32 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 合同Entity
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-09
  */
 public class DkContract extends DataEntity<DkContract> {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;		// 名称
+	private DkContract parent;		// 主合同ID
+	private String contractFlag;		// 合同类型(0-主合同；1-增补合同)
 	private DkQuotation dkQuotation;		// 报价单ID
 	private String contractNumber;		// 合同号
 	private String memberName;		// 顾客名称
 	private String mobile;		// 联系方式
 	private String address;		// 联系地址
 	private DkMember dkMember;		// 会员ID
-	private Double totalFee;		// 合同总金额
+	private Double contractFee;		// 合同金额
+	private Double totalFee;		// 合同总金额（包含增补合同）
+	private Double arriveFee;		// 已到账金额
 	private Double connectionRatio;		// 连接率
-	private User iuser;		// 安装人员
-	private User suser;		// 销售人员
-	private String productType;		// 合同类型
+	private User installUser;		// 安装人员
+	private User saleUser;		// 销售人员
+	private String productType;		// 商品类型
+	private String contractStatus;   //合同状态（0-未签订、1-已签订、2、安装中、3-已完工  9-已完结）
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
-	private User ruser;		// 审核者
-	private String reviewTime;		// 审核日期
+	private User reviewUser;		// 审核者
+	private Date reviewTime;		// 审核日期
+	private String isReview;		// 是否有审核记录(0-没有；1-有)
 	private String remark;		// 备注
 	private List<DkContractProduct> dkContractProductList = Lists.newArrayList();		// 子表列表
 	
@@ -55,7 +65,26 @@ public class DkContract extends DataEntity<DkContract> {
 		this.name = name;
 	}
 	
-	@ExcelField(title="报价单ID", align=2, sort=2)
+	@ExcelField(title="主合同ID", align=2, sort=2)
+	public DkContract getParent() {
+		return parent;
+	}
+
+	public void setParent(DkContract parent) {
+		this.parent = parent;
+	}
+	
+	@ExcelField(title="合同类型(0-主合同；1-增补合同)", dictType="contract_flag", align=2, sort=3)
+	public String getContractFlag() {
+		return contractFlag;
+	}
+
+	public void setContractFlag(String contractFlag) {
+		this.contractFlag = contractFlag;
+	}
+	
+	@NotNull(message="报价单ID不能为空")
+	@ExcelField(title="报价单ID", align=2, sort=4)
 	public DkQuotation getDkQuotation() {
 		return dkQuotation;
 	}
@@ -64,7 +93,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.dkQuotation = dkQuotation;
 	}
 	
-	@ExcelField(title="合同号", align=2, sort=3)
+	@ExcelField(title="合同号", align=2, sort=5)
 	public String getContractNumber() {
 		return contractNumber;
 	}
@@ -73,7 +102,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.contractNumber = contractNumber;
 	}
 	
-	@ExcelField(title="顾客名称", align=2, sort=4)
+	@ExcelField(title="顾客名称", align=2, sort=6)
 	public String getMemberName() {
 		return memberName;
 	}
@@ -82,7 +111,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.memberName = memberName;
 	}
 	
-	@ExcelField(title="联系方式", align=2, sort=5)
+	@ExcelField(title="联系方式", align=2, sort=7)
 	public String getMobile() {
 		return mobile;
 	}
@@ -91,7 +120,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.mobile = mobile;
 	}
 	
-	@ExcelField(title="联系地址", align=2, sort=6)
+	@ExcelField(title="联系地址", align=2, sort=8)
 	public String getAddress() {
 		return address;
 	}
@@ -100,7 +129,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.address = address;
 	}
 	
-	@ExcelField(title="会员ID", align=2, sort=7)
+	@ExcelField(title="会员ID", align=2, sort=9)
 	public DkMember getDkMember() {
 		return dkMember;
 	}
@@ -109,7 +138,17 @@ public class DkContract extends DataEntity<DkContract> {
 		this.dkMember = dkMember;
 	}
 	
-	@ExcelField(title="合同总金额", align=2, sort=8)
+	@NotNull(message="合同金额不能为空")
+	@ExcelField(title="合同金额", align=2, sort=10)
+	public Double getContractFee() {
+		return contractFee;
+	}
+
+	public void setContractFee(Double contractFee) {
+		this.contractFee = contractFee;
+	}
+	
+	@ExcelField(title="合同总金额（包含增补合同）", align=2, sort=11)
 	public Double getTotalFee() {
 		return totalFee;
 	}
@@ -118,7 +157,16 @@ public class DkContract extends DataEntity<DkContract> {
 		this.totalFee = totalFee;
 	}
 	
-	@ExcelField(title="连接率", align=2, sort=9)
+	@ExcelField(title="已到账金额", align=2, sort=12)
+	public Double getArriveFee() {
+		return arriveFee;
+	}
+
+	public void setArriveFee(Double arriveFee) {
+		this.arriveFee = arriveFee;
+	}
+	
+	@ExcelField(title="连接率", align=2, sort=13)
 	public Double getConnectionRatio() {
 		return connectionRatio;
 	}
@@ -127,25 +175,26 @@ public class DkContract extends DataEntity<DkContract> {
 		this.connectionRatio = connectionRatio;
 	}
 	
-	@ExcelField(title="安装人员", fieldType=User.class, value="iuser.name", align=2, sort=10)
-	public User getIuser() {
-		return iuser;
+	@ExcelField(title="安装人员", fieldType=User.class, value="installUser.name", align=2, sort=14)
+	public User getInstallUser() {
+		return installUser;
 	}
 
-	public void setIuser(User iuser) {
-		this.iuser = iuser;
+	public void setInstallUser(User installUser) {
+		this.installUser = installUser;
 	}
 	
-	@ExcelField(title="销售人员", fieldType=User.class, value="suser.name", align=2, sort=11)
-	public User getSuser() {
-		return suser;
+	@NotNull(message="销售人员不能为空")
+	@ExcelField(title="销售人员", fieldType=User.class, value="saleUser.name", align=2, sort=15)
+	public User getSaleUser() {
+		return saleUser;
 	}
 
-	public void setSuser(User suser) {
-		this.suser = suser;
+	public void setSaleUser(User saleUser) {
+		this.saleUser = saleUser;
 	}
 	
-	@ExcelField(title="合同类型", dictType="product_type", align=2, sort=12)
+	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=16)
 	public String getProductType() {
 		return productType;
 	}
@@ -154,7 +203,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.productType = productType;
 	}
 	
-	@ExcelField(title="审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）", dictType="review_status", align=2, sort=13)
+	@ExcelField(title="审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）", dictType="review_status", align=2, sort=17)
 	public String getReviewStatus() {
 		return reviewStatus;
 	}
@@ -163,27 +212,45 @@ public class DkContract extends DataEntity<DkContract> {
 		this.reviewStatus = reviewStatus;
 	}
 	
-	@ExcelField(title="审核者", fieldType=User.class, value="ruser.name", align=2, sort=14)
-	public User getRuser() {
-		return ruser;
+	@ExcelField(title="审核者", fieldType=User.class, value="reviewUser.name", align=2, sort=18)
+	public User getReviewUser() {
+		return reviewUser;
 	}
 
-	public void setRuser(User ruser) {
-		this.ruser = ruser;
+	public void setReviewUser(User reviewUser) {
+		this.reviewUser = reviewUser;
 	}
 	
-	@ExcelField(title="审核日期", align=2, sort=15)
-	public String getReviewTime() {
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@ExcelField(title="审核日期", align=2, sort=19)
+	public Date getReviewTime() {
 		return reviewTime;
 	}
 
-	public void setReviewTime(String reviewTime) {
+	public void setReviewTime(Date reviewTime) {
 		this.reviewTime = reviewTime;
 	}
 	
-	@ExcelField(title="备注", align=2, sort=16)
+	@ExcelField(title="是否有审核记录(0-没有；1-有)", align=2, sort=20)
+	public String getIsReview() {
+		return isReview;
+	}
+
+	public void setIsReview(String isReview) {
+		this.isReview = isReview;
+	}
+	
+	@ExcelField(title="备注", align=2, sort=21)
 	public String getRemark() {
 		return remark;
+	}
+	
+	public String getContractStatus() {
+		return contractStatus;
+	}
+
+	public void setContractStatus(String contractStatus) {
+		this.contractStatus = contractStatus;
 	}
 
 	public void setRemark(String remark) {

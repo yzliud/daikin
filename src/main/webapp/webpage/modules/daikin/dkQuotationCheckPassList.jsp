@@ -14,7 +14,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="ibox">
 	<div class="ibox-title">
-		<h5>报价单列表 </h5>
+		<h5>审核通过报价单 </h5>
 		<div class="ibox-tools">
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
@@ -22,12 +22,7 @@
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fa fa-wrench"></i>
 			</a>
-			<ul class="dropdown-menu dropdown-user">
-				<li><a href="#">选项1</a>
-				</li>
-				<li><a href="#">选项2</a>
-				</li>
-			</ul>
+		
 			<a class="close-link">
 				<i class="fa fa-times"></i>
 			</a>
@@ -40,7 +35,7 @@
 	<!--查询条件-->
 	<div class="row">
 	<div class="col-sm-12">
-	<form:form id="searchForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/" method="post" class="form-inline">
+	<form:form id="searchForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/checkPass" method="post" class="form-inline">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
@@ -59,11 +54,6 @@
 			<span>销售人员：</span>
 				<sys:treeselect id="suser" name="suser.id" value="${dkContract.suser.id}" labelName="suser.name" labelValue="${dkContract.suser.name}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
-			<span>审核状态：</span>
-				<form:select path="reviewStatus"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('review_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
 		 </div>	
 	</form:form>
 	<br/>
@@ -74,14 +64,6 @@
 	<div class="row">
 	<div class="col-sm-12">
 		<div class="pull-left">
-			<shiro:hasPermission name="daikin:dkQuotation:add">
-				<table:addRow url="${ctx}/daikin/dkQuotation/form" title="报价单"></table:addRow> <!--增加按钮 -->
-				
-				<!--<button class="btn btn-white btn-sm"  onclick="choise();" title="添加"><i class="fa fa-plus"></i> ${label==null?'添加':label}</button>-->
-			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkQuotation:import">
-				<table:importExcel url="${ctx}/daikin/dkQuotation/import"></table:importExcel><!-- 导入按钮 -->
-			</shiro:hasPermission>
 			<shiro:hasPermission name="daikin:dkQuotation:export">
 	       		<table:exportExcel url="${ctx}/daikin/dkQuotation/export"></table:exportExcel><!-- 导出按钮 -->
 	       	</shiro:hasPermission>
@@ -152,24 +134,11 @@
 				</td>
 				<td>
 					<shiro:hasPermission name="daikin:dkQuotation:view">
-						<a href="#" onclick="openDialogView('查看报价单', '${ctx}/daikin/dkQuotation/detail?id=${dkQuotation.id}','800px', '600px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
+						<a href="#" onclick="openDialogView('查看报价单', '${ctx}/daikin/dkQuotation/detail?id=${dkQuotation.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
 					</shiro:hasPermission>
-					<shiro:hasPermission name="daikin:dkQuotation:edit">
-						<c:if test="${dkQuotation.reviewStatus == '0' || dkQuotation.reviewStatus == '2'}">
-    					<a href="#" onclick="openDialog('修改报价单', '${ctx}/daikin/dkQuotation/form?id=${dkQuotation.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
-    					</c:if>
-    					<c:if test="${dkQuotation.reviewStatus == '0' }">
-    					<a href="${ctx}/daikin/dkQuotation/updateReviewStatus?id=${dkQuotation.id}&reviewStatus=1" onclick="return confirmx('确定提交审核吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-edit"></i> 提交审核</a>
-    					</c:if>
-    				</shiro:hasPermission>
-    				<shiro:hasPermission name="daikin:dkQuotation:del">
-    					<c:if test="${dkQuotation.reviewStatus == '0' && dkQuotation.isReview != 1}">
-						<a href="${ctx}/daikin/dkQuotation/delete?id=${dkQuotation.id}" onclick="return confirmx('确认要删除该报价单吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
-						</c:if>
+					<shiro:hasPermission name="daikin:dkQuotation:view">
+						<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkQuotation.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
 					</shiro:hasPermission>
-					<c:if test="${ dkQuotation.isReview == 1}">
-					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkQuotation.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
-					</c:if>
 				</td>
 			</tr>
 		</c:forEach>

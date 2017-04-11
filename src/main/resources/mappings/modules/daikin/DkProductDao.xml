@@ -88,13 +88,6 @@
 		</choose>
 	</select>
 	
-	<select id="getByName" resultType="DkProduct">
-		SELECT
-			*
-		FROM dk_product a		
-		WHERE a.name = #{name}
-	</select>
-	
 	<insert id="insert">
 		INSERT INTO dk_product(
 			id,
@@ -172,5 +165,21 @@
 	<select id="findUniqueByProperty" resultType="DkProduct" statementType="STATEMENT">
 		select * FROM dk_product  where ${propertyName} = '${value}'
 	</select>
+	
+	<select id="getByName" resultType="DkProduct" >
+		SELECT 
+			*
+		FROM dk_product a
+		WHERE a.name = #{name} 
+		<if test="id != null and id != ''">
+		 and a.id != #{id}
+		 </if> 
+	</select>
+	
+	<update id="updateProductStock">
+		UPDATE dk_product SET 	
+			stock = #{stock}
+		WHERE id = #{id}
+	</update>
 	
 </mapper>
