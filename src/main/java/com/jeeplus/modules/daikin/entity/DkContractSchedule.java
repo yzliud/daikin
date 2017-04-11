@@ -13,15 +13,16 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 安装进度Entity
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-11
  */
 public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 	
 	private static final long serialVersionUID = 1L;
-	private DkContract dkContract;		// 合同ID
+	private DkContract contractId;		// 合同ID
 	private String descript;		// 进度描述
 	private Date submitDate;		// 提交日期
 	private String pic;		// 上传图片
+	private Integer percent;		// 进度百分比
 	private Date beginSubmitDate;		// 开始 提交日期
 	private Date endSubmitDate;		// 结束 提交日期
 	
@@ -34,12 +35,12 @@ public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 	}
 
 	@ExcelField(title="合同ID", align=2, sort=1)
-	public DkContract getDkContract() {
-		return dkContract;
+	public DkContract getContractId() {
+		return contractId;
 	}
 
-	public void setDkContract(DkContract dkContract) {
-		this.dkContract = dkContract;
+	public void setContractId(DkContract contractId) {
+		this.contractId = contractId;
 	}
 	
 	@ExcelField(title="进度描述", align=2, sort=2)
@@ -68,6 +69,15 @@ public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 
 	public void setPic(String pic) {
 		this.pic = pic;
+	}
+	
+	@ExcelField(title="进度百分比", align=2, sort=5)
+	public Integer getPercent() {
+		return percent;
+	}
+
+	public void setPercent(Integer percent) {
+		this.percent = percent;
 	}
 	
 	public Date getBeginSubmitDate() {

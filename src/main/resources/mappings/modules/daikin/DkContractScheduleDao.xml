@@ -4,20 +4,20 @@
     
 	<sql id="dkContractScheduleColumns">
 		a.id AS "id",
-		a.contract_id AS "dkContract.id",
+		a.contract_id AS "contractId",
 		a.descript AS "descript",
 		a.submit_date AS "submitDate",
 		a.pic AS "pic",
+		a.percent AS "percent",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
-		a.del_flag AS "delFlag",
-		dkContract.contract_number AS "dkContract.contract_number"
+		a.del_flag AS "delFlag"
 	</sql>
 	
 	<sql id="dkContractScheduleJoins">
-		LEFT JOIN dk_contract dkContract ON dkContract.id = a.contract_id
+		LEFT JOIN dk_contract contractId ON contractId.id = a.contract_id
 	</sql>
 	
     
@@ -36,8 +36,8 @@
 		<include refid="dkContractScheduleJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="dkContract != null and dkContract.id != null and dkContract.id != ''">
-				AND a.contract_id = #{dkContract.id}
+			<if test="contractId != null and contractId != ''">
+				AND a.contract_id = #{contractId}
 			</if>
 			<if test="beginSubmitDate != null and endSubmitDate != null and beginSubmitDate != '' and endSubmitDate != ''">
 				AND a.submit_date BETWEEN #{beginSubmitDate} AND #{endSubmitDate}
@@ -78,6 +78,7 @@
 			descript,
 			submit_date,
 			pic,
+			percent,
 			create_by,
 			create_date,
 			update_by,
@@ -85,10 +86,11 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{dkContract.id},
+			#{contractId},
 			#{descript},
 			#{submitDate},
 			#{pic},
+			#{percent},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -99,10 +101,11 @@
 	
 	<update id="update">
 		UPDATE dk_contract_schedule SET 	
-			contract_id = #{dkContract.id},
+			contract_id = #{contractId},
 			descript = #{descript},
 			submit_date = #{submitDate},
 			pic = #{pic},
+			percent = #{percent},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}
@@ -128,17 +131,17 @@
 		select * FROM dk_contract_schedule  where ${propertyName} = '${value}'
 	</select>
 	
-	<select id="findListBydkContract" resultType="DkContract">
+	<select id="findListBycontractId" resultType="DkContract">
 		SELECT 
 			*
 		FROM dk_contract a
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="contract_number != null and contract_number != ''">
-				AND a.contract_number LIKE 
-				<if test="dbName == 'oracle'">#{contract_number}||'%'</if>
-				<if test="dbName == 'mssql'">#{contract_number}+'%'</if>
-				<if test="dbName == 'mysql'">concat(#{contract_number},'%')</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
 			</if>
 		</where>
 		<choose>

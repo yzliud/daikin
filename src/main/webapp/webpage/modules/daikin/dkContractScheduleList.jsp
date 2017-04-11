@@ -55,8 +55,8 @@
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 		<div class="form-group">
 			<span>合同ID：</span>
-				<sys:gridselect url="${ctx}/daikin/dkContractSchedule/selectdkContract" id="dkContract" name="dkContract"  value="${dkContractSchedule.dkContract.id}"  title="选择合同ID" labelName="dkContract.contract_number" 
-					labelValue="${dkContractSchedule.dkContract.contract_number}" cssClass="form-control required" fieldLabels="合同名称|合同号" fieldKeys="name|contractNumber" searchLabel="合同号" searchKey="contract_number" ></sys:gridselect>
+				<sys:gridselect url="${ctx}/daikin/dkContractSchedule/selectcontractId" id="contractId" name="contractId"  value="${dkContractSchedule.contractId.id}"  title="选择合同ID" labelName="contractId.name" 
+					labelValue="${dkContractSchedule.contractId.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客|合同金额" fieldKeys="name|contractNumber|memberName|totalFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 			<span>提交日期：</span>
 				<input id="beginSubmitDate" name="beginSubmitDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
 					value="<fmt:formatDate value="${dkContractSchedule.beginSubmitDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"/> - 
@@ -102,9 +102,11 @@
 		<thead>
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
-				<th  class="sort-column dkContract.id">合同ID</th>
+				<th  class="sort-column contractId">合同ID</th>
 				<th  class="sort-column descript">进度描述</th>
 				<th  class="sort-column submitDate">提交日期</th>
+				<th  class="sort-column pic">上传图片</th>
+				<th  class="sort-column percent">进度百分比</th>
 				<th  class="sort-column updateDate">update_date</th>
 				<th>操作</th>
 			</tr>
@@ -114,13 +116,19 @@
 			<tr>
 				<td> <input type="checkbox" id="${dkContractSchedule.id}" class="i-checks"></td>
 				<td><a  href="#" onclick="openDialogView('查看安装进度', '${ctx}/daikin/dkContractSchedule/form?id=${dkContractSchedule.id}','800px', '500px')">
-					${dkContractSchedule.dkContract.contractNumber}
+					${dkContractSchedule.}
 				</a></td>
 				<td>
 					${dkContractSchedule.descript}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkContractSchedule.submitDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</td>
+				<td>
+					${dkContractSchedule.pic}
+				</td>
+				<td>
+					${dkContractSchedule.percent}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkContractSchedule.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

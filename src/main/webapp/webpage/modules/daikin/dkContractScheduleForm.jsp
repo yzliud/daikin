@@ -47,8 +47,8 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">合同ID：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/daikin/dkContractSchedule/selectdkContract" id="dkContract" name="dkContract.id"  value="${dkContractSchedule.dkContract.id}"  title="选择合同ID" labelName="dkContract.contract_number" 
-						 labelValue="${dkContractSchedule.dkContract.contract_number}" cssClass="form-control required" fieldLabels="合同名称|合同号" fieldKeys="name|contractNumber" searchLabel="合同号" searchKey="contract_number" ></sys:gridselect>
+						<sys:gridselect url="${ctx}/daikin/dkContractSchedule/selectcontractId" id="contractId" name="contractId"  value="${dkContractSchedule.contractId.id}"  title="选择合同ID" labelName="contractId.name" 
+						 labelValue="${dkContractSchedule.contractId.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客|合同金额" fieldKeys="name|contractNumber|memberName|totalFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 					</td>
 					<td class="width-15 active"><label class="pull-right">进度描述：</label></td>
 					<td class="width-35">
@@ -66,6 +66,14 @@
 						<form:input path="pic" htmlEscape="false"    class="form-control "/>
 					</td>
 				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">进度百分比：</label></td>
+					<td class="width-35">
+						<form:input path="percent" htmlEscape="false"    class="form-control "/>
+					</td>
+					<td class="width-15 active"></td>
+		   			<td class="width-35" ></td>
+		  		</tr>
 		 	</tbody>
 		</table>
 	</form:form>
