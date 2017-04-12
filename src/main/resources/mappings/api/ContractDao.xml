@@ -3,50 +3,19 @@
 <mapper namespace="com.jeeplus.api.dao.ContractDao">
     
 	<sql id="dkContractColumns">
-		a.id ,
-		a.name ,
-		a.parent_id ,
-		a.contract_flag ,
-		a.quotation_id ,
-		a.contract_number ,
-		a.member_name ,
-		a.mobile ,
-		a.address ,
-		a.member_id ,
-		a.contract_fee ,
-		a.total_fee ,
-		a.arrive_fee ,
-		a.connection_ratio ,
-		a.install_by ,
-		a.sale_by ,
-		a.product_type ,
-		a.review_status ,
-		a.review_by ,
-		a.review_time ,
-		a.is_review ,
-		a.remark ,
-		a.create_by ,
-		a.create_date ,
-		a.update_by ,
-		a.update_date ,
-		a.del_flag
-	</sql>
-	
-	<sql id="dkContractJoins">
-		LEFT JOIN dk_contract parent ON parent.id = a.parent_id
-		LEFT JOIN dk_quotation dkQuotation ON dkQuotation.id = a.quotation_id
-		LEFT JOIN dk_member dkMember ON dkMember.id = a.member_id
-		LEFT JOIN sys_user installUser ON installUser.id = a.install_by
-		LEFT JOIN sys_user saleUser ON saleUser.id = a.sale_by
-		LEFT JOIN sys_user reviewUser ON reviewUser.id = a.review_by
+		id ,
+		name ,
+		contract_number ,
+		contract_fee ,
+		contract_status,
+		DATE_FORMAT(create_date,'%Y-%m-%d') as create_date
 	</sql>
 	
     
-	<select id="findListByMobile" resultType="DkContract" >
+	<select id="findListByMobile" resultType="hashmap" >
 		SELECT 
 			<include refid="dkContractColumns"/>
 		FROM dk_contract a
-			<include refid="dkContractJoins"/>
 		WHERE a.mobile = #{0}
 		order by a.update_date desc
 		limit #{1},#{2}

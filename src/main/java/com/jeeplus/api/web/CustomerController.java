@@ -2,6 +2,7 @@ package com.jeeplus.api.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,13 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.gson.Gson;
-import com.jeeplus.api.entity.JsonResult;
+import com.jeeplus.api.service.ContractScheduleService;
 import com.jeeplus.api.service.ContractService;
-import com.jeeplus.common.persistence.Page;
-import com.jeeplus.modules.daikin.entity.DkContract;
-import com.jeeplus.modules.daikin.entity.DkContractSchedule;
-import com.jeeplus.modules.daikin.service.DkContractScheduleService;
-import com.jeeplus.modules.daikin.service.DkContractService;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/customer")
@@ -26,6 +22,9 @@ public class CustomerController {
 
 	@Autowired
 	private ContractService contractService;
+	
+	@Autowired
+	private ContractScheduleService contractScheduleService;
 
 	/**
 	 * 首页跳转
@@ -54,27 +53,36 @@ public class CustomerController {
 		Integer pageSize = 3;
 		
 		Integer beginNum = (Integer.valueOf(pageNum)-1)*pageSize;
-
-		List<DkContract> list = contractService.findListByMobile(mobile,beginNum,pageSize);
+		List<HashMap<String, Object>> list = contractService.findListByMobile(mobile,beginNum,pageSize);
 		Gson gson = new Gson();
 		writer.println(gson.toJson(list));
 		writer.flush();
 		writer.close();
+		
 	}
 
 	/**
 	 * 获取合同进度接口
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "getContractSchedule")
-	public void getContractSchedule(HttpServletRequest request, HttpServletResponse response) {
-		JsonResult result = new JsonResult();
+	public void getContractSchedule(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter writer = response.getWriter();
+		
 		String contractId = request.getParameter("contractId");
-		contractId = "f8764fcb41a7435592f4dab7ca29d866";
 		String pageNum = request.getParameter("pageNum");
 		if (pageNum == null || "".equals(pageNum)) {
 			pageNum = "1";
 		}
-		String pageSize = "3";
+		Integer pageSize = 3;
+		
+		Integer beginNum = (Integer.valueOf(pageNum)-1)*pageSize;
+		List<HashMap<String, Object>> list = contractScheduleService.findListByContractId(contractId,beginNum,pageSize);
+		Gson gson = new Gson();
+		writer.println(gson.toJson(list));
+		writer.flush();
+		writer.close();
 
 	}
 }

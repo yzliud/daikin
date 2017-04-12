@@ -19,11 +19,12 @@
 </head>
 <body style="background-color: #efeff4;">
 	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-		<div class="mui-scroll" id="space">
+		<div class="mui-scroll" >
 			<img src="img/banner.jpg" style="width: 100%; height: 140px;">
 			<button
 				style="width: 90%; margin: 5px 5%; height: 42px; font-size: 1em;"
 				onclick="tocontract()">我的合同</button>
+				<div id="space"></div>
 			<div style="height: 30px; background-color: #efeff4;"></div>
 		</div>
 	</div>
@@ -48,7 +49,7 @@
 		setTimeout(function() {
 			page = 1;
 			//刷新的业务
-			location.reload();
+			
 			mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 		}, 1500);
 	}
@@ -71,7 +72,6 @@
 					count = count + 1;
  					mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.length == 0)); //参数为true代表没有更多数据了。
  						for(var i = 0; i < data.length; i++) {
- 							alert(data[i].name);
  						var div = document.createElement('div');
  						div.className = 'divcss';
 						div.innerHTML ="<div style='padding: 8px 10px; border-bottom: 1px solid #ccc; height: 40px;'> <label>合同号:</label> <label id='num'>" +  
@@ -80,11 +80,12 @@
 						data[i].name+"</label> </div> <div style='padding: 8px 10px;'> <label>金额:</label> <label id='money'>￥"+
 						data[i].contract_fee+"</label> </div> <div style='padding: 8px 10px;'> <label>签订时间:</label> <label id='num'>"+
 						data[i].create_date+"</label></div>"+
-						"<div style='padding: 8px 10px; border-top: 1px solid #ccc; height: 40px;' onclick='toschedule("+
-						data[i].id+")'>"+
+						"<div style='padding: 8px 10px; border-top: 1px solid #ccc; height: 40px;' onclick='toschedule('"+
+						data[i].id+"')'>"+
 						"<label id='status' style='float: right;'>查看进度</label> <img src='img/book.png' style='width: 20px; float: right;'>"+
 						"</div>";
-						$("#place").append(div);
+						
+						$("#space").append(div);
 					}
 				},
 				error: function() {}

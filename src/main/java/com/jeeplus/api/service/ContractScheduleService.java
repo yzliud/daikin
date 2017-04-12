@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeeplus.api.dao.ContractDao;
+import com.jeeplus.api.dao.ContractScheduleDao;
 import com.jeeplus.common.service.CrudService;
 import com.jeeplus.modules.daikin.entity.DkContract;
+import com.jeeplus.modules.daikin.entity.DkContractSchedule;
 
 /**
  * 合同Service
@@ -21,11 +23,11 @@ import com.jeeplus.modules.daikin.entity.DkContract;
  */
 @Service
 @Transactional(readOnly = true)
-public class ContractService extends CrudService<ContractDao, DkContract> {
+public class ContractScheduleService extends CrudService<ContractScheduleDao, DkContractSchedule> {
 
-	public List<HashMap<String, Object>> findListByMobile(String mobile,int beginNum,int pageSize) {
+	public List<HashMap<String, Object>> findListByContractId(String contractId, Integer beginNum, Integer pageSize) {
 		// TODO Auto-generated method stub
-		return dao.findListByMobile(mobile,beginNum,pageSize);
+		return dao.findListByContractId(contractId,beginNum,pageSize);
 	}
 
 }
