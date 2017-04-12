@@ -17,6 +17,7 @@
 				/static/** = anon
 				/userfiles/** = anon
 				${adminPath}/api/customer/index = anon
+				${adminPath}/api/customer/getAllContracts = anon
 				${adminPath}/api/worker/index = anon
 				${adminPath}/api/worker/banding = anon
 				${adminPath}/sys/user/infoCareStatus = anon

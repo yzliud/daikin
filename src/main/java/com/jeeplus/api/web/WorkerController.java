@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class WorkerController extends BaseController{
 	 * 首页跳转
 	 */
 	@RequestMapping(value = "index")
-	public String index(HttpServletRequest request , HttpServletRequest response){
+	public String index(HttpServletRequest request , HttpServletResponse response){
 		
 		return "redirect:../../../webpage/api/worker_index.html";
 	}
