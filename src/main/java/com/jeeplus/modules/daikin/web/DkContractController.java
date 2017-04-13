@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.daikin.web;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -72,6 +73,30 @@ public class DkContractController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/daikin/dkContractList";
 	}
+	
+	/**
+	 * 待审核合同
+	 */
+	@RequiresPermissions("daikin:dkContract:uncheck")
+	@RequestMapping(value = {"uncheck"})
+	public String uncheck(DkContract dkContract, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContract.setReviewStatus(Consts.ReviewStatus_1);
+		Page<DkContract> page = dkContractService.findPage(new Page<DkContract>(request, response), dkContract); 
+		model.addAttribute("page", page);
+		return "modules/daikin/dkContractUncheckList";
+	}
+	
+	/**
+	 * 审核通过合同
+	 */
+	@RequiresPermissions("daikin:dkContract:checkPass")
+	@RequestMapping(value = {"checkPass"})
+	public String checkPass(DkContract dkContract, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContract.setReviewStatus(Consts.ReviewStatus_9);
+		Page<DkContract> page = dkContractService.findPage(new Page<DkContract>(request, response), dkContract); 
+		model.addAttribute("page", page);
+		return "modules/daikin/dkContractCheckPassList";
+	}
 
 	/**
 	 * 查看，增加，编辑合同表单页面
@@ -92,6 +117,7 @@ public class DkContractController extends BaseController {
 		if (!beanValidator(model, dkContract)){
 			return form(dkContract, model);
 		}
+		dkContract.setReviewStatus(Consts.ReviewStatus_0);
 		if(!dkContract.getIsNewRecord()){//编辑表单保存
 			DkContract t = dkContractService.get(dkContract.getId());//从数据库取出记录的值
 			MyBeanUtils.copyBeanNotNull2Bean(dkContract, t);//将编辑表单中的非NULL值覆盖数据库记录中的值
@@ -201,6 +227,7 @@ public class DkContractController extends BaseController {
 	 */
 	@RequestMapping(value = "selectparent")
 	public String selectparent(DkContract parent, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		parent.setContractFlag(Consts.ContractFlag_0);
 		Page<DkContract> page = dkContractService.findPageByparent(new Page<DkContract>(request, response),  parent);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
@@ -219,7 +246,7 @@ public class DkContractController extends BaseController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("obj", parent);
 		model.addAttribute("page", page);
-		return "modules/sys/gridselect";
+		return "modules/daikin/gridSelectFour";
 	}
 	/**
 	 * 选择报价单ID
@@ -300,5 +327,92 @@ public class DkContractController extends BaseController {
 		return "modules/daikin/dkContractAdd";
 	}
 	
+	/**
+	 * 合同列表页面
+	 */
+	@RequestMapping(value = {"checkContract"})
+	public String checkContract(DkContract dkContract, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
+		DkContract dk = dkContractService.getSingle(dkContract);
+    	String result = "";
+		
+		if(dk == null){
+			result = "{\"rtnCode\":0}";
+		}else{
+			result = "{\"rtnCode\":500}";
+		}
+		
+		response.reset();
+		response.setContentType("text/plain; charset=UTF-8");
+		response.setCharacterEncoding("utf-8");
+		response.getOutputStream().write(result.getBytes("utf-8"));
+		response.getOutputStream().flush();
+
+		return null;
+		
+	}
+	
+	/**
+	 * 查看，增加，编辑合同表单页面
+	 */
+	@RequestMapping(value = "detail")
+	public String detail(DkContract dkContract, String checkType, Model model) {
+		model.addAttribute("dkContract", dkContract);
+		model.addAttribute("checkType", checkType);
+		return "modules/daikin/dkContractDetail";
+	}
+	
+	/**
+	 * 审核合同
+	 * @param dkContract
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value = "reviewContract")
+	public String reviewContract(DkContract dkContract, RedirectAttributes redirectAttributes) {
+		String isReview = "";
+		String url = "";
+		if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_1)){
+			addMessage(redirectAttributes, "审核提交成功");
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContract/?repage";
+		}else if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_2)){
+			addMessage(redirectAttributes, "该合同已驳回");
+			isReview = Consts.IsReview_1;
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContract/uncheck";
+		}else{
+			addMessage(redirectAttributes, "合同审核通过");
+			isReview = Consts.IsReview_1;
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContract/uncheck";
+		}
+		dkContract.setIsReview(isReview);
+		dkContractService.reviewContract(dkContract);
+		return url;
+	}
+	
+	/**
+	 * 审核合同
+	 * @param dkContract
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value = "formalContractDetail")
+	public String formalContractDetail(DkContract dkContract, RedirectAttributes redirectAttributes) {
+		String isReview = "";
+		String url = "";
+		if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_1)){
+			addMessage(redirectAttributes, "审核提交成功");
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContract/?repage";
+		}else if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_2)){
+			addMessage(redirectAttributes, "该报价单已驳回");
+			isReview = Consts.IsReview_1;
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContract/uncheck";
+		}else{
+			addMessage(redirectAttributes, "该报价单审核通过");
+			isReview = Consts.IsReview_1;
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContract/uncheck";
+		}
+		dkContract.setIsReview(isReview);
+		dkContractService.reviewContract(dkContract);
+		return url;
+	}
 
 }

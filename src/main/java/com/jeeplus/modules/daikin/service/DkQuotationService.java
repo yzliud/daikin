@@ -103,7 +103,7 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 	
 	@Transactional(readOnly = false)
 	public void updateReviewStatus(DkQuotation dkQuotation) {
-		if(dkQuotation.getIsReview() != null && dkQuotation.getIsReview().equals(Consts.IsReview_1)){
+		if( dkQuotation.getReviewStatus().equals(Consts.ReviewStatus_2) || dkQuotation.getReviewStatus().equals(Consts.ReviewStatus_9)){
 			DkAuditRecord dkAuditRecord = new DkAuditRecord();
 			dkAuditRecord.setRecordId(dkQuotation.getId());
 			dkAuditRecord.setRecordType(Consts.RecordType_0);

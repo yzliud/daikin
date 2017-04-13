@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>报价单管理</title>
+	<title>合同明细</title>
 	<meta name="decorator" content="default"/>
 <script type="text/javascript">
 		var validateForm;
@@ -35,8 +35,8 @@
 	</script>
 </head>
 <body class="gray-bg">
-<form:form id="inputForm" modelAttribute="dkContract" action="${ctx}/daikin/dkQuotation/checkQuotation" method="post" class="form-horizontal">
-    <div class="wrapper wrapper-content animated fadeInRight">
+<form:form id="inputForm" modelAttribute="dkContract" action="${ctx}/daikin/dkContract/reviewContract" method="post" class="form-horizontal">
+    <div class="wrapper wrapper-content animated fadeInRight" id="printDiv">
 
         <div class="row">
             <div class="col-sm-12">
@@ -51,14 +51,13 @@
                         </div>
 
                         <div class="col-sm-6 text-right">
-                            <h4>合同号：</h4>
-                            <h4 class="text-navy">${dkContract.contractNumber }</h4><br>
-                            <h4 class="text-navy">${dkContract.name }</h4>
+                            <h4>合同：</h4>
+                            <h4 class="text-navy">${dkContract.name }(${dkContract.contractNumber })</h4><br>
                             <address>
                                 <strong>${dkContract.memberName }</strong><br>
                                 ${dkContract.address }<br>
-                                <abbr title="Phone">联系方式：</abbr> ${dkContract.mobile }
-                                <abbr title="Phone">销售人员：</abbr> ${dkContract.saleUser.name }
+                                <abbr title="Phone">联系方式：</abbr> ${dkContract.mobile }<br>
+                                <abbr title="Phone">销售人员：</abbr> ${dkContract.saleUser.name }<br>
                                 <abbr title="Phone">安装人员：</abbr> ${dkContract.installUser.name }
                             </address>
                             <p>
@@ -84,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            	<c:forEach var="item" items="${dkContract.dkQuotationProductList}" varStatus="status">   
+                            	<c:forEach var="item" items="${dkContract.dkContractProductList}" varStatus="status">   
 								      <tr>
 									      <td>
 	                                        <div><strong>${item.name }</strong>
@@ -114,14 +113,14 @@
                             <tr>
                                 <td><strong>总价：</strong>
                                 </td>
-                                <td>&yen;${dkContract.totalFee }</td>
+                                <td>&yen;${dkContract.contractFee }</td>
                             </tr>
                         </tbody>
                     </table>
                     <form:hidden path="id"/>
                     <form:hidden path="reviewStatus"/>
                     <c:if test="${checkType == '1' }">
-					<div><strong>审核意见:</strong><form:input path="remark" htmlEscape="false"    class="form-control required"/>
+					<div><strong>审核意见:</strong><input name="remark" id="remark"   value=""  class="form-control required"/>
                     </div>
                     </c:if>
                 </div>

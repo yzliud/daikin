@@ -3,12 +3,9 @@
  */
 package com.jeeplus.modules.daikin.entity;
 
-import com.jeeplus.modules.daikin.entity.DkProduct;
 import javax.validation.constraints.NotNull;
-import com.jeeplus.modules.sys.entity.User;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
-
 import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
@@ -21,8 +18,8 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	
 	private static final long serialVersionUID = 1L;
 	private String contractId;		// 合同ID 父类
-	private DkProduct dkProduct;		// 商品ID
-	private User suser;		// 名称
+	private String productId;		// 商品ID
+	private String name;		// 名称
 	private String model;		// 规格
 	private Double price;		// 单价
 	private Integer amount;		// 数量
@@ -58,23 +55,21 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.contractId = contractId;
 	}
 	
-	@NotNull(message="商品ID不能为空")
-	@ExcelField(title="商品ID", align=2, sort=2)
-	public DkProduct getDkProduct() {
-		return dkProduct;
+	public String getProductId() {
+		return productId;
 	}
 
-	public void setDkProduct(DkProduct dkProduct) {
-		this.dkProduct = dkProduct;
-	}
-	
-	@ExcelField(title="名称", fieldType=User.class, value="suser.name", align=2, sort=3)
-	public User getSuser() {
-		return suser;
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 
-	public void setSuser(User suser) {
-		this.suser = suser;
+	@ExcelField(title="名称", align=2, sort=3)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@ExcelField(title="规格", align=2, sort=4)

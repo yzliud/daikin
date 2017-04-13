@@ -81,7 +81,6 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 	}
 	
 	@NotNull(message="会员ID不能为空")
-	@ExcelField(title="会员ID", align=2, sort=5)
 	public DkMember getDkMember() {
 		return dkMember;
 	}
@@ -91,7 +90,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 	}
 	
 	@NotNull(message="合同总金额不能为空")
-	@ExcelField(title="合同总金额", align=2, sort=6)
+	@ExcelField(title="合同总金额", align=2, sort=5)
 	public Double getTotalFee() {
 		return totalFee;
 	}
@@ -100,7 +99,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.totalFee = totalFee;
 	}
 	
-	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=7)
+	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=6)
 	public String getProductType() {
 		return productType;
 	}
@@ -109,7 +108,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.productType = productType;
 	}
 	
-	@ExcelField(title="销售人员", fieldType=User.class, value="tuser.name", align=2, sort=8)
+	@ExcelField(title="销售人员", fieldType=User.class, value="tuser.name", align=2, sort=7)
 	public User getTuser() {
 		return tuser;
 	}
@@ -118,7 +117,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.tuser = tuser;
 	}
 	
-	@ExcelField(title="连接率", align=2, sort=9)
+	@ExcelField(title="连接率", align=2, sort=8)
 	public Double getConnectionRatio() {
 		return connectionRatio;
 	}
@@ -127,7 +126,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.connectionRatio = connectionRatio;
 	}
 	
-	@ExcelField(title="审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）", dictType="review_status", align=2, sort=10)
+	@ExcelField(title="审核状态", dictType="review_status", align=2, sort=9)
 	public String getReviewStatus() {
 		return reviewStatus;
 	}
@@ -136,7 +135,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.reviewStatus = reviewStatus;
 	}
 	
-	@ExcelField(title="审核者", fieldType=User.class, value="ruser.name", align=2, sort=11)
+	@ExcelField(title="审核者", fieldType=User.class, value="ruser.name", align=2, sort=10)
 	public User getRuser() {
 		return ruser;
 	}
@@ -145,7 +144,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.ruser = ruser;
 	}
 	
-	@ExcelField(title="备注", align=2, sort=12)
+	@ExcelField(title="备注", align=2, sort=11)
 	public String getRemark() {
 		return remark;
 	}

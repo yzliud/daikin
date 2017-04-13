@@ -50,6 +50,7 @@
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select><br>
+			<form:hidden path="reviewStatus" value="1"/>
 			<span>销售人员：</span>
 				<sys:treeselect id="suser" name="suser.id" value="${dkContract.suser.id}" labelName="suser.name" labelValue="${dkContract.suser.name}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>

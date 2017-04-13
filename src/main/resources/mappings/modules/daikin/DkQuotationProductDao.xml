@@ -30,7 +30,6 @@
 	
 	<sql id="dkQuotationProductJoins">
 		LEFT JOIN dk_quotation b ON b.id = a.quotation_id
-		LEFT JOIN dk_product productId ON productId.id = a.product_id
 	</sql>
 	
     

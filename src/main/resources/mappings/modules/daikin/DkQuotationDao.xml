@@ -167,7 +167,7 @@
 	<update id="updateReviewStatus">
 		UPDATE dk_quotation SET 	
 			review_status = #{reviewStatus},
-			<if test="isReview != null and isReview != ''">
+			<if test="reviewStatus == '2'.toString() or reviewStatus == '9'.toString() ">
 			is_review = #{isReview},
 			review_by = #{ruser.id},
 			</if>

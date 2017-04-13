@@ -5,8 +5,8 @@
 	<sql id="dkContractProductColumns">
 		a.id AS "id",
 		a.contract_id AS "contractId",
-		a.product_id AS "dkProduct.id",
-		a.name AS "suser.id",
+		a.product_id AS "productId",
+		a.name AS "name",
 		a.model AS "model",
 		a.price AS "price",
 		a.amount AS "amount",
@@ -25,15 +25,11 @@
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
-		a.del_flag AS "delFlag",
-		dkProduct.name AS "dkProduct.name",
-		suser.name AS "suser.name"
+		a.del_flag AS "delFlag"
 	</sql>
 	
 	<sql id="dkContractProductJoins">
 		LEFT JOIN dk_contract b ON b.id = a.contract_id
-		LEFT JOIN dk_product dkProduct ON dkProduct.id = a.product_id
-		LEFT JOIN sys_user suser ON suser.id = a.name
 	</sql>
 	
     
@@ -55,8 +51,8 @@
 			<if test="contractId != null and contractId != ''">
 				AND a.contract_id = #{contractId}
 			</if>
-			<if test="dkProduct != null and dkProduct.id != null and dkProduct.id != ''">
-				AND a.product_id = #{dkProduct.id}
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
 			</if>
 		</where>
 		<choose>
@@ -142,8 +138,8 @@
 	<update id="update">
 		UPDATE dk_contract_product SET 	
 			contract_id = #{contractId},
-			product_id = #{dkProduct.id},
-			name = #{suser.id},
+			product_id = #{productId},
+			name = #{name},
 			model = #{model},
 			price = #{price},
 			amount = #{amount},

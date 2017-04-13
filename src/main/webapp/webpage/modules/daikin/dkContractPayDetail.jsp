@@ -39,36 +39,43 @@
 	</script>
 </head>
 <body class="hideScroll">
-		<form:form id="inputForm" modelAttribute="dkContractPay" action="${ctx}/daikin/dkContractPay/save" method="post" class="form-horizontal">
+		<form:form id="inputForm" modelAttribute="dkContractPay" action="${ctx}/daikin/dkContractPay/reviewContractPay" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+        <form:hidden path="reviewStatus"/>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/daikin/dkContractPay/selectdkContract" id="dkContract" name="dkContract.id"  value="${dkContractPay.dkContract.id}"  title="选择合同ID" labelName="dkContract.name" 
-						 labelValue="${dkContractPay.dkContract.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|客户|合同金额" fieldKeys="name|contractNumber|memberName|totalFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
+						${dkContractPay.dkContract.name}
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>支付时间：</label></td>
 					<td class="width-35">
-						<input id="payDate" name="payDate" type="text" maxlength="20" class="laydate-icon form-control layer-date required"
-							value="<fmt:formatDate value="${dkContractPay.payDate}" pattern="yyyy-MM-dd"/>"/>
+						<fmt:formatDate value="${dkContractPay.payDate}" pattern="yyyy-MM-dd"/>
 					</td>
 				
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>支付金额：</label></td>
 					<td class="width-35">
-						<form:input path="payFee" htmlEscape="false"   max="1000000"  min="1" class="form-control required number"/>
+						${dkContractPay.payFee} 元
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">备注：</label></td>
 					<td class="width-35" colspan=3>
-						<form:input path="remark" htmlEscape="false"    class="form-control "/>
+						${dkContractPay.remark}
 					</td>
 				</tr>
+				<c:if test="${checkType == '1' }">
+				<tr>
+					<td class="width-15 active"><label class="pull-right">审核意见：</label></td>
+					<td class="width-35" colspan=3>
+						<input name="remark" id="remark"   class="form-control required"/>
+					</td>
+				</tr>
+				</c:if>
 		 	</tbody>
 		</table>
 	</form:form>

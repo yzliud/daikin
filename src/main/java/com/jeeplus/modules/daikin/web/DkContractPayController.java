@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
@@ -37,9 +38,9 @@ import com.jeeplus.modules.daikin.entity.DkContractPay;
 import com.jeeplus.modules.daikin.service.DkContractPayService;
 
 /**
- * 合同回款记录Controller
+ * 合同到款Controller
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-13
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkContractPay")
@@ -61,7 +62,7 @@ public class DkContractPayController extends BaseController {
 	}
 	
 	/**
-	 * 合同回款记录列表页面
+	 * 合同到款列表页面
 	 */
 	@RequiresPermissions("daikin:dkContractPay:list")
 	@RequestMapping(value = {"list", ""})
@@ -70,9 +71,33 @@ public class DkContractPayController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/daikin/dkContractPayList";
 	}
+	
+	/**
+	 * 待审核
+	 */
+	@RequiresPermissions("daikin:dkContractPay:uncheck")
+	@RequestMapping(value = {"uncheck"})
+	public String uncheck(DkContractPay dkContractPay, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContractPay.setReviewStatus(Consts.ReviewStatus_1);
+		Page<DkContractPay> page = dkContractPayService.findPage(new Page<DkContractPay>(request, response), dkContractPay); 
+		model.addAttribute("page", page);
+		return "modules/daikin/dkContractPayUncheckList";
+	}
+	
+	/**
+	 * 审核通过
+	 */
+	@RequiresPermissions("daikin:dkContractPay:checkPass")
+	@RequestMapping(value = {"checkPass"})
+	public String checkPass(DkContractPay dkContractPay, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContractPay.setReviewStatus(Consts.ReviewStatus_9);
+		Page<DkContractPay> page = dkContractPayService.findPage(new Page<DkContractPay>(request, response), dkContractPay); 
+		model.addAttribute("page", page);
+		return "modules/daikin/dkContractPayCheckPassList";
+	}
 
 	/**
-	 * 查看，增加，编辑合同回款记录表单页面
+	 * 查看，增加，编辑合同到款表单页面
 	 */
 	@RequiresPermissions(value={"daikin:dkContractPay:view","daikin:dkContractPay:add","daikin:dkContractPay:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
@@ -82,7 +107,7 @@ public class DkContractPayController extends BaseController {
 	}
 
 	/**
-	 * 保存合同回款记录
+	 * 保存合同到款
 	 */
 	@RequiresPermissions(value={"daikin:dkContractPay:add","daikin:dkContractPay:edit"},logical=Logical.OR)
 	@RequestMapping(value = "save")
@@ -90,6 +115,7 @@ public class DkContractPayController extends BaseController {
 		if (!beanValidator(model, dkContractPay)){
 			return form(dkContractPay, model);
 		}
+		dkContractPay.setReviewStatus(Consts.ReviewStatus_1);
 		if(!dkContractPay.getIsNewRecord()){//编辑表单保存
 			DkContractPay t = dkContractPayService.get(dkContractPay.getId());//从数据库取出记录的值
 			MyBeanUtils.copyBeanNotNull2Bean(dkContractPay, t);//将编辑表单中的非NULL值覆盖数据库记录中的值
@@ -97,23 +123,23 @@ public class DkContractPayController extends BaseController {
 		}else{//新增表单保存
 			dkContractPayService.save(dkContractPay);//保存
 		}
-		addMessage(redirectAttributes, "保存合同回款记录成功");
+		addMessage(redirectAttributes, "保存合同到款成功");
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
 	}
 	
 	/**
-	 * 删除合同回款记录
+	 * 删除合同到款
 	 */
 	@RequiresPermissions("daikin:dkContractPay:del")
 	@RequestMapping(value = "delete")
 	public String delete(DkContractPay dkContractPay, RedirectAttributes redirectAttributes) {
 		dkContractPayService.delete(dkContractPay);
-		addMessage(redirectAttributes, "删除合同回款记录成功");
+		addMessage(redirectAttributes, "删除合同到款成功");
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
 	}
 	
 	/**
-	 * 批量删除合同回款记录
+	 * 批量删除合同到款
 	 */
 	@RequiresPermissions("daikin:dkContractPay:del")
 	@RequestMapping(value = "deleteAll")
@@ -122,7 +148,7 @@ public class DkContractPayController extends BaseController {
 		for(String id : idArray){
 			dkContractPayService.delete(dkContractPayService.get(id));
 		}
-		addMessage(redirectAttributes, "删除合同回款记录成功");
+		addMessage(redirectAttributes, "删除合同到款成功");
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
 	}
 	
@@ -133,12 +159,12 @@ public class DkContractPayController extends BaseController {
     @RequestMapping(value = "export", method=RequestMethod.POST)
     public String exportFile(DkContractPay dkContractPay, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "合同回款记录"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "合同到款"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<DkContractPay> page = dkContractPayService.findPage(new Page<DkContractPay>(request, response, -1), dkContractPay);
-    		new ExportExcel("合同回款记录", DkContractPay.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("合同到款", DkContractPay.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导出合同回款记录记录失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导出合同到款记录失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
     }
@@ -167,25 +193,25 @@ public class DkContractPayController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条合同回款记录记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条合同到款记录。");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条合同回款记录记录"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条合同到款记录"+failureMsg);
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入合同回款记录失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入合同到款失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
     }
 	
 	/**
-	 * 下载导入合同回款记录数据模板
+	 * 下载导入合同到款数据模板
 	 */
 	@RequiresPermissions("daikin:dkContractPay:import")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "合同回款记录数据导入模板.xlsx";
+            String fileName = "合同到款数据导入模板.xlsx";
     		List<DkContractPay> list = Lists.newArrayList(); 
-    		new ExportExcel("合同回款记录数据", DkContractPay.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("合同到款数据", DkContractPay.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
@@ -199,6 +225,7 @@ public class DkContractPayController extends BaseController {
 	 */
 	@RequestMapping(value = "selectdkContract")
 	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContract.setContractFlag(Consts.ContractFlag_0);
 		Page<DkContract> page = dkContractPayService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
@@ -220,5 +247,41 @@ public class DkContractPayController extends BaseController {
 		return "modules/sys/gridselect";
 	}
 	
-
+	/**
+	 * 审核合同
+	 * @param dkContract
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value = "reviewContractPay")
+	public String reviewContractPay(DkContractPay dkContractPay, RedirectAttributes redirectAttributes) {
+		String isReview = "";
+		String url = "";
+		if(dkContractPay.getReviewStatus().equals(Consts.ReviewStatus_1)){
+			addMessage(redirectAttributes, "审核提交成功");
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
+		}else if(dkContractPay.getReviewStatus().equals(Consts.ReviewStatus_2)){
+			addMessage(redirectAttributes, "该报价单已驳回");
+			isReview = Consts.IsReview_1;
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/uncheck";
+		}else{
+			addMessage(redirectAttributes, "该报价单审核通过");
+			isReview = Consts.IsReview_1;
+			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/uncheck";
+		}
+		dkContractPay.setIsReview(isReview);
+		dkContractPayService.reviewContractPay(dkContractPay);
+		return url;
+	}
+	
+	/**
+	 * 查看，增加，编辑合同到款表单页面
+	 */
+	@RequestMapping(value = "detail")
+	public String detail(DkContractPay dkContractPay, String checkType, Model model) {
+		model.addAttribute("dkContractPay", dkContractPay);
+		model.addAttribute("checkType", checkType);
+		return "modules/daikin/dkContractPayDetail";
+	}
+	
 }

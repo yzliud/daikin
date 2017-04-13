@@ -331,6 +331,8 @@ public class ImportExcel {
 							}
 						}else if (valType == Integer.class){
 							val = Double.valueOf(val.toString()).intValue();
+						}else if (valType == int.class){
+							val = Double.valueOf(val.toString()).intValue();
 						}else if (valType == Long.class){
 							val = Double.valueOf(val.toString()).longValue();
 						}else if (valType == Double.class){
