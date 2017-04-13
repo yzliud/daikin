@@ -21,6 +21,7 @@
 				${adminPath}/api/customer/getContractSchedule = anon
 				${adminPath}/api/worker/index = anon
 				${adminPath}/api/worker/banding = anon
+				${adminPath}/api/worker/upload = anon
 				${adminPath}/sys/user/infoCareStatus = anon
 				${adminPath}/sys/user/validateLoginName = anon
 				${adminPath}/sys/user/validateMobile = anon
