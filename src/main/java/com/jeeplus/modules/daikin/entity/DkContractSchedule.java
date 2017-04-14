@@ -18,7 +18,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 	
 	private static final long serialVersionUID = 1L;
-	private DkContract contractId;		// 合同ID
+	private DkContract dkContract;		// 合同
 	private String descript;		// 进度描述
 	private Date submitDate;		// 提交日期
 	private String pic;		// 上传图片
@@ -35,12 +35,12 @@ public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 	}
 
 	@ExcelField(title="合同ID", align=2, sort=1)
-	public DkContract getContractId() {
-		return contractId;
+	public DkContract getDkContract() {
+		return dkContract;
 	}
 
-	public void setContractId(DkContract contractId) {
-		this.contractId = contractId;
+	public void setDkContract(DkContract dkContract) {
+		this.dkContract = dkContract;
 	}
 	
 	@ExcelField(title="进度描述", align=2, sort=2)

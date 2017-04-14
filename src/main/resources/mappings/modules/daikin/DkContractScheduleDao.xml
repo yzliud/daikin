@@ -4,7 +4,8 @@
     
 	<sql id="dkContractScheduleColumns">
 		a.id AS "id",
-		a.contract_id AS "contractId",
+		a.contract_id AS "dkContract.id",
+		contract.name AS "dkContract.name",
 		a.descript AS "descript",
 		a.submit_date AS "submitDate",
 		a.pic AS "pic",
@@ -17,7 +18,7 @@
 	</sql>
 	
 	<sql id="dkContractScheduleJoins">
-		LEFT JOIN dk_contract contractId ON contractId.id = a.contract_id
+		LEFT JOIN dk_contract contract ON contract.id = a.contract_id
 	</sql>
 	
     

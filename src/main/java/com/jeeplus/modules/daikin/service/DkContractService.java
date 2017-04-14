@@ -124,4 +124,9 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 		}
 		dao.reviewContract(dc);
 	}
+	
+	@Transactional(readOnly = false)
+	public void assignInstall(DkContract dc) {
+		dao.assignInstall(dc);
+	}
 }

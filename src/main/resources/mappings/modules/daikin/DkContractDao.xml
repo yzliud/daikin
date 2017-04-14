@@ -405,4 +405,10 @@
 			arrive_fee = arrive_fee + #{arriveFee}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="assignInstall">
+		UPDATE dk_contract SET 
+			install_by = #{installUser.id}
+		WHERE id = #{id}
+	</update>
 </mapper>

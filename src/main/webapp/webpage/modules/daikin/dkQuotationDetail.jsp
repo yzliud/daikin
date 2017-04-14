@@ -73,10 +73,20 @@
 									<th>单价</th>
 									<th>数量</th>
 									<th>总价</th>
-									<th>功率</th>
-									<th>楼层</th>
-									<th>位置</th>
-									<th>需求面积</th>
+									<c:choose> 
+									  <c:when test="${dkQuotation.productType == '0' }">   
+									    <th>功率</th>
+										<th>楼层</th>
+										<th>位置</th>
+										<th>需求面积</th>
+									  </c:when> 
+									  <c:otherwise>   
+									    <th>产地</th>
+										<th>品牌</th>
+										<th>单位</th>
+									  </c:otherwise> 
+									</c:choose> 
+									
 									<th>描述</th>
                                 </tr>
                             </thead>
@@ -91,11 +101,20 @@
 	                                      <td>&yen;${item.price }</td>
 	                                      <td>${item.amount }</td>
 	                                      <td>&yen;${item.totalPrice }</td>
-	                                      <td>${item.power }</td>
-	                                      <td>${item.floor }</td>
-	                                      <td>${item.position }</td>
-	                                      <td>${item.demandArea }</td>
-	                                      <td>${item.descript }</td>  
+	                                      <c:choose> 
+											  <c:when test="${dkQuotation.productType == '0' }">   
+											      <td>${item.power }</td>
+			                                      <td>${item.floor }</td>
+			                                      <td>${item.position }</td>
+			                                      <td>${item.demandArea }</td>
+											  </c:when> 
+											  <c:otherwise>   
+											      <td>${item.place }</td>
+			                                      <td>${fns:getDictLabel(item.brandId, 'brand_id', '')}</td>
+			                                      <td>${item.unit }</td>
+											  </c:otherwise> 
+											</c:choose> 
+										<td>${item.descript }</td>  
 								      </tr>   
 								</c:forEach> 
 
