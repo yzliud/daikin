@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="stylesheet" href="css/mui.min.css">
+<link rel="stylesheet" type="text/css" href="css/app.css" />
+<title>中央空调</title>
+</head>
+<style>
+.top_img {
+	margin-top: 70px;
+	margin-bottom: 30px;
+	width: 100px;
+}
+</style>
+<body style="background-color: #efeff4;">
+	<div style="text-align: center; width: 100%;">
+		<img SRC="img/user.png" class="top_img" />
+	</div>
+	<div style="padding-left: 8%; width: 100%; padding-right: 8%;">
+		<input placeholder="请输入您的手机号" type="number"
+			style="-webkit-user-select: auto; width: 100%; padding-left: 10px; height: 40px; font-size: 1em; border-radius: 7px; border: 1px solid #ccc"
+			id="mobile">
+	</div>
+
+	<button
+		style="margin-top: 25px; width: 84%; margin-left: 8%; height: 40px; font-size: 1em; border-radius: 7px; border: 1px solid #ccc; background-color: white;"
+		onclick="enter()">进入</button>
+</body>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+	//校验手机号是否合法
+	function isPhoneNum() {
+		var phonenum = $("#mobile").val();
+		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		if (!myreg.test(phonenum)) {
+			var btnArray = [ '确定' ];
+			mui.confirm('请输入合法手机号!', '', btnArray, function(e) {
+			})
+			return false;
+		} else {
+			return true;
+		}
+	}
+	//弹窗模板
+	function myalert() {
+		var btnArray = [ '确定' ];
+		mui.confirm('现在进入!', '', btnArray, function(e) {
+		})
+	}
+	function enter() {
+		if(isPhoneNum()){
+			window.location.href = "customer_contract.html?mobile="+document.getElementById("mobile").value;	
+		}
+	}
+</script>
+</html>

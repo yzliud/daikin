@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<link rel="stylesheet" href="css/mui.min.css">
+<title>个人中心</title>
+</head>
+<style>
+.top_img {
+	margin-top: 70px;
+	margin-bottom: 30px;
+	width: 100px;
+}
+</style>
+<body style="background-color: #efeff4; font-size: 1em;">
+	<div style="text-align: center; width: 100%;">
+		<img SRC="img/install.png" class="top_img" />
+	</div>
+	<div style="padding-left: 5%; width: 100%; padding-right: 5%;">
+		<input placeholder="请输入您的手机号" type="text"
+			style="-webkit-user-select: auto; width: 100%; padding-left: 10px; height: 40px; font-size: 1em; border-radius: 5px; border: 1px solid #ccc;"
+			id="mobile"></input> <input placeholder="请输入验证码" type="number"
+			style="-webkit-user-select: auto; width: 65%; padding-left: 10px; height: 40px; font-size: 1em; border-radius: 7px; border: 1px solid #ccc; margin-top: 20px;"
+			id="code">
+		<button
+			style="width: 32%; height: 40px; float: right; border: 1px solid #ccc; background-color: white; border-radius: 7px; margin-top: 20px;"
+			onclick="getCode()" id="getCode">获取验证码</button>
+	</div>
+
+	<div style="text-align: center;">
+		<button placeholder="请输入您的手机号"
+			style="margin-top: 30px; width: 70%; height: 40px; font-size: 1em; border-radius: 5px; border: 1px solid #ccc; background-color: white;"
+			onclick="enter()">进入</button>
+	</div>
+</body>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+	//校验手机号是否合法
+	function isPhoneNum() {
+		var phonenum = $("#mobile").val();
+		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		if (!myreg.test(phonenum)) {
+			var btnArray = [ '确定' ];
+			mui.confirm('请输入合法手机号!', '', btnArray, function(e) {
+			})
+			return false;
+		} else {
+			return true;
+		}
+	}
+	var countdown;
+	//倒计时
+	var str_countdown = "";
+	function settime() {
+		str_countdown = "已发送(" + countdown + "s)";
+		$("#getCode").html(str_countdown);
+		$('#getCode').attr('disabled', "true");
+		if (countdown == 0) {
+			$("#getCode").removeAttr("disabled");
+			$("#getCode").html("获取验证码");
+			return;
+		}
+		countdown--;
+		setTimeout(function() {
+			settime()
+		}, 1000)
+	}
+
+	function getCode() {
+		var result = isPhoneNum();
+		if (result) {
+			countdown = 30;
+			settime();
+		}
+	}
+	//弹窗模板
+	function myalert() {
+		var btnArray = [ '确定' ];
+		mui.confirm('现在进入!', '', btnArray, function(e) {
+		})
+	}
+	function enter() {
+		if(isPhoneNum){
+			window.location.href = "file5.html"
+		}	
+	}
+</script>
+</html>

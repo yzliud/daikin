@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.api.dao.ContractDao">
+    
+	<sql id="dkContractColumns">
+		id ,
+		name ,
+		contract_number ,
+		contract_fee ,
+		contract_status,
+		DATE_FORMAT(create_date,'%Y-%m-%d') as create_date
+	</sql>
+	
+    
+	<select id="findListByMobile" resultType="hashmap" >
+		SELECT 
+			<include refid="dkContractColumns"/>
+		FROM dk_contract a
+		WHERE a.mobile = #{0}
+		order by a.update_date desc
+		limit #{1},#{2}
+	</select>
+	
+</mapper>

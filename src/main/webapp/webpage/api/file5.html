@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport"content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title></title>
+	</head>
+	<body style="background-color: #efeff4;">
+<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+  <div class="mui-scroll">
+		<img src="img/banner.jpg" style="width: 100%;height: 140px;">
+		<button style="width: 90%;margin: 5px 5%;height: 42px;font-size: 1em;" onclick="tocontract()">我的工作</button>
+		
+		<div style="padding:0px 5px;font-size:0.9em;width: 100%;border-top: 1px solid black;border-bottom: 1px solid black;">
+			<div style="padding: 8px 10px;border-bottom: 1px solid #ccc;height: 40px;">
+				<label>合同号:</label>
+				<label id="num">VA3389475921-1-2-3</label>
+				<label id ="status" style="float: right;border-left: 1px solid #ccc;padding-left: 8px;">未完成</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>名称:</label>
+				<label id="num">中央大厦中央空调</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>客户姓名:</label>
+				<label id="money">王健林</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>施工地址:</label>
+				<label id="num">中央110号</label>
+			</div>
+			
+			<div style="padding: 8px 10px;">
+				<label>开始时间:</label>
+				<label id="num">2017-04-07</label>
+			</div>
+			<div style="padding: 8px 10px;border-top: 1px solid #ccc;height: 40px;" onclick="toschedule()">
+				<label id ="status" style="float: right;">添加进度</label>
+				<img src="img/book.png" style="width: 20px;float: right;">
+			</div>
+		</div>
+		
+		<div style="margin-top:10px;padding:0px 5px;font-size:0.9em;width: 100%;border-top: 1px solid black;border-bottom: 1px solid black;">
+			<div style="padding: 8px 10px;border-bottom: 1px solid #ccc;height: 40px;">
+				<label>合同号:</label>
+				<label id="num">VA3389475921-1-2-3</label>
+				<label id ="status" style="float: right;border-left: 1px solid #ccc;padding-left: 8px;">未完成</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>名称:</label>
+				<label id="num">中央大厦中央空调</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>客户姓名:</label>
+				<label id="money">王健林</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>施工地址:</label>
+				<label id="num">中央110号</label>
+			</div>
+			
+			<div style="padding: 8px 10px;">
+				<label>开始时间:</label>
+				<label id="num">2017-04-07</label>
+			</div>
+			<div style="padding: 8px 10px;border-top: 1px solid #ccc;height: 40px;" onclick="toschedule()">
+				<label id ="status" style="float: right;">添加进度</label>
+				<img src="img/book.png" style="width: 20px;float: right;">
+			</div>
+		</div>
+		
+		<div style="margin-top:10px;padding:0px 5px;font-size:0.9em;width: 100%;border-top: 1px solid black;border-bottom: 1px solid black;">
+			<div style="padding: 8px 10px;border-bottom: 1px solid #ccc;height: 40px;">
+				<label>合同号:</label>
+				<label id="num">VA3389475921-1-2-3</label>
+				<label id ="status" style="float: right;border-left: 1px solid #ccc;padding-left: 8px;">未完成</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>名称:</label>
+				<label id="num">中央大厦中央空调</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>客户姓名:</label>
+				<label id="money">王健林</label>
+			</div>
+			<div style="padding: 8px 10px;">
+				<label>施工地址:</label>
+				<label id="num">中央110号</label>
+			</div>
+			
+			<div style="padding: 8px 10px;">
+				<label>开始时间:</label>
+				<label id="num">2017-04-07</label>
+			</div>
+			<div style="padding: 8px 10px;border-top: 1px solid #ccc;height: 40px;" onclick="toschedule()">
+				<label id ="status" style="float: right;">添加进度</label>
+				<img src="img/book.png" style="width: 20px;float: right;">
+			</div>
+		</div>
+			<div style="height: 30px;background-color: #efeff4;"></div>	
+	</div>
+</div>
+
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js" ></script>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		function toschedule(){
+			window.location.href="file6.html"
+		}
+		
+		function tocontract(){
+			alert("查看工作");
+		}
+		
+/**
+ * 下拉刷新具体业务实现
+ */
+function pulldownRefresh() {
+	setTimeout(function() {
+		page=1;
+		//刷新的业务
+		mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+	}, 1500);
+}
+
+/**
+ * 上拉加载具体业务实现
+ */
+function pullupRefresh() {
+	setTimeout(function() {
+		 mui('#pullrefresh').pullRefresh().endPullupToRefresh((1> 2)); //参数为true代表没有更多数据了。
+		//下拉业务
+	}, 1500);
+}
+
+ mui.init({
+	  pullRefresh:  {
+		container: '#pullrefresh',
+		down: {
+			callback: pulldownRefresh
+		},
+		up: {
+			contentrefresh: '正在加载...',
+			callback: pullupRefresh
+		}
+	 } 
+}); 
+mui("#pullrefresh").on('tap', 'div', function (event) {
+this.click();
+});
+mui("#pullrefresh").on('tap', 'button', function (event) {
+this.click();
+});
+</script>
+</html>
