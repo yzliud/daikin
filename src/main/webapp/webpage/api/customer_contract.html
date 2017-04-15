@@ -34,8 +34,8 @@
 <script src="js/mui.min.js"></script>
 <script type="text/javascript" charset="utf-8">
 
-	function toschedule() {
-		window.location.href = "file3.html"
+	function toschedule(id) {
+		window.location.href = "customer_schedule.html?contractId="+id;
 	}
 
 	function tocontract() {
@@ -79,9 +79,8 @@
 						data[i].contract_status+"</label> </div> <div style='padding: 8px 10px;'> <label>名称:</label> <label id='num'>"+
 						data[i].name+"</label> </div> <div style='padding: 8px 10px;'> <label>金额:</label> <label id='money'>￥"+
 						data[i].contract_fee+"</label> </div> <div style='padding: 8px 10px;'> <label>签订时间:</label> <label id='num'>"+
-						data[i].create_date+"</label></div>"+
-						"<div style='padding: 8px 10px; border-top: 1px solid #ccc; height: 40px;' onclick='toschedule('"+
-						data[i].id+"')'>"+
+						data[i].review_time+"</label></div>"+
+						"<div style='padding: 8px 10px; border-top: 1px solid #ccc; height: 40px;' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
 						"<label id='status' style='float: right;'>查看进度</label> <img src='img/book.png' style='width: 20px; float: right;'>"+
 						"</div>";
 						
