@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkContractPay;
+import com.jeeplus.modules.daikin.entity.DkContractProduct;
 import com.jeeplus.modules.daikin.entity.DkContractSchedule;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkMember;
@@ -40,6 +41,7 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
 import com.jeeplus.modules.daikin.service.DkContractPayService;
+import com.jeeplus.modules.daikin.service.DkContractProductService;
 import com.jeeplus.modules.daikin.service.DkContractScheduleService;
 import com.jeeplus.modules.daikin.service.DkContractService;
 
@@ -60,6 +62,9 @@ public class DkContractController extends BaseController {
 	
 	@Autowired
 	private DkContractPayService dkContractPayService;
+	
+	@Autowired
+	private DkContractProductService dkContractProductService;
 	
 	@ModelAttribute
 	public DkContract get(@RequestParam(required=false) String id) {
@@ -383,6 +388,11 @@ public class DkContractController extends BaseController {
 		dc.setContractFlag(Consts.ContractFlag_1);
 		dc.setReviewStatus(Consts.ReviewStatus_9);
 		List<DkContract> dcSubList = dkContractService.findList(dc);
+		for(DkContract subdc:dcSubList){
+			DkContractProduct dcp = new DkContractProduct();
+			dcp.setContractId(subdc.getId());
+			subdc.setDkContractProductList(dkContractProductService.findList(dcp));
+		}
 		model.addAttribute("contractSubList", dcSubList);
 		//进度
 		DkContractSchedule dcs = new DkContractSchedule();
@@ -403,7 +413,7 @@ public class DkContractController extends BaseController {
 		List<DkContractPay> dspList =  dkContractPayService.findList(dkContractPay);
 		model.addAttribute("contractPayList", dspList);
 		
-		double payCent = dkContract.getArriveFee()/dkContract.getTotalFee();
+		double payCent = dkContract.getArriveFee()/dkContract.getTotalFee()*100;
 		model.addAttribute("payCent", String.format("%.2f", payCent));
 		return "modules/daikin/dkContractTotalDetail";
 	}

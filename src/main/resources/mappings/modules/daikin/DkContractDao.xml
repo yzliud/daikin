@@ -343,7 +343,7 @@
 			SELECT 
 				#{id},
 				#{name},
-				#{id},
+				#{parent.id},
 				#{contractFlag},
 				#{dkQuotation.id},
 				#{contractNumber},

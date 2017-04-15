@@ -43,7 +43,6 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="m-b-md">
-                                    <a href="project_detail.html#" class="btn btn-white btn-xs pull-right">返回</a>
                                     <h2>${dkContract.name }</h2>
                                 </div>
                                 <dl class="dl-horizontal">
@@ -101,7 +100,7 @@
                                     <dt>当前回款进度</dt>
                                     <dd>
                                         <div class="progress progress-striped active m-b-sm">
-                                            <div style="width: ${payCent }/%;" class="progress-bar"></div>
+                                            <div style="width: ${payCent }%;" class="progress-bar"></div>
                                         </div>
                                         <small>当前已完成项目回款总进度的 <strong>${payCent }%</strong></small>
                                     </dd>
