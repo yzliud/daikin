@@ -76,7 +76,7 @@
 									<th>数量</th>
 									<th>总价</th>
 									<c:choose> 
-									  <c:when test="${dkQuotation.productType == '0' }">   
+									  <c:when test="${dkContract.productType == '0' }">   
 									    <th>功率</th>
 										<th>楼层</th>
 										<th>位置</th>
@@ -103,7 +103,7 @@
 	                                      <td>${item.amount }</td>
 	                                      <td>&yen;${item.totalPrice }</td>
 	                                      <c:choose> 
-											  <c:when test="${dkQuotation.productType == '0' }">   
+											  <c:when test="${dkContract.productType == '0' }">   
 											      <td>${item.power }</td>
 			                                      <td>${item.floor }</td>
 			                                      <td>${item.position }</td>

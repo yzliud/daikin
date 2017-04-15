@@ -10,7 +10,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.web.util.SavedRequest;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.google.common.collect.Maps;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.common.mapper.JsonMapper;
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.security.shiro.session.SessionDAO;
 import com.jeeplus.common.servlet.ValidateCodeServlet;

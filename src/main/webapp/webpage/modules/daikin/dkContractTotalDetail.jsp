@@ -34,9 +34,9 @@
 		});
 	</script>
 </head>
-<body class="gray-bg">
+<body class="gray-bg" style="overflow-x:hidden;">
 <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <div class="wrapper wrapper-content animated fadeInUp">
                 <div class="ibox">
                     <div class="ibox-content">
@@ -130,7 +130,7 @@
 
                                         <div class="tab-content">
                                      
-                                            <div class="tab-pane" id="tab-100">
+                                            <div class="tab-pane active" id="tab-100">
 
                                                 <table class="table table-striped">
                                                     <thead>
@@ -140,10 +140,19 @@
 															<th>单价</th>
 															<th>数量</th>
 															<th>总价</th>
-															<th>功率</th>
-															<th>楼层</th>
-															<th>位置</th>
-															<th>需求面积</th>
+															<c:choose> 
+															  <c:when test="${dkContract.productType == '0' }">   
+															    <th>功率</th>
+																<th>楼层</th>
+																<th>位置</th>
+																<th>需求面积</th>
+															  </c:when> 
+															  <c:otherwise>   
+															    <th>产地</th>
+																<th>品牌</th>
+																<th>单位</th>
+															  </c:otherwise> 
+															</c:choose> 
 															<th>描述</th>
 						                                </tr>
                                                     </thead>
@@ -158,10 +167,19 @@
 							                                      <td>&yen;${item.price }</td>
 							                                      <td>${item.amount }</td>
 							                                      <td>&yen;${item.totalPrice }</td>
-							                                      <td>${item.power }</td>
-							                                      <td>${item.floor }</td>
-							                                      <td>${item.position }</td>
-							                                      <td>${item.demandArea }</td>
+							                                      <c:choose> 
+																	  <c:when test="${dkContract.productType == '0' }">   
+																	      <td>${item.power }</td>
+									                                      <td>${item.floor }</td>
+									                                      <td>${item.position }</td>
+									                                      <td>${item.demandArea }</td>
+																	  </c:when> 
+																	  <c:otherwise>   
+																	      <td>${item.place }</td>
+									                                      <td>${fns:getDictLabel(item.brandId, 'brand_id', '')}</td>
+									                                      <td>${item.unit }</td>
+																	  </c:otherwise> 
+																	</c:choose> 
 							                                      <td>${item.descript }</td>  
 														      </tr>   
 														</c:forEach> 
@@ -231,10 +249,10 @@
                                                         <c:forEach var="itemPay" items="${contractPayList}">   
 														      <tr>
 															      <td>
-							                                        ${item.payDate }
+							                                        <fmt:formatDate value="${itemPay.payDate}" pattern="yyyy-MM-dd"/>
 							                                      </td>  
-							                                      <td>&yen;${item.payFee }</td>
-							                                      <td>${item.remark }</td>
+							                                      <td>&yen;${itemPay.payFee }</td>
+							                                      <td>${itemPay.remark }</td>
 														      </tr>   
 														</c:forEach> 
 
@@ -247,15 +265,15 @@
                                             
                                             
                                             
-                                            <div class="tab-pane active" id="tab-102">
+                                            <div class="tab-pane" id="tab-102">
                                                 <div class="feed-activity-list">
                                                 	<c:forEach var="itemSchedule" items="${contractScheduleList}">   
 	                                                    <div class="feed-element">
 	                                                        <div class="media-body ">
-	                                                            <small class="pull-right">${itemSchedule.submitDate }</small>
+	                                                            <small class="pull-right"><fmt:formatDate value="${itemSchedule.submitDate }" pattern="yyyy-MM-dd HH:mm:ss"/> </small>
 	                                                            	${itemSchedule.descript }
 	                                                            <br>
-	                                                            <small class="text-muted">${itemSchedule.percent }%</small>
+	                                                            <small class="text-muted">进度:${itemSchedule.percent }%</small>
 	                                                            <div class="photos">
 	                                                                <a target="_blank" href="http://24.media.tumblr.com/20a9c501846f50c1271210639987000f/tumblr_n4vje69pJm1st5lhmo1_1280.jpg">
 	                                                                    <img alt="image" class="feed-photo" src="img/p1.jpg">

@@ -403,8 +403,8 @@ public class DkContractController extends BaseController {
 		List<DkContractPay> dspList =  dkContractPayService.findList(dkContractPay);
 		model.addAttribute("contractPayList", dspList);
 		
-		double payCent = dkContract.getArriveFee()/dkContract.getTotalFee()*100;
-		model.addAttribute("payCent", payCent);
+		double payCent = dkContract.getArriveFee()/dkContract.getTotalFee();
+		model.addAttribute("payCent", String.format("%.2f", payCent));
 		return "modules/daikin/dkContractTotalDetail";
 	}
 	

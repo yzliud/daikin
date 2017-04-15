@@ -37,8 +37,8 @@
 		<include refid="dkContractScheduleJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="contractId != null and contractId != ''">
-				AND a.contract_id = #{contractId}
+			<if test="dkContract.id != null and dkContract.id != ''">
+				AND a.contract_id = #{dkContract.id}
 			</if>
 			<if test="beginSubmitDate != null and endSubmitDate != null and beginSubmitDate != '' and endSubmitDate != ''">
 				AND a.submit_date BETWEEN #{beginSubmitDate} AND #{endSubmitDate}
