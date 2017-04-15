@@ -20,6 +20,11 @@
 				${adminPath}/api/customer/getAllContracts = anon
 				${adminPath}/api/customer/getContractSchedule = anon
 				${adminPath}/api/worker/index = anon
+				${adminPath}/api/worker/getAllContracts = anon
+				${adminPath}/api/worker/getContractSchedule = anon
+				${adminPath}/api/worker/binding = anon
+				${adminPath}/api/worker/upload = anon
+				${adminPath}/api/worker/sendCode = anon
 				${adminPath}/api/worker/banding = anon
 				${adminPath}/api/worker/upload = anon
 				${adminPath}/sys/user/infoCareStatus = anon
