@@ -26,7 +26,9 @@ import com.jeeplus.api.service.ContractService;
 import com.jeeplus.api.util.Sms;
 import com.jeeplus.common.web.BaseController;
 import com.jeeplus.modules.daikin.entity.DkWorker;
+import com.jeeplus.modules.daikin.entity.SysUser;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
+import com.jeeplus.modules.daikin.service.SysUserService;
 import com.jeeplus.modules.sys.entity.User;
 
 @Controller
@@ -35,6 +37,9 @@ public class WorkerController extends BaseController{
 	
 	@Autowired
 	private DkWorkerService workerService;
+	
+	@Autowired
+	private SysUserService sysUserService;
 	
 	@Autowired
 	private ContractService contractService;
@@ -52,7 +57,7 @@ public class WorkerController extends BaseController{
 		String workerMobile = worker.getMobile();
 		if(workerMobile!=null&&!workerMobile.equals("")){
 			request.getSession().setAttribute("sysId", worker.getSysUserId());
-			return "forward:/getAllContracts";
+			return "redirect:../../../webpage/api/worker_contract.html";
 		}else{
 			return "redirect:../../../webpage/api/worker_index.html";
 		}
@@ -76,7 +81,6 @@ public class WorkerController extends BaseController{
 	 * 绑定接口
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "binding")
 	public void binding(HttpServletRequest request , HttpServletResponse response) throws IOException{
 		response.setContentType("text/html; charset=UTF-8");
@@ -90,15 +94,20 @@ public class WorkerController extends BaseController{
 		
 		if(code.equals(par_code)){
 			DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
-			//User user = 
+			SysUser user = sysUserService.findUniqueByProperty("mobile", mobile);
+			worker.setName(user.getName());
+			worker.setMobile(mobile);
+			workerService.save(worker);
+			msg="success";
 		}else{
 			msg="验证码不正确";
 		}
 		System.out.println(openId);
 
+		Map<String, String> map = new HashMap<String,String>();
+		map.put("msg", msg);
 		Gson gson = new Gson();
-		msg="success";
-		writer.println(gson.toJson(msg));
+		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
 	}
@@ -121,9 +130,9 @@ public class WorkerController extends BaseController{
 		Integer pageSize = 3;
 		
 		Integer beginNum = (Integer.valueOf(pageNum)-1)*pageSize;
-		//List<HashMap<String, Object>> list = contractService.findListByInstall(sysId,beginNum,pageSize);
+		List<HashMap<String, Object>> list = contractService.findListByInstall(sysId,beginNum,pageSize);
 		Gson gson = new Gson();
-		//writer.println(gson.toJson(list));
+		writer.println(gson.toJson(list));
 		writer.flush();
 		writer.close();
 		

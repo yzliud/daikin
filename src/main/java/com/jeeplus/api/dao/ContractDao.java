@@ -19,4 +19,6 @@ import com.jeeplus.modules.daikin.entity.DkContract;
 public interface ContractDao extends CrudDao<DkContract> {
 
 	public List<HashMap<String, Object>> findListByMobile(String mobile,int beginNum,int pageSize);
+
+	public List<HashMap<String, Object>> findListByInstall(String sysId, Integer beginNum, Integer pageSize);
 }

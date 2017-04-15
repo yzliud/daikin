@@ -28,4 +28,9 @@ public class ContractService extends CrudService<ContractDao, DkContract> {
 		return dao.findListByMobile(mobile,beginNum,pageSize);
 	}
 
+	public List<HashMap<String, Object>> findListByInstall(String sysId, Integer beginNum, Integer pageSize) {
+		// TODO Auto-generated method stub
+		return dao.findListByInstall(sysId,beginNum,pageSize);
+	}
+
 }
