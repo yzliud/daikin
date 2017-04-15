@@ -20,17 +20,77 @@
 				
 				 if($("#contractFlag").val() == '1' && $("#parentName").val() == ''){
 					return false;
+				 }else if($("#contractFlag").val() == '0' && $("#contractNumber").val() == ''){
+				    return false;
 				 }else{
-				    return true;
+					 return true;
 				 }
 			
-			}, "请选择后面的主合同");
+			}, "请输入合同号或选择后面的主合同");
+			
+			jQuery.validator.addMethod("checkContractName", function(value, element) {
+				
+				var checkFlag = 0;
+				$.ajax({
+		 			url:'${ctx}/daikin/dkContract/checkContract',
+		 			dataType:'json',
+		 			async:false,
+		 			data:{
+		 				name:$('#name').val()
+					},
+		 			type:'post',
+		 			success:function(data){
+		 				if(data.rtnCode == '0'){
+		 					checkFlag = 1;
+		 				}
+		 			}
+			    });
+			    if(checkFlag == 1){
+			        return true;
+			    }else{
+			        return false;
+			    }
+			
+			}, "此合同名称已存在,请重新输入！");
+			
+			jQuery.validator.addMethod("checkContractNumber", function(value, element) {
+				
+				if($("#contractFlag").val() == '0' ){
+					var checkFlag = 0;
+					$.ajax({
+			 			url:'${ctx}/daikin/dkContract/checkContract',
+			 			dataType:'json',
+			 			async:false,
+			 			data:{
+			 				contractNumber:$('#contractNumber').val()
+						},
+			 			type:'post',
+			 			success:function(data){
+			 				if(data.rtnCode == '0'){
+			 					checkFlag = 1;
+			 				}
+			 			}
+				    });
+				    if(checkFlag == 1){
+				        return true;
+				    }else{
+				        return false;
+				    }
+				}else{
+					return true;
+				}
+			
+			}, "此合同号已存在,请重新输入！");
 			
 			
 			validateForm = $("#inputForm").validate({
 				rules: {
-					contractNumber:{
-						 checkSel: true
+					    name:{
+							 checkContractName: true
+			            },
+			            contractNumber:{
+							 checkSel: true,
+							 checkContractNumber: true
 			            }
 			        },
 			        
@@ -85,8 +145,9 @@
 					</td>
 					<td class="width-15 active" name="td_contract"><label class="pull-right">主合同：</label></td>
 					<td class="width-35" name="td_contract">
-						<sys:gridselect url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同ID" labelName="parent.name" 
-						 labelValue="${dkContract.parent.name}" cssClass="form-control" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
+						<dk:gridSelectFour url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同ID" labelName="parent.name" 
+						 labelValue="${dkContract.parent.name}" cssClass="form-control" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" 
+						 searchLabel="合同名称" searchKey="name" searchNameTwo="contractNumber"></dk:gridSelectFour>
 					</td>
 				</tr>
 				
@@ -100,9 +161,11 @@ selChange();
 function selChange(){
 	if($("#contractFlag").val() == '0'){
 		$("*[name='td_contract']").hide();
-		 $("#contractNumber").removeAttr("readonly"); 
+		$("#contractNumber").val('');
+		$("#contractNumber").removeAttr("readonly"); 
 	}else{
 		$("*[name='td_contract']").show();
+		$("#contractNumber").val('');
 		$("#contractNumber").attr("readonly",true);
 	}
 }

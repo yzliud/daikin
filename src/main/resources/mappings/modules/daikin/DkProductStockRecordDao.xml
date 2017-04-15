@@ -49,7 +49,7 @@
 				AND a.flag = #{flag}
 			</if>
 			<if test="beginOperateTime != null and endOperateTime != null and beginOperateTime != '' and endOperateTime != ''">
-				AND a.operate_time BETWEEN #{beginOperateTime} AND #{endOperateTime}
+				AND a.operate_time BETWEEN #{beginOperateTime} AND DATE_ADD(#{endOperateTime}, INTERVAL 1 DAY)
 			</if>
 			<if test="contractNum != null and contractNum != ''">
 				AND a.contract_num LIKE 

@@ -11,6 +11,7 @@
 <%@ attribute name="searchKey" type="java.lang.String" required="true" description="表格Td里显示的值"%>
 <%@ attribute name="title" type="java.lang.String" required="true" description="选择框标题"%>
 <%@ attribute name="rowkeys" type="java.lang.String" required="false" description="选择框标题"%>
+<%@ attribute name="feekeys" type="java.lang.String" required="false" description="选择框标题"%>
 <%@ attribute name="url" type="java.lang.String" required="true" description="数据地址"%>
 <%@ attribute name="cssClass" type="java.lang.String" required="false" description="css样式"%>
 <%@ attribute name="cssStyle" type="java.lang.String" required="false" description="css样式"%>
@@ -34,21 +35,21 @@ function searchGrid${id}(){
 	    	 }
 	    	 $("#${id}Id").val(item.split('_item_')[0]);
 	    	 $("#${id}Name").val(item.split('_item_')[1]);
-	    	 $("#dkQuotationProductList${rowkeys}_price").val(item.split('_item_')[3]);
-	    	 $("#dkQuotationProductList${rowkeys}_power").val(item.split('_item_')[4]);
+	    	 $("#${rowkeys}_price").val(item.split('_item_')[3]);
+	    	 $("#${rowkeys}_power").val(item.split('_item_')[4]);
 	    	 
-	    	 var num1 = $("#dkQuotationProductList${rowkeys}_price").val();
-				var num2 = $('#dkQuotationProductList${rowkeys}_amount').val();
-				var num3 = num1 * num2 * 10000 / 10000;
-				$('#dkQuotationProductList${rowkeys}_totalPrice').val(num3);
+	    	 var num1 = $("#${rowkeys}_price").val();
+			 var num2 = $('#${rowkeys}_amount').val();
+			 var num3 = num1 * num2 * 10000 / 10000;
+			 $('#${rowkeys}_totalPrice').val(num3);
 				
 	    	 var sum=0;
-				$("input[id$='_totalPrice']").each(function(){
-					if($(this).val()!=""){
-						sum = parseFloat(sum) + parseFloat($(this).val());
-					}
-				})
-				$("#totalFee").val(sum);
+			 $("input[id$='_totalPrice']").each(function(){
+				if($(this).val()!=""){
+					sum = parseFloat(sum) + parseFloat($(this).val());
+				}
+			 })
+			 $("#${feekeys}").val(sum);
 			 top.layer.close(index);//关闭对话框。
 		  },
 		  cancel: function(index){ 

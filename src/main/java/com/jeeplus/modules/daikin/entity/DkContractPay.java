@@ -14,9 +14,9 @@ import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
- * 合同回款记录Entity
+ * 合同到款Entity
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-13
  */
 public class DkContractPay extends DataEntity<DkContractPay> {
 	
@@ -26,7 +26,9 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 	private Double payFee;		// 支付金额
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
 	private String reviewBy;		// 审核者
+	private String reviewName;
 	private String remark;		// 备注
+	private String isReview;
 	private Date beginPayDate;		// 开始 支付时间
 	private Date endPayDate;		// 结束 支付时间
 	
@@ -112,6 +114,22 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 
 	public void setEndPayDate(Date endPayDate) {
 		this.endPayDate = endPayDate;
+	}
+	
+	public String getIsReview() {
+		return isReview;
+	}
+
+	public void setIsReview(String isReview) {
+		this.isReview = isReview;
+	}
+
+	public String getReviewName() {
+		return reviewName;
+	}
+
+	public void setReviewName(String reviewName) {
+		this.reviewName = reviewName;
 	}
 		
 }

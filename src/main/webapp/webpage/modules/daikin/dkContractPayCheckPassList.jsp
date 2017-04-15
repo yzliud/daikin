@@ -23,7 +23,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="ibox">
 	<div class="ibox-title">
-		<h5>合同到款列表 </h5>
+		<h5>审核通过到款记录 </h5>
 		<div class="ibox-tools">
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
@@ -43,9 +43,10 @@
 	<!--查询条件-->
 	<div class="row">
 	<div class="col-sm-12">
-	<form:form id="searchForm" modelAttribute="dkContractPay" action="${ctx}/daikin/dkContractPay/" method="post" class="form-inline">
+	<form:form id="searchForm" modelAttribute="dkContractPay" action="${ctx}/daikin/dkContractPay/checkPass" method="post" class="form-inline">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<form:hidden path="reviewStatus" value="9"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 		<div class="form-group">
 			<span>合同：</span>
@@ -56,11 +57,6 @@
 					value="<fmt:formatDate value="${dkContractPay.beginPayDate}" pattern="yyyy-MM-dd"/>"/> - 
 				<input id="endPayDate" name="endPayDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
 					value="<fmt:formatDate value="${dkContractPay.endPayDate}" pattern="yyyy-MM-dd"/>"/>
-			<span>审核状态：</span>
-				<form:select path="reviewStatus"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('review_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
 		 </div>	
 	</form:form>
 	<br/>
@@ -71,12 +67,6 @@
 	<div class="row">
 	<div class="col-sm-12">
 		<div class="pull-left">
-			<shiro:hasPermission name="daikin:dkContractPay:add">
-				<table:addRow url="${ctx}/daikin/dkContractPay/form" title="合同到款"></table:addRow><!-- 增加按钮 -->
-			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkContractPay:import">
-				<table:importExcel url="${ctx}/daikin/dkContractPay/import"></table:importExcel><!-- 导入按钮 -->
-			</shiro:hasPermission>
 			<shiro:hasPermission name="daikin:dkContractPay:export">
 	       		<table:exportExcel url="${ctx}/daikin/dkContractPay/export"></table:exportExcel><!-- 导出按钮 -->
 	       	</shiro:hasPermission>
@@ -113,7 +103,7 @@
 					${dkContractPay.dkContract.name}
 				</a></td>
 				<td>
-					<fmt:formatDate value="${dkContractPay.payDate}" pattern="yyyy-MM-dd"/>
+					<fmt:formatDate value="${dkContractPay.payDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
 					${dkContractPay.payFee}
@@ -131,22 +121,9 @@
 					<fmt:formatDate value="${dkContractPay.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					<shiro:hasPermission name="daikin:dkContractPay:view">
-						<a href="#" onclick="openDialogView('查看合同到款', '${ctx}/daikin/dkContractPay/detail?id=${dkContractPay.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
-					</shiro:hasPermission>
-					<c:if test="${dkContractPay.reviewStatus == '0' || dkContractPay.reviewStatus == '1' }">
-					<shiro:hasPermission name="daikin:dkContractPay:edit">
-    					<a href="#" onclick="openDialog('修改合同到款', '${ctx}/daikin/dkContractPay/form?id=${dkContractPay.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
-    				</shiro:hasPermission>
-    				<shiro:hasPermission name="daikin:dkContractPay:del">
-    					<c:if test="${dkContractPay.isReview != '1' }">
-							<a href="${ctx}/daikin/dkContractPay/delete?id=${dkContractPay.id}" onclick="return confirmx('确认要删除该合同到款吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
-						</c:if>
-					</shiro:hasPermission>
-					</c:if>
-					<c:if test="${ dkContractPay.isReview == 1}">
-						<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContractPay.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
-					</c:if>
+					<a href="#" onclick="openDialogView('查看合同到款', '${ctx}/daikin/dkContractPay/detail?id=${dkContractPay.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
+					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContractPay.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
+
 				</td>
 			</tr>
 		</c:forEach>

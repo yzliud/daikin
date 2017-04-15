@@ -14,11 +14,14 @@ import com.jeeplus.common.service.CrudService;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
+import com.jeeplus.modules.daikin.dao.DkAuditRecordDao;
 import com.jeeplus.modules.daikin.dao.DkContractDao;
+import com.jeeplus.modules.daikin.entity.DkAuditRecord;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.entity.DkContractProduct;
 import com.jeeplus.modules.daikin.dao.DkContractProductDao;
+import com.jeeplus.modules.sys.utils.UserUtils;
 
 /**
  * 合同Service
@@ -31,6 +34,9 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 
 	@Autowired
 	private DkContractProductDao dkContractProductDao;
+	
+	@Autowired
+	private DkAuditRecordDao dkAuditRecordDao;
 	
 	public DkContract get(String id) {
 		DkContract dkContract = super.get(id);
@@ -98,4 +104,29 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 		dkContractProductDao.add(dkContract);
 	}
 	
+	public DkContract getSingle(DkContract dc) {
+		DkContract dkContract = dao.getSingle(dc);
+		return dkContract;
+	}
+	
+	@Transactional(readOnly = false)
+	public void reviewContract(DkContract dc) {
+		dc.preUpdate();
+		if( dc.getReviewStatus().equals(Consts.ReviewStatus_2) || dc.getReviewStatus().equals(Consts.ReviewStatus_9)){
+			DkAuditRecord dkAuditRecord = new DkAuditRecord();
+			dkAuditRecord.setRecordId(dc.getId());
+			dkAuditRecord.setRecordType(Consts.RecordType_1);
+			dkAuditRecord.setReviewStatus(dc.getReviewStatus());
+			dkAuditRecord.setRemark(dc.getRemark());
+			dkAuditRecord.setTuser(UserUtils.getUser());
+			dkAuditRecord.preInsert();
+			dkAuditRecordDao.insert(dkAuditRecord);
+		}
+		dao.reviewContract(dc);
+	}
+	
+	@Transactional(readOnly = false)
+	public void assignInstall(DkContract dc) {
+		dao.assignInstall(dc);
+	}
 }

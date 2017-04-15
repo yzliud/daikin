@@ -171,9 +171,6 @@ public class DkProductController extends BaseController {
 					if(dkProduct == null || dkProduct.getPrice() == null || ("").equals(dkProduct.getPrice()) || !StringUtils.isNumeric(dkProduct.getPrice()+"")){
 						rowMsg = rowMsg + " 价格";
 					}
-					if(!rowMsg.equals("")){
-						rtnMsg = rtnMsg + "第"+size+"行"+rowMsg+" 数据有误";
-					}
 					if(rowMsg.equals("") ){
 						DkProduct dp = dkProductService.getByName(dkProduct);
 						if(dp == null){
@@ -181,9 +178,13 @@ public class DkProductController extends BaseController {
 							successNum++;
 						}else{
 							failureNum++;
+							rowMsg = rowMsg + " 名称重复";
 						}
 					}else{
 						failureNum++;
+					}
+					if(!rowMsg.equals("")){
+						rtnMsg = rtnMsg + "第"+size+"行"+rowMsg+" 数据有误";
 					}
 				}catch(ConstraintViolationException ex){
 					failureNum++;

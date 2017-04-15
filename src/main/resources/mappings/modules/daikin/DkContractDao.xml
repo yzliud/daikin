@@ -209,7 +209,7 @@
 			address = #{address},
 			member_id = #{dkMember.id},
 			contract_fee = #{contractFee},
-			total_fee = #{totalFee},
+			total_fee = #{contractFee},
 			arrive_fee = #{arriveFee},
 			connection_ratio = #{connectionRatio},
 			install_by = #{installUser.id},
@@ -280,6 +280,7 @@
 				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
 			</if>
 			and a.review_status = #{reviewStatus}
+			and not exists(select 1 from dk_contract dc where dc.quotation_id = a.id)
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -366,4 +367,48 @@
 			FROM dk_quotation 
 			WHERE id = #{dkQuotation.id}
 	</insert>
+	
+	<select id="getSingle" resultType="DkContract" >
+		SELECT 
+			*
+		FROM dk_contract a
+		WHERE 1 = 1
+		<if test="name != null and name != ''">
+			AND a.name = #{name}
+		</if>
+		<if test="contractNumber != null and contractNumber != ''">
+			AND a.contract_number = #{contractNumber} 
+		</if>
+		<if test="id != null and id != ''">
+			AND a.id != #{id}
+		</if>
+		<if test="contractFlag != null and contractFlag != ''">
+			AND a.contract_flag = #{contractFlag}
+		</if>
+	</select>
+	
+	<update id="reviewContract">
+		UPDATE dk_contract SET 
+			review_status = #{reviewStatus},
+			<if test="reviewStatus == '2'.toString() or reviewStatus == '9'.toString() ">
+			is_review = #{isReview},
+			review_by = #{updateBy.id},
+			review_time = #{updateDate},
+			</if>
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateContractPay">
+		UPDATE dk_contract SET 
+			arrive_fee = arrive_fee + #{arriveFee}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="assignInstall">
+		UPDATE dk_contract SET 
+			install_by = #{installUser.id}
+		WHERE id = #{id}
+	</update>
 </mapper>

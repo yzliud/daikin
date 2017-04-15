@@ -23,7 +23,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="ibox">
 	<div class="ibox-title">
-		<h5>合同到款列表 </h5>
+		<h5>待审核到款 记录</h5>
 		<div class="ibox-tools">
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
@@ -43,9 +43,10 @@
 	<!--查询条件-->
 	<div class="row">
 	<div class="col-sm-12">
-	<form:form id="searchForm" modelAttribute="dkContractPay" action="${ctx}/daikin/dkContractPay/" method="post" class="form-inline">
+	<form:form id="searchForm" modelAttribute="dkContractPay" action="${ctx}/daikin/dkContractPay/uncheck" method="post" class="form-inline">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<form:hidden path="reviewStatus" value="1"/>
 		<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 		<div class="form-group">
 			<span>合同：</span>
@@ -56,11 +57,6 @@
 					value="<fmt:formatDate value="${dkContractPay.beginPayDate}" pattern="yyyy-MM-dd"/>"/> - 
 				<input id="endPayDate" name="endPayDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
 					value="<fmt:formatDate value="${dkContractPay.endPayDate}" pattern="yyyy-MM-dd"/>"/>
-			<span>审核状态：</span>
-				<form:select path="reviewStatus"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('review_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
 		 </div>	
 	</form:form>
 	<br/>
@@ -71,15 +67,7 @@
 	<div class="row">
 	<div class="col-sm-12">
 		<div class="pull-left">
-			<shiro:hasPermission name="daikin:dkContractPay:add">
-				<table:addRow url="${ctx}/daikin/dkContractPay/form" title="合同到款"></table:addRow><!-- 增加按钮 -->
-			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkContractPay:import">
-				<table:importExcel url="${ctx}/daikin/dkContractPay/import"></table:importExcel><!-- 导入按钮 -->
-			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkContractPay:export">
-	       		<table:exportExcel url="${ctx}/daikin/dkContractPay/export"></table:exportExcel><!-- 导出按钮 -->
-	       	</shiro:hasPermission>
+	       <table:exportExcel url="${ctx}/daikin/dkContractPay/export"></table:exportExcel><!-- 导出按钮 -->
 	       <button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="sortOrRefresh()" title="刷新"><i class="glyphicon glyphicon-repeat"></i> 刷新</button>
 		
 			</div>
@@ -94,7 +82,6 @@
 	<table id="contentTable" class="table table-striped table-bordered table-hover table-condensed dataTables-example dataTable">
 		<thead>
 			<tr>
-				<th> <input type="checkbox" class="i-checks"></th>
 				<th  class="sort-column dkContract.id">合同</th>
 				<th  class="sort-column payDate">支付时间</th>
 				<th  class="sort-column payFee">支付金额</th>
@@ -108,10 +95,9 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="dkContractPay">
 			<tr>
-				<td> <input type="checkbox" id="${dkContractPay.id}" class="i-checks"></td>
-				<td><a  href="#" onclick="openDialogView('查看合同到款', '${ctx}/daikin/dkContractPay/form?id=${dkContractPay.id}','800px', '500px')">
+				<td>
 					${dkContractPay.dkContract.name}
-				</a></td>
+				</td>
 				<td>
 					<fmt:formatDate value="${dkContractPay.payDate}" pattern="yyyy-MM-dd"/>
 				</td>
@@ -131,19 +117,9 @@
 					<fmt:formatDate value="${dkContractPay.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					<shiro:hasPermission name="daikin:dkContractPay:view">
-						<a href="#" onclick="openDialogView('查看合同到款', '${ctx}/daikin/dkContractPay/detail?id=${dkContractPay.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
-					</shiro:hasPermission>
-					<c:if test="${dkContractPay.reviewStatus == '0' || dkContractPay.reviewStatus == '1' }">
-					<shiro:hasPermission name="daikin:dkContractPay:edit">
-    					<a href="#" onclick="openDialog('修改合同到款', '${ctx}/daikin/dkContractPay/form?id=${dkContractPay.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
-    				</shiro:hasPermission>
-    				<shiro:hasPermission name="daikin:dkContractPay:del">
-    					<c:if test="${dkContractPay.isReview != '1' }">
-							<a href="${ctx}/daikin/dkContractPay/delete?id=${dkContractPay.id}" onclick="return confirmx('确认要删除该合同到款吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
-						</c:if>
-					</shiro:hasPermission>
-					</c:if>
+					<c:if test="${dkContractPay.reviewStatus == '1' }">
+						<a href="#" onclick="openDialog_check('审核合同到款', '${ctx}/daikin/dkContractPay/detail?id=${dkContractPay.id}&checkType=1','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核</a>
+    				</c:if>
 					<c:if test="${ dkContractPay.isReview == 1}">
 						<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContractPay.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
 					</c:if>
@@ -160,5 +136,75 @@
 	</div>
 	</div>
 </div>
+<script type="text/javascript">
+	
+	//打开对话框(添加修改)
+	function openDialog_check(title,url,width,height,target){
+		
+		if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){//如果是移动端，就使用自适应大小弹窗
+			width='auto';
+			height='auto';
+		}else{//如果是PC端，根据用户设置的width和height显示。
+		
+		}
+		
+		top.layer.open({
+		    type: 2,  
+		    area: [width, height],
+		    title: title,
+	        maxmin: true, //开启最大化最小化按钮
+		    content: url ,
+		    btn: ['通过', '驳回', '关闭'],
+		    btn1: function(index, layero){
+		    	 
+		    	 var body = top.layer.getChildFrame('body', index);
+		         var iframeWin = layero.find('iframe')[0]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+		         body.find('#reviewStatus').val("9");
+		         var inputForm = body.find('#inputForm');
+		         var top_iframe;
+		         if(target){
+		        	 top_iframe = target;//如果指定了iframe，则在改frame中跳转
+		         }else{
+		        	 top_iframe = top.getActiveTab().attr("name");//获取当前active的tab的iframe 
+		         }
+		         inputForm.attr("target",top_iframe);//表单提交成功后，从服务器返回的url在当前tab中展示
+		        if(iframeWin.contentWindow.doSubmit() ){
+		        	  setTimeout(function(){top.layer.close(index)}, 100);//延时0.1秒，对应360 7.1版本bug
+		        	  return true;
+		        }else{
+		        	 return false;
+		         }
+				
+			  },
+			  btn2: function(index, layero){
+			    	 
+			    	 var body = top.layer.getChildFrame('body', index);
+			         var iframeWin = layero.find('iframe')[0]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+			         body.find('#reviewStatus').val("2");
+			         var inputForm = body.find('#inputForm');
+			         var top_iframe;
+			         if(target){
+			        	 top_iframe = target;//如果指定了iframe，则在改frame中跳转
+			         }else{
+			        	 top_iframe = top.getActiveTab().attr("name");//获取当前active的tab的iframe 
+			         }
+			         inputForm.attr("target",top_iframe);//表单提交成功后，从服务器返回的url在当前tab中展示
+			        if(iframeWin.contentWindow.doSubmit() ){
+			        	  setTimeout(function(){top.layer.close(index)}, 100);//延时0.1秒，对应360 7.1版本bug
+			        	  return true;
+			        }else{
+			        	 return false;
+			         }
+					
+				  },
+			  cancel: function(index, layero){ 
+		    	   
+		       },
+		       
+		}); 	
+		
+	}
+	
+</script>
 </body>
 </html>

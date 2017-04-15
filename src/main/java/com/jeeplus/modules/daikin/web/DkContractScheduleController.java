@@ -39,7 +39,7 @@ import com.jeeplus.modules.daikin.service.DkContractScheduleService;
 /**
  * 安装进度Controller
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-11
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkContractSchedule")
@@ -197,9 +197,9 @@ public class DkContractScheduleController extends BaseController {
 	/**
 	 * 选择合同ID
 	 */
-	@RequestMapping(value = "selectdkContract")
-	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<DkContract> page = dkContractScheduleService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
+	@RequestMapping(value = "selectcontractId")
+	public String selectcontractId(DkContract contractId, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DkContract> page = dkContractScheduleService.findPageBycontractId(new Page<DkContract>(request, response),  contractId);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
 			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");
@@ -215,7 +215,7 @@ public class DkContractScheduleController extends BaseController {
 		model.addAttribute("url", url);
 		model.addAttribute("searchLabel", searchLabel);
 		model.addAttribute("searchKey", searchKey);
-		model.addAttribute("obj", dkContract);
+		model.addAttribute("obj", contractId);
 		model.addAttribute("page", page);
 		return "modules/sys/gridselect";
 	}

@@ -10,13 +10,13 @@ import com.jeeplus.common.persistence.annotation.MyBatisDao;
 import com.jeeplus.modules.daikin.entity.DkContractPay;
 
 /**
- * 合同回款记录DAO接口
+ * 合同到款DAO接口
  * @author LD
- * @version 2017-03-31
+ * @version 2017-04-13
  */
 @MyBatisDao
 public interface DkContractPayDao extends CrudDao<DkContractPay> {
 
 	public List<DkContract> findListBydkContract(DkContract dkContract);
-	
+	public void reviewContractPay(DkContractPay dkContractPay);
 }

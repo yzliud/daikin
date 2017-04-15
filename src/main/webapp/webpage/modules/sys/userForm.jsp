@@ -14,11 +14,20 @@
 	
 		  return false;
 		}
+		
+		// 手机号码验证
+		jQuery.validator.addMethod("isMobile", function(value, element) {
+		    var length = value.length;
+		    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+		    return this.optional(element) || (length == 11 && mobile.test(value));
+		}, "请正确填写您的手机号码");
+		
 		$(document).ready(function() {
 			$("#no").focus();
 			validateForm = $("#inputForm").validate({
 				rules: {
-					loginName: {remote: "${ctx}/sys/user/checkLoginName?oldLoginName=" + encodeURIComponent('${user.loginName}')}//设置了远程验证，在初始化时必须预先调用一次。
+					loginName: {remote: "${ctx}/sys/user/checkLoginName?oldLoginName=" + encodeURIComponent('${user.loginName}')},//设置了远程验证，在初始化时必须预先调用一次
+					mobile:{isMobile:true, minlength : 11,}
 				},
 				messages: {
 					loginName: {remote: "用户登录名已存在"},
@@ -96,8 +105,8 @@
 		      </tr>
 		      
 		      <tr>
-		         <td class="active"><label class="pull-right">手机:</label></td>
-		         <td><form:input path="mobile" htmlEscape="false" maxlength="100" class="form-control"/></td>
+		         <td class="active"><label class="pull-right"><font color="red">*</font>手机:</label></td>
+		         <td><form:input path="mobile" htmlEscape="false" maxlength="100" class="form-control required"/></td>
 		         <td class="active"><label class="pull-right">是否允许登录:</label></td>
 		         <td><form:select path="loginFlag"  class="form-control">
 					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>

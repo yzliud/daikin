@@ -49,19 +49,7 @@
 			});
 		}
 		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
+			$(obj).parent().parent().remove();
 		}
 	</script>
 </head>
@@ -202,7 +190,7 @@
 						<dk:gridProduct url="${ctx}/daikin/dkCommon/selectdkProduct" 
                             id="dkContractProductList{{idx}}_productId" name="dkContractProductList[{{idx}}].productId"  value="{{row.productId}}"  title="选择商品" labelName="dkProduct.name" 
 						    labelValue="{{row.name}}" cssClass="form-control required" fieldLabels="名称|型号|单价|功率"
-                          fieldKeys="name|model|price|power" searchLabel="商品名称" searchKey="name" rowkeys="{{idx}}"></dk:gridProduct>
+                          fieldKeys="name|model|price|power" searchLabel="商品名称" searchKey="name" rowkeys="dkContractProductList{{idx}}" feekeys="contractFee"></dk:gridProduct>
 					</td>	
 					
 					<td>
@@ -274,11 +262,12 @@
 							sum = parseFloat(sum) + parseFloat($(this).val());
 						}
 					})
-					$("#totalFee").val(sum);
+					$("#contractFee").val(sum);
 					delRow(str, strvalue);
 				}
 				
 				function priceChange(idstr){
+					
 					var num1 = $('#'+idstr+'_price').val();
 					var num2 = $('#'+idstr+'_amount').val();
 					var num3 = num1 * num2 * 10000 / 10000;
@@ -291,7 +280,7 @@
 							sum = parseFloat(sum) + parseFloat($(this).val());
 						}
 					})
-					$("#totalFee").val(sum);
+					$("#contractFee").val(sum);
 				}
 			</script>
 			</div>
