@@ -32,7 +32,7 @@
 	<div style="text-align: center;">
 		<button placeholder="请输入您的手机号"
 			style="margin-top: 30px; width: 70%; height: 40px; font-size: 1em; border-radius: 5px; border: 1px solid #ccc; background-color: white;"
-			onclick="enter()">进入</button>
+			onclick="binding()">绑定</button>
 	</div>
 </body>
 <script src="js/mui.min.js"></script>
@@ -72,8 +72,18 @@
 	function getCode() {
 		var result = isPhoneNum();
 		if (result) {
-			countdown = 30;
+			countdown = 60;
 			settime();
+			 $.ajax({
+	             type: "post",
+	             url: "../../a/api/worker/sendCode",
+	             data: {
+	            	 "mobile":$("#mobile").val() 
+	            	 },
+	             dataType: "json",
+	             success: function(data){
+	             	}
+	         });
 		}
 	}
 	//弹窗模板
@@ -82,9 +92,21 @@
 		mui.confirm('现在进入!', '', btnArray, function(e) {
 		})
 	}
-	function enter() {
+	function binding() {
 		if(isPhoneNum){
-			window.location.href = "file5.html"
+			 $.ajax({
+	             type: "post",
+	             url: "../../a/api/worker/binding",
+	             data: {
+	            	 "mobile":$("#mobile").val(),
+	            	 "code":$("#code").val()
+	            	 },
+	             dataType: "json",
+	             success: function(data){
+	            	 alert(data.msg);
+	            	 window.location.href = "worker_contract.html";
+	             	}
+	         });
 		}	
 	}
 </script>
