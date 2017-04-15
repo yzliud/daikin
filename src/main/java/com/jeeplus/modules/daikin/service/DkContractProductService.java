@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.service.CrudService;
@@ -17,7 +18,7 @@ import com.jeeplus.modules.daikin.dao.DkContractProductDao;
 /**
  * 合同商品Service
  * @author LD
- * @version 2017-04-14
+ * @version 2017-04-16
  */
 @Service
 @Transactional(readOnly = true)
@@ -45,6 +46,11 @@ public class DkContractProductService extends CrudService<DkContractProductDao, 
 		super.delete(dkContractProduct);
 	}
 	
+	public Page<DkContract> findPageBydkContract(Page<DkContract> page, DkContract dkContract) {
+		dkContract.setPage(page);
+		page.setList(dao.findListBydkContract(dkContract));
+		return page;
+	}
 	public Page<DkProduct> findPageBydkProduct(Page<DkProduct> page, DkProduct dkProduct) {
 		dkProduct.setPage(page);
 		page.setList(dao.findListBydkProduct(dkProduct));

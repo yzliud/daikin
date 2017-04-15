@@ -105,7 +105,7 @@
 	                                      <c:choose> 
 											  <c:when test="${dkContract.productType == '0' }">   
 											      <td>${item.power }</td>
-			                                      <td>${item.floor }</td>
+			                                      <td>${fns:getDictLabel(item.floor,'floor','')}</td>
 			                                      <td>${item.position }</td>
 			                                      <td>${item.demandArea }</td>
 											  </c:when> 
