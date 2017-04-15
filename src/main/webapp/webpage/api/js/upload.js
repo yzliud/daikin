@@ -18,8 +18,8 @@ function fileToUpload1() {
 	           "uuid": uuid 
 	    },  
 		success: function (data, status){//服务器成功响应处理函数
-			document.getElementById("upImage1").src=data.url+"?rand=" + Math.random();
-			document.getElementById("imgUrl1").value=data.url;
+			document.getElementById("upImage1").src="../../upload/"+data.imgname+"?rand=" + Math.random();
+			document.getElementById("imgUrl1").value="../../upload/"+data.imgname;
 		},
 		error: function (data, status, e)//服务器响应失败处理函数
 		{

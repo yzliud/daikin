@@ -39,25 +39,25 @@ public class WorkerController extends BaseController{
 		MultipartFile file2 = multipartRequest.getFile("img2");
 		MultipartFile file3 = multipartRequest.getFile("img3");
 		MultipartFile file4 = multipartRequest.getFile("img4");
-		String url = "";
+		String nwename = "";
 		if(file1!=null){
-			url = saveImg(file1,uuid,uploadPath,"1");
+			nwename = saveImg(file1,uuid,uploadPath,"1");
 		}
 		
 		if(file2!=null){
-			url = saveImg(file1,uuid,uploadPath,"2");
+			nwename = saveImg(file1,uuid,uploadPath,"2");
 		}
 		
 		if(file3!=null){
-			url = saveImg(file1,uuid,uploadPath,"3");
+			nwename = saveImg(file1,uuid,uploadPath,"3");
 		}
 		
 		if(file4!=null){
-			url = saveImg(file1,uuid,uploadPath,"4");
+			nwename = saveImg(file1,uuid,uploadPath,"4");
 		}
 		Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("url", url);
+		map.put("imgname", nwename);
 		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
@@ -74,7 +74,7 @@ public class WorkerController extends BaseController{
 		}
 		File uploadFile=new File(uploadPath+"/"+newname);
 		file.transferTo(uploadFile);//上传
-		return uploadFile.getAbsolutePath();
+		return newname;
 	}
 
 	/**
