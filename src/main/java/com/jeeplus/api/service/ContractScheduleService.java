@@ -9,10 +9,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeeplus.api.dao.ContractDao;
 import com.jeeplus.api.dao.ContractScheduleDao;
 import com.jeeplus.common.service.CrudService;
-import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkContractSchedule;
 
 /**

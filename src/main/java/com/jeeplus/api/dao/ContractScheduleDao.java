@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.jeeplus.common.persistence.CrudDao;
 import com.jeeplus.common.persistence.annotation.MyBatisDao;
-import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkContractSchedule;
 
 /**

@@ -60,7 +60,7 @@ function pulldownRefresh() {
 		setTimeout(function() {
 			$.ajax({
 				type: "post",
-				url: "../../a/api/customer/getContractSchedule",
+				url: "../../a/api/worker/getContractSchedule",
 				data: {
 					"pageNum": count ,// 传过去的页码
 					"contractId" : getQueryString("contractId")
