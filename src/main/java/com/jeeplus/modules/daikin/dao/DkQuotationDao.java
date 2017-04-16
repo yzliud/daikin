@@ -18,7 +18,7 @@ import com.jeeplus.modules.daikin.entity.DkQuotation;
 public interface DkQuotationDao extends CrudDao<DkQuotation> {
 
 	public List<DkMember> findListBydkMember(DkMember dkMember);
-	
 	public void updateReviewStatus(DkQuotation dkQuotation);
+	public DkQuotation getSingle(DkQuotation dkQuotation);
 	
 }

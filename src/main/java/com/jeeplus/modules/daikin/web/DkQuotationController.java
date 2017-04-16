@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.daikin.web;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jeeplus.modules.Consts;
+import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
@@ -220,7 +222,7 @@ public class DkQuotationController extends BaseController {
 	
 	
 	/**
-	 * 选择会员ID
+	 * 选择会员
 	 */
 	@RequestMapping(value = "selectdkMember")
 	public String selectdkMember(DkMember dkMember, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -245,6 +247,12 @@ public class DkQuotationController extends BaseController {
 		return "modules/daikin/gridMember";
 	}
 	
+	/**
+	 * 提交审核
+	 * @param dkQuotation
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "updateReviewStatus")
 	public String updateReviewStatus(DkQuotation dkQuotation, RedirectAttributes redirectAttributes) {
 		dkQuotationService.updateReviewStatus(dkQuotation);
@@ -253,7 +261,7 @@ public class DkQuotationController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑报价单表单页面
+	 * 查看报价单详细
 	 */
 	@RequiresPermissions(value={"daikin:dkQuotation:view","daikin:dkQuotation:add","daikin:dkQuotation:edit"},logical=Logical.OR)
 	@RequestMapping(value = "detail")
@@ -264,7 +272,7 @@ public class DkQuotationController extends BaseController {
 	}
 	
 	/**
-	 * 查看，增加，编辑报价单表单页面
+	 * 审核报价单
 	 */
 	@RequestMapping(value = "checkQuotation")
 	public String checkQuotation(DkQuotation dkQuotation, RedirectAttributes redirectAttributes) {
@@ -276,6 +284,30 @@ public class DkQuotationController extends BaseController {
 		dkQuotation.setIsReview(Consts.IsReview_1);
 		dkQuotationService.updateReviewStatus(dkQuotation);
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkQuotation/uncheck";
+	}
+	
+	/**
+	 * 判断名称是否重复
+	 */
+	@RequestMapping(value = {"getSingle"})
+	public String getSingle(DkQuotation dkQuotation, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
+		DkQuotation dq = dkQuotationService.getSingle(dkQuotation);
+    	String result = "";
+		
+		if(dq == null){
+			result = "{\"rtnCode\":0}";
+		}else{
+			result = "{\"rtnCode\":500}";
+		}
+		
+		response.reset();
+		response.setContentType("text/plain; charset=UTF-8");
+		response.setCharacterEncoding("utf-8");
+		response.getOutputStream().write(result.getBytes("utf-8"));
+		response.getOutputStream().flush();
+
+		return null;
+		
 	}
 
 }

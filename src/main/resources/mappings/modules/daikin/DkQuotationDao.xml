@@ -218,4 +218,17 @@
 			</otherwise>
 		</choose>
 	</select>
+	
+	<select id="getSingle" resultType="DkContract" >
+		SELECT 
+			*
+		FROM dk_quotation a
+		WHERE 1 = 1
+		<if test="name != null and name != ''">
+			AND a.name = #{name}
+		</if>
+		<if test="id != null and id != ''">
+			AND a.id != #{id}
+		</if>
+	</select>
 </mapper>

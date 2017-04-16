@@ -257,6 +257,9 @@
 				<if test="dbName == 'mssql'">#{name}+'%'</if>
 				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
 			</if>
+			<if test="contractFlag != null and contractFlag != ''">
+				AND a.contract_flag = #{contractFlag}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

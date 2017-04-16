@@ -343,7 +343,7 @@ public class DkContractController extends BaseController {
 	}
 	
 	/**
-	 * 合同列表页面
+	 * 判断是否重复
 	 */
 	@RequestMapping(value = {"checkContract"})
 	public String checkContract(DkContract dkContract, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
@@ -401,7 +401,7 @@ public class DkContractController extends BaseController {
 		model.addAttribute("contractScheduleList", dscList);
 		
 		int scheduleCent = 0;
-		if(dscList != null && dscList.get(0) != null){
+		if(dscList != null && dscList.size()>0 && dscList.get(0) != null){
 			scheduleCent = dscList.get(0).getPercent();
 		}
 		model.addAttribute("scheduleCent", scheduleCent);
