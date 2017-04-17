@@ -229,6 +229,7 @@ public class WorkerController extends BaseController {
 		user.setId(sysId);
 		contractSchedule.setCreateBy(user);
 		contractSchedule.setCreateDate(new Date());
+		contractSchedule.setIsNewRecord(true);
 		dkContractScheduleService.save(contractSchedule);
 
 		Gson gson = new Gson();

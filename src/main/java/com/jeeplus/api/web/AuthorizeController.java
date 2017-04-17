@@ -96,6 +96,7 @@ public class AuthorizeController {
 					worker.setHeadImg2(headimgurl);
 					worker.setDelFlag("0");
 					worker.setCreateDate(new Date());
+					worker.setIsNewRecord(true);
 					workerService.save(worker);
 				}
 				
