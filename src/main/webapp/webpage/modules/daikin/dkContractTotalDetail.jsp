@@ -43,7 +43,6 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="m-b-md">
-                                    <a href="project_detail.html#" class="btn btn-white btn-xs pull-right">返回</a>
                                     <h2>${dkContract.name }</h2>
                                 </div>
                                 <dl class="dl-horizontal">
@@ -101,7 +100,7 @@
                                     <dt>当前回款进度</dt>
                                     <dd>
                                         <div class="progress progress-striped active m-b-sm">
-                                            <div style="width: ${payCent }/%;" class="progress-bar"></div>
+                                            <div style="width: ${payCent }%;" class="progress-bar"></div>
                                         </div>
                                         <small>当前已完成项目回款总进度的 <strong>${payCent }%</strong></small>
                                     </dd>
@@ -170,7 +169,7 @@
 							                                      <c:choose> 
 																	  <c:when test="${dkContract.productType == '0' }">   
 																	      <td>${item.power }</td>
-									                                      <td>${item.floor }</td>
+									                                      <td>${fns:getDictLabel(item.floor,'floor','')}</td>
 									                                      <td>${item.position }</td>
 									                                      <td>${item.demandArea }</td>
 																	  </c:when> 
@@ -201,10 +200,19 @@
 															<th>单价</th>
 															<th>数量</th>
 															<th>总价</th>
-															<th>功率</th>
-															<th>楼层</th>
-															<th>位置</th>
-															<th>需求面积</th>
+															<c:choose> 
+															  <c:when test="${dkContract.productType == '0' }">   
+															    <th>功率</th>
+																<th>楼层</th>
+																<th>位置</th>
+																<th>需求面积</th>
+															  </c:when> 
+															  <c:otherwise>   
+															    <th>产地</th>
+																<th>品牌</th>
+																<th>单位</th>
+															  </c:otherwise> 
+															</c:choose> 
 															<th>描述</th>
 						                                </tr>
                                                     </thead>
@@ -219,10 +227,20 @@
 							                                      <td>&yen;${subitemPro.price }</td>
 							                                      <td>${subitemPro.amount }</td>
 							                                      <td>&yen;${subitemPro.totalPrice }</td>
-							                                      <td>${subitemPro.power }</td>
-							                                      <td>${subitemPro.floor }</td>
-							                                      <td>${subitemPro.position }</td>
-							                                      <td>${subitemPro.demandArea }</td>
+							                                      <c:choose> 
+																	  <c:when test="${dkContract.productType == '0' }">   
+																	      <td>${subitemPro.power }</td>
+									                                      <td>${fns:getDictLabel(subitemPro.floor,'floor','')}</td>
+									                                      <td>${subitemPro.position }</td>
+									                                      <td>${subitemPro.demandArea }</td>
+																	  </c:when> 
+																	  <c:otherwise>   
+																	      <td>${subitemPro.place }</td>
+									                                      <td>${fns:getDictLabel(subitemPro.brandId, 'brand_id', '')}</td>
+									                                      <td>${subitemPro.unit }</td>
+																	  </c:otherwise> 
+																	</c:choose> 
+																	
 							                                      <td>${subitemPro.descript }</td>  
 														      </tr>   
 														</c:forEach> 
@@ -275,12 +293,12 @@
 	                                                            <br>
 	                                                            <small class="text-muted">进度:${itemSchedule.percent }%</small>
 	                                                            <div class="photos">
-	                                                                <a target="_blank" href="http://24.media.tumblr.com/20a9c501846f50c1271210639987000f/tumblr_n4vje69pJm1st5lhmo1_1280.jpg">
-	                                                                    <img alt="image" class="feed-photo" src="img/p1.jpg">
-	                                                                </a>
-	                                                                <a target="_blank" href="http://37.media.tumblr.com/9afe602b3e624aff6681b0b51f5a062b/tumblr_n4ef69szs71st5lhmo1_1280.jpg">
-	                                                                    <img alt="image" class="feed-photo" src="img/p3.jpg">
-	                                                                </a>
+	                                                                
+	                                                                <c:if test="${itemSchedule.pic != null }">
+																	<c:forTokens items="${itemSchedule.pic}" delims="," var="itemSchedulePic">
+																	   <img src="${itemSchedulePic}" class="feed-photo">
+																	</c:forTokens>
+																	</c:if>
 	                                                            </div>
 	                                                        </div>
                                                     </div>

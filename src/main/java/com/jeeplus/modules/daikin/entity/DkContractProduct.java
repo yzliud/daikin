@@ -3,23 +3,33 @@
  */
 package com.jeeplus.modules.daikin.entity;
 
+import com.jeeplus.modules.daikin.entity.DkContract;
+import com.jeeplus.modules.daikin.entity.DkProduct;
+
 import javax.validation.constraints.NotNull;
+
+import com.jeeplus.modules.sys.entity.User;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
+
 import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
- * 合同Entity
+ * 合同商品Entity
  * @author LD
- * @version 2017-04-09
+ * @version 2017-04-16
  */
 public class DkContractProduct extends DataEntity<DkContractProduct> {
 	
 	private static final long serialVersionUID = 1L;
+	private DkContract dkContract;		// 合同ID
+	private DkProduct dkProduct;		// 商品ID
 	private String contractId;		// 合同ID 父类
 	private String productId;		// 商品ID
 	private String name;		// 名称
+	private User suser;		// 名称
 	private String model;		// 规格
 	private Double price;		// 单价
 	private Integer amount;		// 数量
@@ -47,32 +57,34 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.contractId = dkContract.getId();
 	}
 
-	public String getContractId() {
-		return contractId;
+	@ExcelField(title="合同", align=2, sort=1,fieldType=DkQuotation.class,value="dkQuotation.name")
+	public DkContract getDkContract() {
+		return dkContract;
 	}
 
-	public void setContractId(String contractId) {
-		this.contractId = contractId;
+	public void setDkContract(DkContract dkContract) {
+		this.dkContract = dkContract;
 	}
 	
-	public String getProductId() {
-		return productId;
+	@NotNull(message="商品ID不能为空")
+	public DkProduct getDkProduct() {
+		return dkProduct;
 	}
 
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
-	@ExcelField(title="名称", align=2, sort=3)
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setDkProduct(DkProduct dkProduct) {
+		this.dkProduct = dkProduct;
 	}
 	
-	@ExcelField(title="规格", align=2, sort=4)
+	@ExcelField(title="名称", align=2, sort=2)
+	public User getSuser() {
+		return suser;
+	}
+
+	public void setSuser(User suser) {
+		this.suser = suser;
+	}
+	
+	@ExcelField(title="规格", align=2, sort=3)
 	public String getModel() {
 		return model;
 	}
@@ -84,7 +96,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	@NotNull(message="单价不能为空")
 	@Min(value=1,message="单价的最小值不能小于1")
 	@Max(value=1000000,message="单价的最大值不能超过1000000")
-	@ExcelField(title="单价", align=2, sort=5)
+	@ExcelField(title="单价", align=2, sort=4)
 	public Double getPrice() {
 		return price;
 	}
@@ -96,7 +108,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	@NotNull(message="数量不能为空")
 	@Min(value=1,message="数量的最小值不能小于1")
 	@Max(value=1000,message="数量的最大值不能超过1000")
-	@ExcelField(title="数量", align=2, sort=6)
+	@ExcelField(title="数量", align=2, sort=5)
 	public Integer getAmount() {
 		return amount;
 	}
@@ -108,7 +120,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	@NotNull(message="总价不能为空")
 	@Min(value=1,message="总价的最小值不能小于1")
 	@Max(value=10000000,message="总价的最大值不能超过10000000")
-	@ExcelField(title="总价", align=2, sort=7)
+	@ExcelField(title="总价", align=2, sort=6)
 	public Double getTotalPrice() {
 		return totalPrice;
 	}
@@ -117,7 +129,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.totalPrice = totalPrice;
 	}
 	
-	@ExcelField(title="分类", dictType="classify_id", align=2, sort=8)
+	@ExcelField(title="分类", dictType="classify_id", align=2, sort=7)
 	public String getClassifyId() {
 		return classifyId;
 	}
@@ -126,7 +138,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.classifyId = classifyId;
 	}
 	
-	@ExcelField(title="功率", align=2, sort=9)
+	@ExcelField(title="功率", align=2, sort=8)
 	public Double getPower() {
 		return power;
 	}
@@ -135,7 +147,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.power = power;
 	}
 	
-	@ExcelField(title="产地", align=2, sort=10)
+	@ExcelField(title="产地", align=2, sort=9)
 	public String getPlace() {
 		return place;
 	}
@@ -144,7 +156,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.place = place;
 	}
 	
-	@ExcelField(title="品牌", dictType="brand_id", align=2, sort=11)
+	@ExcelField(title="品牌", dictType="brand_id", align=2, sort=10)
 	public String getBrandId() {
 		return brandId;
 	}
@@ -153,7 +165,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.brandId = brandId;
 	}
 	
-	@ExcelField(title="单位", align=2, sort=12)
+	@ExcelField(title="单位", align=2, sort=11)
 	public String getUnit() {
 		return unit;
 	}
@@ -162,7 +174,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.unit = unit;
 	}
 	
-	@ExcelField(title="商品类型(0-空调 1-地暖)", dictType="product_type", align=2, sort=13)
+	@ExcelField(title="商品类型(空调 地暖)", dictType="product_type", align=2, sort=12)
 	public String getProductType() {
 		return productType;
 	}
@@ -171,7 +183,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.productType = productType;
 	}
 	
-	@ExcelField(title="位置", align=2, sort=14)
+	@ExcelField(title="位置", align=2, sort=13)
 	public String getPosition() {
 		return position;
 	}
@@ -180,7 +192,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.position = position;
 	}
 	
-	@ExcelField(title="楼层", dictType="floor", align=2, sort=15)
+	@ExcelField(title="楼层", dictType="floor", align=2, sort=14)
 	public String getFloor() {
 		return floor;
 	}
@@ -189,7 +201,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.floor = floor;
 	}
 	
-	@ExcelField(title="需求面积", align=2, sort=16)
+	@ExcelField(title="需求面积", align=2, sort=15)
 	public Double getDemandArea() {
 		return demandArea;
 	}
@@ -198,7 +210,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.demandArea = demandArea;
 	}
 	
-	@ExcelField(title="描述", align=2, sort=17)
+	@ExcelField(title="描述", align=2, sort=16)
 	public String getDescript() {
 		return descript;
 	}
@@ -207,4 +219,27 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.descript = descript;
 	}
 	
+	public String getContractId() {
+		return contractId;
+	}
+
+	public void setContractId(String contractId) {
+		this.contractId = contractId;
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

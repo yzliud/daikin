@@ -17,7 +17,7 @@ import com.jeeplus.modules.daikin.dao.DkContractScheduleDao;
 /**
  * 安装进度Service
  * @author LD
- * @version 2017-04-11
+ * @version 2017-04-16
  */
 @Service
 @Transactional(readOnly = true)
@@ -45,9 +45,9 @@ public class DkContractScheduleService extends CrudService<DkContractScheduleDao
 		super.delete(dkContractSchedule);
 	}
 	
-	public Page<DkContract> findPageBycontractId(Page<DkContract> page, DkContract contractId) {
-		contractId.setPage(page);
-		page.setList(dao.findListBycontractId(contractId));
+	public Page<DkContract> findPageBydkContract(Page<DkContract> page, DkContract dkContract) {
+		dkContract.setPage(page);
+		page.setList(dao.findListBydkContract(dkContract));
 		return page;
 	}
 	

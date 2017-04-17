@@ -261,11 +261,11 @@ public class DkContractPayController extends BaseController {
 			addMessage(redirectAttributes, "审核提交成功");
 			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/?repage";
 		}else if(dkContractPay.getReviewStatus().equals(Consts.ReviewStatus_2)){
-			addMessage(redirectAttributes, "该报价单已驳回");
+			addMessage(redirectAttributes, "该到款已驳回");
 			isReview = Consts.IsReview_1;
 			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/uncheck";
 		}else{
-			addMessage(redirectAttributes, "该报价单审核通过");
+			addMessage(redirectAttributes, "该到款审核通过");
 			isReview = Consts.IsReview_1;
 			url = "redirect:"+Global.getAdminPath()+"/daikin/dkContractPay/uncheck";
 		}

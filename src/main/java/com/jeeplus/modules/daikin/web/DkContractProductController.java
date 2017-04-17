@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
@@ -39,7 +40,7 @@ import com.jeeplus.modules.daikin.service.DkContractProductService;
 /**
  * 合同商品Controller
  * @author LD
- * @version 2017-04-14
+ * @version 2017-04-16
  */
 @Controller
 @RequestMapping(value = "${adminPath}/daikin/dkContractProduct")
@@ -194,6 +195,31 @@ public class DkContractProductController extends BaseController {
     }
 	
 	
+	/**
+	 * 选择合同ID
+	 */
+	@RequestMapping(value = "selectdkContract")
+	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DkContract> page = dkContractProductService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
+		try {
+			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
+			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");
+			searchLabel = URLDecoder.decode(searchLabel, "UTF-8");
+			searchKey = URLDecoder.decode(searchKey, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("labelNames", fieldLabels.split("\\|"));
+		model.addAttribute("labelValues", fieldKeys.split("\\|"));
+		model.addAttribute("fieldLabels", fieldLabels);
+		model.addAttribute("fieldKeys", fieldKeys);
+		model.addAttribute("url", url);
+		model.addAttribute("searchLabel", searchLabel);
+		model.addAttribute("searchKey", searchKey);
+		model.addAttribute("obj", dkContract);
+		model.addAttribute("page", page);
+		return "modules/sys/gridselect";
+	}
 	/**
 	 * 选择商品ID
 	 */

@@ -4,21 +4,22 @@
 package com.jeeplus.modules.daikin.entity;
 
 import com.jeeplus.modules.daikin.entity.DkContract;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
  * 安装进度Entity
  * @author LD
- * @version 2017-04-11
+ * @version 2017-04-16
  */
 public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 	
 	private static final long serialVersionUID = 1L;
-	private DkContract dkContract;		// 合同
+	private DkContract dkContract;		// 合同ID
 	private String descript;		// 进度描述
 	private Date submitDate;		// 提交日期
 	private String pic;		// 上传图片
@@ -34,7 +35,7 @@ public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 		super(id);
 	}
 
-	@ExcelField(title="合同ID", align=2, sort=1)
+	@ExcelField(title="合同", align=2, sort=1,fieldType=DkContract.class,value="dkContract.name")
 	public DkContract getDkContract() {
 		return dkContract;
 	}

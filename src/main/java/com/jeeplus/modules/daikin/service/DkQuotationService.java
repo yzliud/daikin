@@ -117,4 +117,8 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 		dao.updateReviewStatus(dkQuotation);
 	}
 	
+	public DkQuotation getSingle(DkQuotation dkQuotation) {
+		return dao.getSingle(dkQuotation);
+	}
+	
 }
