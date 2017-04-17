@@ -116,7 +116,9 @@ public class WorkerController extends BaseController {
 			if (user != null) {
 				worker.setName(user.getName());
 				worker.setSysUserId(user.getId());
-				// worker.setUpdateBy(user); 这里有问题！
+				User user2 = new User();
+				user2.setId(user.getId());
+				worker.setUpdateBy(user2);
 			}
 			workerService.save(worker);
 			msg = "success";
@@ -225,7 +227,7 @@ public class WorkerController extends BaseController {
 		User user = new User();
 		String sysId = (String) request.getSession().getAttribute("sysId");
 		user.setId(sysId);
-		//contractSchedule.setCreateBy(user);这里有问题！
+		contractSchedule.setCreateBy(user);
 		contractSchedule.setCreateDate(new Date());
 		dkContractScheduleService.save(contractSchedule);
 
