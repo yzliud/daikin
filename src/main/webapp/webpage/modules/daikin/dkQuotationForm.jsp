@@ -15,7 +15,38 @@
 		  return false;
 		}
 		$(document).ready(function() {
+			jQuery.validator.addMethod("checkQuotationName", function(value, element) {
+				
+				var checkFlag = 0;
+				$.ajax({
+		 			url:'${ctx}/daikin/dkQuotation/getSingle',
+		 			dataType:'json',
+		 			async:false,
+		 			data:{
+		 				name:$('#name').val(),
+		 				id:$('#id').val()
+					},
+		 			type:'post',
+		 			success:function(data){
+		 				if(data.rtnCode == '0'){
+		 					checkFlag = 1;
+		 				}
+		 			}
+			    });
+			    if(checkFlag == 1){
+			        return true;
+			    }else{
+			        return false;
+			    }
+			
+			}, "此报价单名称已存在,请重新输入！");
+			
 			validateForm = $("#inputForm").validate({
+				rules: {
+				    name:{
+				    	checkQuotationName: true
+		            }
+		        },
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
 					form.submit();

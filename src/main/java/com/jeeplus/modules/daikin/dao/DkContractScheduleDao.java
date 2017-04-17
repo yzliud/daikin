@@ -12,11 +12,11 @@ import com.jeeplus.modules.daikin.entity.DkContractSchedule;
 /**
  * 安装进度DAO接口
  * @author LD
- * @version 2017-04-11
+ * @version 2017-04-16
  */
 @MyBatisDao
 public interface DkContractScheduleDao extends CrudDao<DkContractSchedule> {
 
-	public List<DkContract> findListBycontractId(DkContract contractId);
+	public List<DkContract> findListBydkContract(DkContract dkContract);
 	
 }

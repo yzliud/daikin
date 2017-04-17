@@ -45,25 +45,31 @@
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">合同ID：</label></td>
+					<td class="width-15 active"><label class="pull-right">合同：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/daikin/dkContractSchedule/selectcontractId" id="contractId" name="contractId"  value="${dkContractSchedule.contractId.id}"  title="选择合同ID" labelName="contractId.name" 
-						 labelValue="${dkContractSchedule.contractId.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客|合同金额" fieldKeys="name|contractNumber|memberName|totalFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
+						<sys:gridselect url="${ctx}/daikin/dkContractSchedule/selectdkContract" id="dkContract" name="dkContract.id"  value="${dkContractSchedule.dkContract.id}"  title="选择合同" labelName="dkContract.name" 
+						 labelValue="${dkContractSchedule.dkContract.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客|合同金额" fieldKeys="name|contractNumber|memberName|totalFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 					</td>
-					<td class="width-15 active"><label class="pull-right">进度描述：</label></td>
-					<td class="width-35">
-						<form:input path="descript" htmlEscape="false"    class="form-control "/>
-					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right">提交日期：</label></td>
 					<td class="width-35">
 						<input id="submitDate" name="submitDate" type="text" maxlength="20" class="laydate-icon form-control layer-date "
 							value="<fmt:formatDate value="${dkContractSchedule.submitDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
 					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">进度描述：</label></td>
+					<td class="width-35" colspan=3>
+						<form:textarea path="descript" htmlEscape="false"    class="form-control "/>
+					</td>
+				</tr>
+				<tr>	
 					<td class="width-15 active"><label class="pull-right">上传图片：</label></td>
-					<td class="width-35">
-						<form:input path="pic" htmlEscape="false"    class="form-control "/>
+					<td class="width-35" colspan=3>
+						<c:if test="${dkContractSchedule.pic != null }">
+						<c:forTokens items="${dkContractSchedule.pic}" delims="," var="name">
+						   <img src="${name}" height="200" width="200">
+						</c:forTokens>
+						</c:if>
 					</td>
 				</tr>
 				<tr>

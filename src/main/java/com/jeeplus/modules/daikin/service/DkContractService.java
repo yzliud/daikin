@@ -100,6 +100,12 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 	public void add(DkContract dkContract) {
 		dkContract.setReviewStatus(Consts.ReviewStatus_0);
 		dkContract.preInsert();
+		if(!(dkContract.getParent() != null && dkContract.getParent().getId()!=null)){
+			DkContract dc = new DkContract();
+			dc.setId(dkContract.getId());
+			dkContract.setParent(dc);
+		}
+		
 		dao.add(dkContract);
 		dkContractProductDao.add(dkContract);
 	}
