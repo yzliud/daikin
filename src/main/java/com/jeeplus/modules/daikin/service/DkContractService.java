@@ -127,6 +127,12 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 			dkAuditRecord.setTuser(UserUtils.getUser());
 			dkAuditRecord.preInsert();
 			dkAuditRecordDao.insert(dkAuditRecord);
+			
+			if(dc.getReviewStatus().equals(Consts.ReviewStatus_9)){
+				DkContract d = new DkContract();
+				d.setParent(dc.getParent());
+				dao.updateContractTotalFee(d);
+			}
 		}
 		dao.reviewContract(dc);
 	}

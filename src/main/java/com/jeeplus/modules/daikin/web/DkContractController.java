@@ -494,5 +494,14 @@ public class DkContractController extends BaseController {
 		dkContractService.assignInstall(dkContract);
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/checkPass";
 	}
+	
+	/**
+	 * 跳转安装设置
+	 */
+	@RequestMapping(value = "forwardWorkOrder")
+	public String forwardWorkOrder(DkContract dkContract, Model model) {
+		model.addAttribute("dkContract", dkContract);
+		return "modules/daikin/printWorkOrder";
+	}
 
 }

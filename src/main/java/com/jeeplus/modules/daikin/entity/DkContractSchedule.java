@@ -63,7 +63,6 @@ public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 		this.submitDate = submitDate;
 	}
 	
-	@ExcelField(title="上传图片", align=2, sort=4)
 	public String getPic() {
 		return pic;
 	}
@@ -72,7 +71,7 @@ public class DkContractSchedule extends DataEntity<DkContractSchedule> {
 		this.pic = pic;
 	}
 	
-	@ExcelField(title="进度百分比", align=2, sort=5)
+	@ExcelField(title="进度百分比", align=2, sort=4)
 	public Integer getPercent() {
 		return percent;
 	}

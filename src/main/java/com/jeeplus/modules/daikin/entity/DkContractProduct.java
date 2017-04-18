@@ -57,7 +57,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.contractId = dkContract.getId();
 	}
 
-	@ExcelField(title="合同", align=2, sort=1,fieldType=DkQuotation.class,value="dkQuotation.name")
+	@ExcelField(title="合同", align=2, sort=1,fieldType=DkContract.class,value="dkContract.name")
 	public DkContract getDkContract() {
 		return dkContract;
 	}
@@ -75,7 +75,6 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.dkProduct = dkProduct;
 	}
 	
-	@ExcelField(title="名称", align=2, sort=2)
 	public User getSuser() {
 		return suser;
 	}
@@ -235,6 +234,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.productId = productId;
 	}
 
+	@ExcelField(title="商品名称", align=2, sort=2)
 	public String getName() {
 		return name;
 	}

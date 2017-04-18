@@ -28,15 +28,6 @@
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
 			</a>
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="fa fa-wrench"></i>
-			</a>
-			<ul class="dropdown-menu dropdown-user">
-				<li><a href="#">选项1</a>
-				</li>
-				<li><a href="#">选项2</a>
-				</li>
-			</ul>
 			<a class="close-link">
 				<i class="fa fa-times"></i>
 			</a>
@@ -125,7 +116,11 @@
 					<fmt:formatDate value="${dkContractSchedule.submitDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${dkContractSchedule.pic}
+					<c:if test="${dkContractSchedule.pic != null }">
+						<c:forTokens items="${dkContractSchedule.pic}" delims="," var="name">
+						   <img src="${name}" height="30" width="30">
+						</c:forTokens>
+						</c:if>
 				</td>
 				<td>
 					${dkContractSchedule.percent}

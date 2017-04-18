@@ -414,4 +414,11 @@
 			install_by = #{installUser.id}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updateContractTotalFee">
+		UPDATE dk_contract 
+			SET     total_fee = 
+(SELECT a.totalFee FROM (SELECT IFNULL(SUM(contract_fee ),0) totalFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) a ) 
+		WHERE id  = #{parent.id}
+	</update>
 </mapper>

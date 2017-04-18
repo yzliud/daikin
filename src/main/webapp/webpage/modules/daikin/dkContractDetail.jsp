@@ -136,6 +136,7 @@
                         </tbody>
                     </table>
                     <form:hidden path="id"/>
+                    <form:hidden path="parent.id"/>
                     <form:hidden path="reviewStatus"/>
                     <c:if test="${checkType == '1' }">
 					<div><strong>审核意见:</strong><input name="remark" id="remark"   value=""  class="form-control required"/>

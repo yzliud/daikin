@@ -17,10 +17,10 @@
 		<!-- jeeplus -->
 		<link href="${ctxStatic}/common/jeeplus.css" type="text/css" rel="stylesheet" />
 		<script src="${ctxStatic}/common/jeeplus.js" type="text/javascript"></script>
-		<!--  <link rel="shortcut icon" href="${ctxStatic}/images/favicon.ico"> -->
+		<link rel="shortcut icon" href="${ctxStatic}/images/favicon.ico">
 		<!-- text fonts -->
 		<link rel="stylesheet" href="${ctxStatic }/common/login/ace-fonts.css" />
-		<!--  <title>大金管理系统</title>-->
+		<title>舜举后台管理系统</title>
 		<!-- ace styles -->
 		<link rel="stylesheet" href="${ctxStatic }/common/login/ace.css" />
 

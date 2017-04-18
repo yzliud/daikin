@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
@@ -199,6 +200,7 @@ public class DkContractScheduleController extends BaseController {
 	 */
 	@RequestMapping(value = "selectdkContract")
 	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContract.setContractFlag(Consts.ContractFlag_0);
 		Page<DkContract> page = dkContractScheduleService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");

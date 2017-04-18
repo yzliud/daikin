@@ -19,9 +19,6 @@
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
 			</a>
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="fa fa-wrench"></i>
-			</a>
 			<a class="close-link">
 				<i class="fa fa-times"></i>
 			</a>
@@ -138,6 +135,9 @@
 						<a href="#" onclick="openDialog('详细信息', '${ctx}/daikin/dkContract/totalDetail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 合同详细</a>
 						<a href="#" onclick="openDialog('设置安装人员', '${ctx}/daikin/dkContract/forwardAssign?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 安装人员</a>
 					</c:if>
+					<c:if test="${dkContract.installUser!= null }">
+						<a href="#" onclick="openDialog_print('打印派工单', '${ctx}/daikin/dkContract/forwardWorkOrder?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-print"></i> 打印派工单</a>
+					</c:if>
 					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
 				</td>
 			</tr>
@@ -152,5 +152,40 @@
 	</div>
 	</div>
 </div>
+<script type="text/javascript">
+	
+	//打开对话框(添加修改)
+	function openDialog_print(title,url,width,height,target){
+		
+		if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){//如果是移动端，就使用自适应大小弹窗
+			width='auto';
+			height='auto';
+		}else{//如果是PC端，根据用户设置的width和height显示。
+		
+		}
+		
+		top.layer.open({
+		    type: 2,  
+		    area: [width, height],
+		    title: title,
+	        maxmin: true, //开启最大化最小化按钮
+		    content: url ,
+		    btn: ['打印', '关闭'],
+		    btn1: function(index, layero){
+		    	 
+		    	 var body = top.layer.getChildFrame('body', index);
+		         var iframeWin = layero.find('iframe')[0]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+		         iframeWin.contentWindow.printDiv();
+				
+			  },
+			  cancel: function(index, layero){ 
+		    	   
+		       },
+		       
+		}); 	
+		
+	}
+	
+</script>
 </body>
 </html>

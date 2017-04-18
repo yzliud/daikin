@@ -8,13 +8,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-	<!--  <title>大金管理系统</title>-->
+	<title>舜举后台管理系统</title>
 	
 	<%@ include file="/webpage/include/head.jsp"%>
 	<script src="${ctxStatic}/common/inspinia.js?v=3.2.0"></script>
 	<script src="${ctxStatic}/common/contabs.js"></script> 
-    <meta name="keywords" content="JeePlus快速开发平台">
-    <meta name="description" content="JeePlus，采用spring mvc+mybatis+shiro+bootstrap，集成代码生成器的快速开发平台">
+    <meta name="keywords" content="舜举后台管理系统">
+    <meta name="description" content="舜举后台管理系统">
     <script type="text/javascript">
 	$(document).ready(function() {
 		 if('${fns:getDictLabel(cookie.theme.value,'theme','默认主题')}' == '天蓝主题'){
@@ -99,43 +99,7 @@
                         </form>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">${noReadCount}</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-messages">
-                            	 <c:forEach items="${mailPage.list}" var="mailBox">
-	                                <li class="m-t-xs">
-	                                    <div class="dropdown-messages-box">
-	                                   
-	                                        <a  href="#" onclick='top.openTab("${ctx}/iim/contact/index?name=${mailBox.sender.name }","通讯录", false)' class="pull-left">
-	                                            <img alt="image" class="img-circle" src="${mailBox.sender.photo }">
-	                                        </a>
-	                                        <div class="media-body">
-	                                            <small class="pull-right">${fns:getTime(mailBox.sendtime)}前</small>
-	                                            <strong>${mailBox.sender.name }</strong>
-	                                            <a class="J_menuItem" href="${ctx}/iim/mailBox/detail?id=${mailBox.id}"> ${fns:abbr(mailBox.mail.title,50)}</a>
-	                                            <br>
-	                                            <a class="J_menuItem" href="${ctx}/iim/mailBox/detail?id=${mailBox.id}">
-	                                             ${mailBox.mail.overview}
-	                                            </a>
-	                                            <br>
-	                                            <small class="text-muted">
-	                                            <fmt:formatDate value="${mailBox.sendtime}" pattern="yyyy-MM-dd HH:mm:ss"/></small>
-	                                        </div>
-	                                    </div>
-	                                </li>
-	                                <li class="divider"></li>
-                                </c:forEach>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a class="J_menuItem" href="${ctx}/iim/mailBox/list?orderBy=sendtime desc">
-                                            <i class="fa fa-envelope"></i> <strong> 查看所有邮件</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
+                       
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <i class="fa fa-bell"></i> <span class="label label-primary">${count }</span>
@@ -168,67 +132,7 @@
                         </li>
                       
                       <!-- 国际化功能预留接口 -->
-                        <li class="dropdown">
-							<a id="lang-switch" class="lang-selector dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="true">
-								<span class="lang-selected">
-										<img  class="lang-flag" src="${ctxStatic}/common/img/china.png" alt="中国">
-										<span class="lang-id">中国</span>
-										<span class="lang-name">中文</span>
-									</span>
-							</a>
-
-							<!--Language selector menu-->
-							<ul class="head-list dropdown-menu with-arrow">
-								<li>
-									<!--English-->
-									<a class="lang-select">
-										<img class="lang-flag" src="${ctxStatic}/common/img/china.png" alt="中国">
-										<span class="lang-id">中国</span>
-										<span class="lang-name">中文</span>
-									</a>
-								</li>
-								<li>
-									<!--English-->
-									<a class="lang-select">
-										<img class="lang-flag" src="${ctxStatic}/common/img/united-kingdom.png" alt="English">
-										<span class="lang-id">EN</span>
-										<span class="lang-name">English</span>
-									</a>
-								</li>
-								<li>
-									<!--France-->
-									<a class="lang-select">
-										<img class="lang-flag" src="${ctxStatic}/common/img/france.png" alt="France">
-										<span class="lang-id">FR</span>
-										<span class="lang-name">Français</span>
-									</a>
-								</li>
-								<li>
-									<!--Germany-->
-									<a class="lang-select">
-										<img class="lang-flag" src="${ctxStatic}/common/img/germany.png" alt="Germany">
-										<span class="lang-id">DE</span>
-										<span class="lang-name">Deutsch</span>
-									</a>
-								</li>
-								<li>
-									<!--Italy-->
-									<a class="lang-select">
-										<img class="lang-flag" src="${ctxStatic}/common/img/italy.png" alt="Italy">
-										<span class="lang-id">IT</span>
-										<span class="lang-name">Italiano</span>
-									</a>
-								</li>
-								<li>
-									<!--Spain-->
-									<a class="lang-select">
-										<img class="lang-flag" src="${ctxStatic}/common/img/spain.png" alt="Spain">
-										<span class="lang-id">ES</span>
-										<span class="lang-name">Español</span>
-									</a>
-								</li>
-							</ul>
-						</li>
+                       
                     </ul>
                 </nav>
             </div>
