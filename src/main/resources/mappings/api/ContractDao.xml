@@ -18,7 +18,8 @@
 		SELECT 
 			<include refid="dkContractColumns"/>
 		FROM dk_contract a
-		WHERE a.mobile = #{0}
+		WHERE a.review_status = '9'
+		and a.mobile = #{0}
 		order by a.update_date desc
 		limit #{1},#{2}
 	</select>
@@ -27,7 +28,8 @@
 		SELECT 
 			<include refid="dkContractColumns"/>
 		FROM dk_contract a
-		WHERE a.install_by = #{0}
+		WHERE a.contract_flag = '0'
+		and a.install_by = #{0}
 		order by a.update_date desc
 		limit #{1},#{2}
 	</select>

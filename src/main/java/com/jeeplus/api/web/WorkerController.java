@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jeeplus.api.service.ContractScheduleService;
 import com.jeeplus.api.service.ContractService;
 import com.jeeplus.api.util.Sms;
@@ -200,26 +202,17 @@ public class WorkerController extends BaseController {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
 
-		String id = request.getParameter("uid");
 		String contractId = request.getParameter("contractId");
 		String descript = request.getParameter("descript");
 		String percent = request.getParameter("percent");
-		String submit_data = request.getParameter("choiceTime");
-		String pic = request.getParameter("imgUrl1")
-				.concat(",")
-				.concat(request.getParameter("imgUrl2"))
-				.concat(",")
-				.concat(request.getParameter("imgUrl3"))
-				.concat(",")
-				.concat(request.getParameter("imgUrl4"));
+		String pic = request.getParameter("imgUrl");
 		
 		DkContractSchedule contractSchedule = new DkContractSchedule();
-		contractSchedule.setId(id);
-		contractSchedule.setDkContract(dkContractService.get( contractId));
+		String uuid = UUID.randomUUID().toString().replace("-", "");
+		contractSchedule.setId(uuid);
+		contractSchedule.setDkContract(dkContractService.get(contractId));
 		contractSchedule.setDescript(descript);
-		if(submit_data!=null&&!"".equals(submit_data)){
-			contractSchedule.setSubmitDate(DateUtils.parseDate(submit_data));
-		}
+		contractSchedule.setSubmitDate(new Date());
 		contractSchedule.setPic(pic);
 		if(percent!=null&&!"".equals(percent)){
 			contractSchedule.setPercent(Integer.valueOf(percent));
@@ -248,7 +241,7 @@ public class WorkerController extends BaseController {
 	public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
-
+		String myFileName = "";
 		//创建一个通用的多部分解析器  
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());  
         //判断 request 是否有文件上传,即多部分请求  
@@ -262,14 +255,16 @@ public class WorkerController extends BaseController {
                 //取得上传文件  
                 if(file != null){  
                     //取得当前上传文件的文件名称  
-                    String myFileName = file.getOriginalFilename();  
+                    myFileName = file.getOriginalFilename();  
                     //如果名称不为“”,说明该文件存在，否则说明该文件不存在  
                     if(myFileName.trim() !=""){  
                         System.out.println(myFileName);  
+                        
                         //重命名上传后的文件名  
-                        String fileName = "demoUpload" + file.getOriginalFilename();  
+                        String fileName = file.getOriginalFilename();  
                         //定义上传路径  
-                        String path = "e:/" + fileName;  
+                        String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
+                        String path = uploadPath + "/" + fileName;  
                         File localFile = new File(path);  
                         file.transferTo(localFile);  
                     }  
@@ -279,8 +274,10 @@ public class WorkerController extends BaseController {
                 System.out.println(finaltime - pre);  
             }
         }
-		
-		writer.println("1");
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("imgname", myFileName);
+		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
 
@@ -317,18 +314,18 @@ public class WorkerController extends BaseController {
 		writer.close();*/
 	}
 
-	private String saveImg(MultipartFile file, String uuid, String uploadPath, String code)
-			throws IllegalStateException, IOException {
-		String oldName = file.getOriginalFilename();
-		String[] strs = oldName.split("\\.");
-		String newname = uuid + "-" + code + "." + strs[strs.length - 1];
-		System.out.println(uploadPath);
-		File uploadDir = new File(uploadPath);
-		if (!uploadDir.exists()) {
-			uploadDir.mkdirs();
-		}
-		File uploadFile = new File(uploadPath + "/" + newname);
-		file.transferTo(uploadFile);// 上传
-		return newname;
-	}
+//	private String saveImg(MultipartFile file, String uuid, String uploadPath, String code)
+//			throws IllegalStateException, IOException {
+//		String oldName = file.getOriginalFilename();
+//		String[] strs = oldName.split("\\.");
+//		String newname = uuid + "-" + code + "." + strs[strs.length - 1];
+//		System.out.println(uploadPath);
+//		File uploadDir = new File(uploadPath);
+//		if (!uploadDir.exists()) {
+//			uploadDir.mkdirs();
+//		}
+//		File uploadFile = new File(uploadPath + "/" + newname);
+//		file.transferTo(uploadFile);// 上传
+//		return newname;
+//	}
 }
