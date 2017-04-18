@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- saved from url=(0016)https://weui.io/ -->
+<html lang="zh-cmn-Hans"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>WeUI</title>
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/example.css">
+</head>
+<body>
+<form id="mainFrom" action="" enctype="multipart/form-data">
+<div>
+    <div class="page__bd">
+
+      <div class="weui-cells__title">表单</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">进度</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请输入进度描述" rows="3"></textarea>
+                    <div class="weui-textarea-counter"><span>0</span>/200</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-gallery" id="gallery">
+            <span class="weui-gallery__img" id="galleryImg"></span>
+            <div class="weui-gallery__opr">
+                <a href="javascript:" class="weui-gallery__del">
+                    <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                </a>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">图片上传</p>
+                            <div class="weui-uploader__info">0/2</div>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files" id="uploaderFiles">
+                               
+                            </ul>
+                            <div class="weui-uploader__input-box">
+                                <input id="uploaderInput" name="uploaderInput" class="weui-uploader__input js_file" onchange="alert(111111);" type="file"  accept="image/*"  multiple/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:upload();" id="showTooltips">确定</a>
+        </div>
+    </div>
+</div>
+</form>
+<script src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/jweixin-1.0.0.js"></script>
+    <script src="js/weui.min.js"></script>
+    <script src="js/example.js"></script>
+    <script type="text/javascript" src="js/stats" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script type="text/javascript" src="js/ajaxfileupload.js" ></script>
+    <script type="text/javascript" src="js/lay/layui.js" ></script>
+    
+    
+<script type="text/javascript">
+        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+            $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
+            $uploaderInput = $("#uploaderInput"),
+            $uploaderFiles = $("#uploaderFiles")
+            ;
+        $('#uploaderInput').on("change", function(e){
+            var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+            for (var i = 0, len = files.length; i < len; ++i) {
+                var file = files[i];
+
+                if (url) {
+                    src = url.createObjectURL(file);
+                } else {
+                    src = e.target.result;
+                }
+
+                $uploaderFiles.append($(tmpl.replace('#url#', src)));
+            }
+
+            
+            $.ajaxFileUpload
+            (
+                {
+                    url: '../../a/api/worker/upload', //用于文件上传的服务器端请求地址
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: 'uploaderInput', //文件上传域的ID
+                    dataType: 'content', //返回值类型 一般设置为json
+                    success: function (data, status)  //服务器成功响应处理函数
+                    {
+                    	
+                    }
+                }
+            )
+            
+        });
+        $uploaderFiles.on("click", "li", function(){
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        $gallery.on("click", function(){
+            $gallery.fadeOut(100);
+        });
+        
+        $(".weui-gallery__del").click(function(){
+        	alert(1);
+           
+       });
+    
+    function upload(){
+    	$("#uploadFrom").submit();
+    }
+   
+</script>
+
+    
+</body></html>
