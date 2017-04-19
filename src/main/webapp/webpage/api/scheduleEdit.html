@@ -98,7 +98,7 @@
                 	}else{
                 		document.getElementById("imgUrl").value= url + ",../../upload/"+data.imgname;
                 	}
-                	$('#uploaderFiles').append("<li class='weui-uploader__file' style='background-image:url(../../upload/"+data.imgname+")'></li>");
+                	$('#uploaderFiles').append("<li id = '"+data.imgname.replace(".","_")+"' class='weui-uploader__file' style='background-image:url(../../upload/"+data.imgname+")'></li>");
                 }
             });
 	}
@@ -149,7 +149,18 @@
         
         $(".weui-gallery__del").click(function(){
         	alert(1);
-           
+        	 
+            var imgback = $(this).parent("div").prev().attr("style");
+            alert(imgback);
+            var imgback_array= imgback.split(')');
+            alert(imgback_array);
+            imgback_array= imgback_array[0].split('/');
+            var imgName = imgback_array[imgback_array.length-1];
+            $("#"+imgName.replace(".","_")).remove();
+
+            var img_str = $("#imgUrl").val();
+            var img_str_new = img_str.replace("../../upload/"+imgName,"");
+            $("#imgUrl").val(img_str_new);
        });
     
     function upload(){
