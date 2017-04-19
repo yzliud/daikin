@@ -73,6 +73,7 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 			dkQuotationProduct.setPlace(dkProduct.getPlace());
 			dkQuotationProduct.setUnit(dkProduct.getUnit());
 			dkQuotationProduct.setProductType(dkProduct.getProductType());
+			dkQuotationProduct.setCostPrice(dkProduct.getCostPrice());
 			
 			if (DkQuotationProduct.DEL_FLAG_NORMAL.equals(dkQuotationProduct.getDelFlag())){
 				if (StringUtils.isBlank(dkQuotationProduct.getId())){

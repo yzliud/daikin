@@ -32,6 +32,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	private User suser;		// 名称
 	private String model;		// 规格
 	private Double price;		// 单价
+	private Double costPrice;		// 成本价
 	private Integer amount;		// 数量
 	private Double totalPrice;		// 总价
 	private String classifyId;		// 分类
@@ -241,5 +242,13 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Double getCostPrice() {
+		return costPrice;
+	}
+
+	public void setCostPrice(Double costPrice) {
+		this.costPrice = costPrice;
 	}
 }

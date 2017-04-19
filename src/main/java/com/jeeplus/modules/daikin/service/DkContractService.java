@@ -16,7 +16,9 @@ import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.dao.DkAuditRecordDao;
 import com.jeeplus.modules.daikin.dao.DkContractDao;
+import com.jeeplus.modules.daikin.dao.DkProductDao;
 import com.jeeplus.modules.daikin.entity.DkAuditRecord;
+import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.entity.DkContractProduct;
@@ -37,6 +39,9 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 	
 	@Autowired
 	private DkAuditRecordDao dkAuditRecordDao;
+	
+	@Autowired
+	private DkProductDao dkProductDao;
 	
 	public DkContract get(String id) {
 		DkContract dkContract = super.get(id);
@@ -59,6 +64,15 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 			if (dkContractProduct.getId() == null){
 				continue;
 			}
+			DkProduct dkProduct = dkProductDao.get(dkContractProduct.getProductId());
+			dkContractProduct.setBrandId(dkProduct.getBrandId());
+			dkContractProduct.setClassifyId(dkProduct.getClassifyId());
+			dkContractProduct.setModel(dkProduct.getModel());
+			dkContractProduct.setName(dkProduct.getName());
+			dkContractProduct.setPlace(dkProduct.getPlace());
+			dkContractProduct.setUnit(dkProduct.getUnit());
+			dkContractProduct.setProductType(dkProduct.getProductType());
+			dkContractProduct.setCostPrice(dkProduct.getCostPrice());
 			if (DkContractProduct.DEL_FLAG_NORMAL.equals(dkContractProduct.getDelFlag())){
 				if (StringUtils.isBlank(dkContractProduct.getId())){
 					dkContractProduct.setContractId(dkContract.getId());

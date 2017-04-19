@@ -86,9 +86,9 @@
 				<th  class="sort-column dkContract.id">合同</th>
 				<th  class="sort-column payDate">支付时间</th>
 				<th  class="sort-column payFee">支付金额</th>
+				<th  class="sort-column remark">支付方式</th>
 				<th  class="sort-column reviewStatus">审核状态</th>
 				<th  class="sort-column reviewBy">审核者</th>
-				<th  class="sort-column remark">备注</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
@@ -107,13 +107,13 @@
 					${dkContractPay.payFee}
 				</td>
 				<td>
+					${dkContractPay.remark}
+				</td>
+				<td>
 					${fns:getDictLabel(dkContractPay.reviewStatus, 'review_status', '')}
 				</td>
 				<td>
 					${dkContractPay.reviewName}
-				</td>
-				<td>
-					${dkContractPay.remark}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkContractPay.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

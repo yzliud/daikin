@@ -39,6 +39,7 @@ public class DkContract extends DataEntity<DkContract> {
 	private Double connectionRatio;		// 连接率
 	private User installUser;		// 安装人员
 	private User saleUser;		// 销售人员
+	private User supervisionUser;		// 监理人员
 	private String productType;		// 商品类型
 	private String contractStatus;   //合同状态（0-未签订、1-已签订、2、安装中、3-已完工  9-已完结）
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
@@ -182,8 +183,17 @@ public class DkContract extends DataEntity<DkContract> {
 		this.installUser = installUser;
 	}
 	
+	@ExcelField(title="工程监理", fieldType=User.class, value="supervisionUser.name", align=2, sort=13)
+	public User getSupervisionUser() {
+		return supervisionUser;
+	}
+
+	public void setSupervisionUser(User supervisionUser) {
+		this.supervisionUser = supervisionUser;
+	}
+	
 	@NotNull(message="销售人员不能为空")
-	@ExcelField(title="销售人员", fieldType=User.class, value="saleUser.name", align=2, sort=13)
+	@ExcelField(title="销售人员", fieldType=User.class, value="saleUser.name", align=2, sort=14)
 	public User getSaleUser() {
 		return saleUser;
 	}
@@ -192,7 +202,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.saleUser = saleUser;
 	}
 	
-	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=14)
+	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=15)
 	public String getProductType() {
 		return productType;
 	}
@@ -201,7 +211,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.productType = productType;
 	}
 	
-	@ExcelField(title="审核状态", dictType="review_status", align=2, sort=15)
+	@ExcelField(title="审核状态", dictType="review_status", align=2, sort=16)
 	public String getReviewStatus() {
 		return reviewStatus;
 	}
@@ -210,7 +220,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.reviewStatus = reviewStatus;
 	}
 	
-	@ExcelField(title="审核者", fieldType=User.class, value="reviewUser.name", align=2, sort=16)
+	@ExcelField(title="审核者", fieldType=User.class, value="reviewUser.name", align=2, sort=17)
 	public User getReviewUser() {
 		return reviewUser;
 	}
@@ -220,7 +230,7 @@ public class DkContract extends DataEntity<DkContract> {
 	}
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@ExcelField(title="审核日期", align=2, sort=17)
+	@ExcelField(title="审核日期", align=2, sort=18)
 	public Date getReviewTime() {
 		return reviewTime;
 	}
@@ -237,7 +247,7 @@ public class DkContract extends DataEntity<DkContract> {
 		this.isReview = isReview;
 	}
 	
-	@ExcelField(title="备注", align=2, sort=18)
+	@ExcelField(title="备注", align=2, sort=19)
 	public String getRemark() {
 		return remark;
 	}

@@ -27,7 +27,7 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
 	private String reviewBy;		// 审核者
 	private String reviewName;
-	private String remark;		// 备注
+	private String remark;		// 支付方式
 	private String isReview;
 	private Date beginPayDate;		// 开始 支付时间
 	private Date endPayDate;		// 结束 支付时间
@@ -40,8 +40,8 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 		super(id);
 	}
 
-	@NotNull(message="合同ID不能为空")
-	@ExcelField(title="合同ID", align=2, sort=1)
+	@NotNull(message="合同不能为空")
+	@ExcelField(title="合同", align=2, sort=1)
 	public DkContract getDkContract() {
 		return dkContract;
 	}
@@ -73,7 +73,7 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 		this.payFee = payFee;
 	}
 	
-	@ExcelField(title="审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）", dictType="review_status", align=2, sort=4)
+	@ExcelField(title="审核状态", dictType="review_status", align=2, sort=5)
 	public String getReviewStatus() {
 		return reviewStatus;
 	}
@@ -82,7 +82,7 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 		this.reviewStatus = reviewStatus;
 	}
 	
-	@ExcelField(title="审核者", align=2, sort=5)
+	@ExcelField(title="审核者", align=2, sort=6)
 	public String getReviewBy() {
 		return reviewBy;
 	}
@@ -91,7 +91,8 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 		this.reviewBy = reviewBy;
 	}
 	
-	@ExcelField(title="备注", align=2, sort=6)
+	@NotNull(message="支付方式不能为空")
+	@ExcelField(title="支付方式", align=2, sort=4)
 	public String getRemark() {
 		return remark;
 	}

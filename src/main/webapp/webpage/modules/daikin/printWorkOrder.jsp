@@ -4,8 +4,10 @@
 <head>
 	<title>合同管理</title>
 	<meta name="decorator" content="default"/>
-	<script type="text/javascript" src="${ctxStatic}/daikin/jquery.jqprint-0.3.js"></script>
-	<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
+	<!--<script type="text/javascript" src="${ctxStatic}/daikin/jquery.jqprint-0.3.js"></script>-->
+	<!--<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>-->
+	<script type="text/javascript" src="${ctxStatic}/daikin/FileSaver.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/daikin/jquery.wordexport.js"></script>
 </head>
 <body class="hideScroll">
 <div id="printDiv">
@@ -18,22 +20,22 @@
 		   		<td class="width-100" colspan=4 align="center">售后服务派工单</td>
 		   		</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">派工单编号：</label></td>
-					<td class="width-35">
+					<td class="width-20 active"><label class="pull-right">派工单编号：</label></td>
+					<td class="width-30">
 						
 					</td>
-					<td class="width-15 active"><label class="pull-right">派工单类型：</label></td>
-					<td class="width-35">
+					<td class="width-20 active"><label class="pull-right">派工单类型：</label></td>
+					<td class="width-30">
 						安装
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">服务人员：</label></td>
-					<td class="width-35">
+					<td class="width-20 active"><label class="pull-right">服务人员：</label></td>
+					<td class="width-30">
 						${dkContract.installUser.name}
 					</td>
-					<td class="width-15 active"><label class="pull-right">派工时间：</label></td>
-					<td class="width-35">
+					<td class="width-20 active"><label class="pull-right">派工时间：</label></td>
+					<td class="width-30">
 						
 					</td>
 				</tr>
@@ -86,6 +88,9 @@
 <script language="javascript">
     function  printDiv(){
         $("#printDiv").jqprint();
+    }
+    function  wordDiv(){
+        $("#printDiv").wordExport();
     }
 </script>
 </body>

@@ -136,7 +136,7 @@
 						<a href="#" onclick="openDialog('设置安装人员', '${ctx}/daikin/dkContract/forwardAssign?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 安装人员</a>
 					</c:if>
 					<c:if test="${dkContract.installUser!= null }">
-						<a href="#" onclick="openDialog_print('打印派工单', '${ctx}/daikin/dkContract/forwardWorkOrder?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-print"></i> 打印派工单</a>
+						<a href="#" onclick="openDialog_print('派工单', '${ctx}/daikin/dkContract/forwardWorkOrder?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-print"></i> 下载派工单</a>
 					</c:if>
 					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
 				</td>
@@ -170,12 +170,12 @@
 		    title: title,
 	        maxmin: true, //开启最大化最小化按钮
 		    content: url ,
-		    btn: ['打印', '关闭'],
+		    btn: ['保存', '关闭'],
 		    btn1: function(index, layero){
 		    	 
 		    	 var body = top.layer.getChildFrame('body', index);
 		         var iframeWin = layero.find('iframe')[0]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-		         iframeWin.contentWindow.printDiv();
+		         iframeWin.contentWindow.wordDiv();
 				
 			  },
 			  cancel: function(index, layero){ 

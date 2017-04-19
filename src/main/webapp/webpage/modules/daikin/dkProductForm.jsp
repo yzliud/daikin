@@ -99,9 +99,12 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>单价：</label></td>
+					<td class="width-15 active"><label class="pull-right">品牌：</label></td>
 					<td class="width-35">
-						<form:input path="price" htmlEscape="false"   max="100000"  min="0" class="form-control required number"/>
+						<form:select path="brandId" class="form-control ">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('brand_id')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>库存：</label></td>
 					<td class="width-35">
@@ -115,6 +118,16 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>单价：</label></td>
+					<td class="width-35">
+						<form:input path="price" htmlEscape="false"   max="100000"  min="0" class="form-control required number"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>成本价：</label></td>
+					<td class="width-35">
+						<form:input path="costPrice" htmlEscape="false"   max="100000"  min="0" class="form-control required number"/>
+					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right">功率：</label></td>
 					<td class="width-35">
 						<form:input path="power" htmlEscape="false"    class="form-control "/>
@@ -125,26 +138,15 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">品牌：</label></td>
-					<td class="width-35">
-						<form:select path="brandId" class="form-control ">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('brand_id')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
-					</td>
 					<td class="width-15 active"><label class="pull-right">单位：</label></td>
 					<td class="width-35">
 						<form:input path="unit" htmlEscape="false"    class="form-control "/>
 					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right">描述：</label></td>
 					<td class="width-35">
 						<form:input path="descript" htmlEscape="false"    class="form-control "/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
-		  		</tr>
+				</tr>
 		 	</tbody>
 		</table>
 	</form:form>

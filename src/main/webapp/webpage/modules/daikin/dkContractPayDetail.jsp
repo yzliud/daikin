@@ -63,7 +63,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-15 active"><label class="pull-right">支付方式：</label></td>
 					<td class="width-35" colspan=3>
 						${dkContractPay.remark}
 					</td>

@@ -65,6 +65,11 @@
 						<sys:treeselect id="installUser" name="installUser.id" value="${dkContract.installUser.id}" labelName="installUser.name" labelValue="${dkContract.installUser.name}"
 							title="用户" url="/sys/office/treeData?type=3" cssClass="form-control required" allowClear="true" notAllowSelectParent="true"/>
 					</td>
+					<td class="width-15 active"><label class="pull-right">工程监理：</label></td>
+					<td class="width-35">
+						<sys:treeselect id="supervisionUser" name="supervisionUser.id" value="${dkContract.supervisionUser.id}" labelName="supervisionUser.name" labelValue="${dkContract.supervisionUser.name}"
+							title="用户" url="/sys/office/treeData?type=3" cssClass="form-control required" allowClear="true" notAllowSelectParent="true"/>
+					</td>
 				</tr>
 		 	</tbody>
 		</table>

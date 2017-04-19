@@ -23,6 +23,7 @@ public class DkQuotationProduct extends DataEntity<DkQuotationProduct> {
 	private String name;		// 名称
 	private String model;		// 规格
 	private Double price;		// 单价
+	private Double costPrice;		// 成本价
 	private Integer amount;		// 数量
 	private Double totalPrice;		// 总价
 	private String classifyId;		// 分类
@@ -206,6 +207,14 @@ public class DkQuotationProduct extends DataEntity<DkQuotationProduct> {
 
 	public void setDescript(String descript) {
 		this.descript = descript;
+	}
+
+	public Double getCostPrice() {
+		return costPrice;
+	}
+
+	public void setCostPrice(Double costPrice) {
+		this.costPrice = costPrice;
 	}
 	
 }

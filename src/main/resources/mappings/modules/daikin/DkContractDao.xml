@@ -19,6 +19,7 @@
 		a.connection_ratio AS "connectionRatio",
 		a.install_by AS "installUser.id",
 		a.sale_by AS "saleUser.id",
+		a.supervision_by AS "supervisionUser.id",
 		a.product_type AS "productType",
 		a.review_status AS "reviewStatus",
 		a.review_by AS "reviewUser.id",
@@ -35,7 +36,8 @@
 		dkMember.name AS "dkMember.name",
 		installUser.name AS "installUser.name",
 		saleUser.name AS "saleUser.name",
-		reviewUser.name AS "reviewUser.name"
+		reviewUser.name AS "reviewUser.name",
+		supervisionUser.name AS "supervisionUser.name"
 	</sql>
 	
 	<sql id="dkContractJoins">
@@ -45,6 +47,7 @@
 		LEFT JOIN sys_user installUser ON installUser.id = a.install_by
 		LEFT JOIN sys_user saleUser ON saleUser.id = a.sale_by
 		LEFT JOIN sys_user reviewUser ON reviewUser.id = a.review_by
+		LEFT JOIN sys_user supervisionUser ON supervisionUser.id = a.supervision_by
 	</sql>
 	
     
@@ -411,7 +414,8 @@
 	
 	<update id="assignInstall">
 		UPDATE dk_contract SET 
-			install_by = #{installUser.id}
+			install_by = #{installUser.id},
+			supervision_by = #{supervisionUser.id}
 		WHERE id = #{id}
 	</update>
 	

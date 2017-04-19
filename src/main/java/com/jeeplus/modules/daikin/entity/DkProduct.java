@@ -24,6 +24,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 	private String name;		// 名称
 	private String model;		// 规格
 	private Double price;		// 单价
+	private Double costPrice;		// 销售价
 	private int stock;		// 库存
 	private Double power;		// 功率
 	private String place;		// 产地
@@ -48,7 +49,16 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.productType = productType;
 	}
 	
-	@ExcelField(title="分类", dictType="classify_id", align=2, sort=2)
+	@ExcelField(title="品牌", dictType="brand_id", align=2, sort=2)
+	public String getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(String brandId) {
+		this.brandId = brandId;
+	}
+	
+	@ExcelField(title="分类", dictType="classify_id", align=2, sort=3)
 	public String getClassifyId() {
 		return classifyId;
 	}
@@ -58,7 +68,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 	}
 	
 	@Length(min=1, max=100, message="名称长度必须介于 1 和 100 之间")
-	@ExcelField(title="名称", align=2, sort=3)
+	@ExcelField(title="名称", align=2, sort=4)
 	public String getName() {
 		return name;
 	}
@@ -67,7 +77,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.name = name;
 	}
 	
-	@ExcelField(title="规格", align=2, sort=4)
+	@ExcelField(title="规格", align=2, sort=5)
 	public String getModel() {
 		return model;
 	}
@@ -79,7 +89,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 	@NotNull(message="单价不能为空")
 	@Min(value=0,message="单价的最小值不能小于0")
 	@Max(value=100000,message="单价的最大值不能超过100000")
-	@ExcelField(title="单价", align=2, sort=5)
+	@ExcelField(title="单价", align=2, sort=6)
 	public Double getPrice() {
 		return price;
 	}
@@ -88,10 +98,23 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.price = price;
 	}
 	
+
+	@NotNull(message="成本价不能为空")
+	@Min(value=0,message="成本价的最小值不能小于0")
+	@Max(value=100000,message="成本价的最大值不能超过100000")
+	@ExcelField(title="成本价", align=2, sort=7)
+	public Double getCostPrice() {
+		return costPrice;
+	}
+
+	public void setCostPrice(Double costPrice) {
+		this.costPrice = costPrice;
+	}
+	
 	@NotNull(message="库存不能为空")
 	@Min(value=0,message="库存的最小值不能小于0")
 	@Max(value=100000,message="库存的最大值不能超过100000")
-	@ExcelField(title="库存", align=2, sort=6)
+	@ExcelField(title="库存", align=2, sort=8)
 	public int getStock() {
 		return stock;
 	}
@@ -100,7 +123,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.stock = stock;
 	}
 	
-	@ExcelField(title="功率", align=2, sort=7)
+	@ExcelField(title="功率", align=2, sort=9)
 	public Double getPower() {
 		return power;
 	}
@@ -109,7 +132,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.power = power;
 	}
 	
-	@ExcelField(title="产地", align=2, sort=8)
+	@ExcelField(title="产地", align=2, sort=10)
 	public String getPlace() {
 		return place;
 	}
@@ -118,16 +141,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.place = place;
 	}
 	
-	@ExcelField(title="品牌", dictType="brand_id", align=2, sort=9)
-	public String getBrandId() {
-		return brandId;
-	}
-
-	public void setBrandId(String brandId) {
-		this.brandId = brandId;
-	}
-	
-	@ExcelField(title="单位", align=2, sort=10)
+	@ExcelField(title="单位", align=2, sort=11)
 	public String getUnit() {
 		return unit;
 	}
@@ -136,7 +150,7 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.unit = unit;
 	}
 	
-	@ExcelField(title="描述", align=2, sort=11)
+	@ExcelField(title="描述", align=2, sort=12)
 	public String getDescript() {
 		return descript;
 	}

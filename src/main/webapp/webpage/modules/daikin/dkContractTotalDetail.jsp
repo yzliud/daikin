@@ -136,6 +136,7 @@
                                                         <tr>
 						                                    <th>商品</th>
 						                                    <th>规格</th>
+						                                    <th>成本价</th>
 															<th>单价</th>
 															<th>数量</th>
 															<th>总价</th>
@@ -163,6 +164,7 @@
 							                                        </div>
 							                                      </td>  
 							                                      <td>${item.model }</td>
+							                                      <td>&yen;${item.costPrice }</td>
 							                                      <td>&yen;${item.price }</td>
 							                                      <td>${item.amount }</td>
 							                                      <td>&yen;${item.totalPrice }</td>
@@ -197,6 +199,7 @@
                                                         <tr>
 						                                    <th>商品</th>
 						                                    <th>规格</th>
+						                                    <th>成本价</th>
 															<th>单价</th>
 															<th>数量</th>
 															<th>总价</th>
@@ -224,6 +227,7 @@
 							                                        </div>
 							                                      </td>  
 							                                      <td>${subitemPro.model }</td>
+							                                      <td>&yen;${subitemPro.costPrice }</td>
 							                                      <td>&yen;${subitemPro.price }</td>
 							                                      <td>${subitemPro.amount }</td>
 							                                      <td>&yen;${subitemPro.totalPrice }</td>

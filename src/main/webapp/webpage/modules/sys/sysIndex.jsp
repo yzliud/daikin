@@ -163,7 +163,7 @@
                 <a href="${ctx}/logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${ctx}/home" frameborder="0" data-id="${ctx}/home" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${ctx}/daikin/index" frameborder="0" data-id="${ctx}/home" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-left">公司地址：江苏省南京市雨花南路51-6号大金空调旗舰店    服务热线：025-51800052</div>

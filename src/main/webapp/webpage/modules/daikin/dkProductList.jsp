@@ -98,14 +98,15 @@
 			<tr>
 				<th> <input type="checkbox" class="i-checks"></th>
 				<th  class="sort-column productType">商品类型</th>
+				<th  class="sort-column brandId">品牌</th>
 				<th  class="sort-column classifyId">分类</th>
 				<th  class="sort-column name">名称</th>
 				<th  class="sort-column model">规格</th>
 				<th  class="sort-column price">单价</th>
+				<th  class="sort-column costPrice">成本价</th>
 				<th  class="sort-column stock">库存</th>
 				<th  class="sort-column power">功率</th>
 				<th  class="sort-column place">产地</th>
-				<th  class="sort-column brandId">品牌</th>
 				<th  class="sort-column unit">单位</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
@@ -119,6 +120,9 @@
 					${fns:getDictLabel(dkProduct.productType, 'product_type', '')}
 				</a></td>
 				<td>
+					${fns:getDictLabel(dkProduct.brandId, 'brand_id', '')}
+				</td>
+				<td>
 					${fns:getDictLabel(dkProduct.classifyId, 'classify_id', '')}
 				</td>
 				<td>
@@ -131,6 +135,9 @@
 					${dkProduct.price}
 				</td>
 				<td>
+					${dkProduct.costPrice}
+				</td>
+				<td>
 					${dkProduct.stock}
 				</td>
 				<td>
@@ -138,9 +145,6 @@
 				</td>
 				<td>
 					${dkProduct.place}
-				</td>
-				<td>
-					${fns:getDictLabel(dkProduct.brandId, 'brand_id', '')}
 				</td>
 				<td>
 					${dkProduct.unit}
