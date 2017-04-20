@@ -25,7 +25,6 @@ import com.google.gson.GsonBuilder;
 import com.jeeplus.api.service.ContractScheduleService;
 import com.jeeplus.api.service.ContractService;
 import com.jeeplus.api.util.Sms;
-import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.web.BaseController;
 import com.jeeplus.modules.daikin.entity.DkContractSchedule;
 import com.jeeplus.modules.daikin.entity.DkWorker;
@@ -147,6 +146,7 @@ public class WorkerController extends BaseController {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
 
+		String search = request.getParameter("search");
 		String sysId = (String) request.getSession().getAttribute("sysId");
 		String pageNum = request.getParameter("pageNum");
 		if (pageNum == null || "".equals(pageNum)) {
@@ -157,7 +157,11 @@ public class WorkerController extends BaseController {
 		Integer beginNum = (Integer.valueOf(pageNum) - 1) * pageSize;
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		if (sysId != null) {
-			list = contractService.findListByInstall(sysId, beginNum, pageSize);
+			if(search!=null&&!search.equals("")){
+				list = contractService.findListByInstallSecrch(sysId, beginNum, pageSize, "%"+search+"%");
+			}else{
+				list = contractService.findListByInstall(sysId, beginNum, pageSize);
+			}	
 		}
 		Gson gson = new Gson();
 		writer.println(gson.toJson(list));
