@@ -29,7 +29,6 @@
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     <textarea name="descript" class="weui-textarea" placeholder="请输入进度描述" rows="3"></textarea>
-                    <div class="weui-textarea-counter"><span>0</span>/200</div>
                 </div>
             </div>
         </div>
@@ -48,7 +47,6 @@
                     <div class="weui-uploader">
                         <div class="weui-uploader__hd">
                             <p class="weui-uploader__title">图片上传</p>
-                            <div class="weui-uploader__info">0/2</div>
                         </div>
                         <div class="weui-uploader__bd">
                             <ul class="weui-uploader__files" id="uploaderFiles">
@@ -148,12 +146,9 @@
         });
         
         $(".weui-gallery__del").click(function(){
-        	alert(1);
         	 
             var imgback = $(this).parent("div").prev().attr("style");
-            alert(imgback);
             var imgback_array= imgback.split(')');
-            alert(imgback_array);
             imgback_array= imgback_array[0].split('/');
             var imgName = imgback_array[imgback_array.length-1];
             $("#"+imgName.replace(".","_")).remove();
@@ -170,8 +165,10 @@
 	          type:"post",
 	          async: false,
 	          success:function(data){//ajax返回的数据
-	         	alert('保存成功');
-	         	window.location.href = "worker_contract.html";
+	        	var btnArray = [ '确定' ];
+	  			mui.confirm('请输入合法手机号!', '', btnArray, function(e) {
+	  				window.location.href = "worker_contract.html";
+	  			})
 	          }
 	     });
     }

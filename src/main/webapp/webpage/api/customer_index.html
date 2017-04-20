@@ -56,7 +56,7 @@
 		      $.ajax({
 		          url:"../../a/api/customer/getAllContracts",
 		          data:{
-		        	  "moblie":document.getElementById("mobile").value
+		        	  mobile:$("#mobile").val()
 		          },
 		          type:"post",
 		          dataType: "JSON",
@@ -65,7 +65,9 @@
 		        	if(data.length>0){
 		        		window.location.href = "customer_contract.html?mobile="+document.getElementById("mobile").value;
 		  			}else{
-		  				alert("此手机号并无合同");
+		  				var btnArray = [ '确定' ];
+		  				mui.confirm('此手机号无有效合同!', '', btnArray, function(e) {
+		  				})
 		  			}	
 		          }
 		     });
