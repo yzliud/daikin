@@ -9,10 +9,18 @@
 		<title></title>
 	</head>
 <body style="background-color: #efeff4;">
+	
 	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+
 		<div class="mui-scroll" >
-			<img src="img/banner.jpg" style="width: 100%; height: 140px;">
-				<div id="space"></div>
+			<div class="weui_search_bar">
+  				<input type="hidden" id="search">
+				<input  class="search-input" id='searchShow' placeholder='请输入合同号或客户手机号' style="box-sizing:content-box"/>
+				<button  class="weui_btn weui_btn_mini weui_btn_primary" onclick="search()">
+					<i class="icon icon-4"></i>
+				</button>  
+			</div>
+			<div id="space"></div>
 		</div>
 	</div>
 
@@ -20,6 +28,15 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/mui.min.js"></script>
 <script type="text/javascript" charset="utf-8">
+
+	window.onload=function(){
+	 	document.getElementById("searchShow").value=getQueryString("search");
+	 	document.getElementById("search").value=getQueryString("search");
+	}
+
+	function search(){
+		window.location.href="worker_contract.html?search="+$("#searchShow").val();
+	}
 
 	function toschedule(id) {
 		window.location.href = "worker_schedule.html?contractId="+id;
@@ -52,6 +69,7 @@
 				url: "../../a/api/worker/getAllContracts",
 				data: {
 					"pageNum": count ,// 传过去的页码
+					"search" : $("#search").val()
 				},
 				dataType: "JSON",
 				success: function(data) {

@@ -21,4 +21,6 @@ public interface ContractDao extends CrudDao<DkContract> {
 	public List<HashMap<String, Object>> findListByMobile(String mobile,int beginNum,int pageSize);
 
 	public List<HashMap<String, Object>> findListByInstall(String sysId, Integer beginNum, Integer pageSize);
+	
+	public List<HashMap<String, Object>> findListByInstallSecrch(String sysId, Integer beginNum, Integer pageSize,String search);
 }
