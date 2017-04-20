@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport"
-	content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-<link rel="stylesheet" href="css/mui.min.css">
-<style>
-.divcss {
-	margin-top: 10px;
-	padding: 0px 5px;
-	font-size: 0.9em;
-	width: 100%;
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
-}
-</style>
-<title></title>
-</head>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport"content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/weui.css"/>
+  		<link rel="stylesheet" href="css/weui2.css"/>
+		<title></title>
+	</head>
 <body style="background-color: #efeff4;">
 	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
 		<div class="mui-scroll" >
 			<img src="img/banner.jpg" style="width: 100%; height: 140px;">
-			<button
-				style="width: 90%; margin: 5px 5%; height: 42px; font-size: 1em;"
-				onclick="tocontract()">我的合同</button>
 				<div id="space"></div>
-			<div style="height: 30px; background-color: #efeff4;"></div>
 		</div>
 	</div>
 
@@ -73,16 +60,38 @@
  					mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.length == 0)); //参数为true代表没有更多数据了。
  						for(var i = 0; i < data.length; i++) {
  						var div = document.createElement('div');
- 						div.className = 'divcss';
-						div.innerHTML ="<div style='padding: 8px 10px; border-bottom: 1px solid #ccc; height: 40px;'> <label>合同号:</label> <label id='num'>" +  
-						data[i].contract_number+"</label> <label id='status' style='float: right; border-left: 1px solid #ccc; padding-left: 8px;'>"+
-						data[i].contract_status+"</label> </div> <div style='padding: 8px 10px;'> <label>名称:</label> <label id='num'>"+
-						data[i].name+"</label> </div> <div style='padding: 8px 10px;'> <label>金额:</label> <label id='money'>￥"+
-						data[i].contract_fee+"</label> </div> <div style='padding: 8px 10px;'> <label>签订时间:</label> <label id='num'>"+
-						data[i].review_time+"</label></div>"+
-						"<div style='padding: 8px 10px; border-top: 1px solid #ccc; height: 40px;' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
-						"<label id='status' style='float: right;'>查看进度</label> <img src='img/book.png' style='width: 20px; float: right;'>"+
-						"</div>";
+ 						div.className = 'weui-form-preview';
+ 						div.style = 'margin-top: 10px;';	
+						div.innerHTML=
+				    		"<div class='weui-form-preview-hd'>"+
+		                		"<label class='weui-form-preview-label' style='font-size: 1em;height: ;'>合同号</label>"+
+		                		"<em class='weui-form-preview-value' style='font-size: 1em;' id='num'>"+data[i].contract_number+"</em>"+
+		            		"</div>"+
+		            		"<div class='weui-form-preview-bd'>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>状态</label>"+
+		                    		"<span class='weui-form-preview-value' id ='status'>"+data[i].contract_status+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>名称</label>"+
+		                    		"<span class='weui-form-preview-value' id='num'>"+data[i].name+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>金额</label>"+
+		                    		"<span class='weui-form-preview-value' id='money'>￥"+data[i].contract_fee+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>客户姓名</label>"+
+		                    		"<span class='weui-form-preview-value' id='name'>"+data[i].member_name+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>签订时间</label>"+
+		                    		"<span class='weui-form-preview-value' id='time'>"+data[i].review_time+"</span>"+
+		                		"</p>"+
+		            		"</div>"+
+		            		"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
+		                		"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
+		            		"</div>";
 						
 						$("#space").append(div);
 					}

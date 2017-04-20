@@ -6,6 +6,20 @@
     <title>WeUI</title>
     <link rel="stylesheet" href="css/weui.css">
     <link rel="stylesheet" href="css/example.css">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <style type="text/css">
+    	.percent {
+  			width: 100%;
+  			border: 0;
+  			outline: 0;
+  			-webkit-appearance: none;
+  			background-color: transparent;
+  			font-size: inherit;
+  			color: inherit;
+  			height: 1.41176471em;
+  			line-height: 1.41176471;
+		}
+    </style>
 </head>
 <body>
 <form id="mainForm" action="" enctype="multipart/form-data">
@@ -14,12 +28,12 @@
 <div>
     <div class="page__bd">
 
-      <div class="weui-cells__title">表单</div>
+      <div class="weui-cells__title">进度添加</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">进度</label></div>
+               
                 <div class="weui-cell__bd">
-                    <input name="percent" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
+                    <input name="percent" style="margin-top:15px;width: 100%;border: 0;outline: 0;-webkit-appearance: none;background-color: transparent;font-size: inherit;color: inherit;height: 1.41176471em;line-height: 1.41176471; " type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
                 </div>
             </div>
         </div>
@@ -69,6 +83,7 @@
 <script src="js/zepto.min.js"></script>
     <script type="text/javascript" src="js/jweixin-1.0.0.js"></script>
     <script src="js/weui.min.js"></script>
+    <script src="js/mui.min.js"></script>
     <script src="js/example.js"></script>
     <script type="text/javascript" src="js/jquery.min.js" ></script>
     <script type="text/javascript" src="js/ajaxfileupload.js" ></script>
@@ -166,8 +181,8 @@
 	          async: false,
 	          success:function(data){//ajax返回的数据
 	        	var btnArray = [ '确定' ];
-	  			mui.confirm('请输入合法手机号!', '', btnArray, function(e) {
-	  				window.location.href = "worker_contract.html";
+	  			mui.confirm('上传成功!', '', btnArray, function(e) {
+	  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
 	  			})
 	          }
 	     });

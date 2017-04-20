@@ -4,129 +4,145 @@
 		<meta charset="utf-8">
 		<meta name="viewport"content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 		<link rel="stylesheet" href="css/mui.min.css">
-		<style type="text/css">
-			.divcss {
-				margin-top: 10px;
-				padding: 0px 5px;
-				font-size: 0.9em;
-				width: 100%;
-				border-top: 1px solid black;
-				border-bottom: 1px solid black;
-			}
-		</style>
+		<link rel="stylesheet" href="css/weui.css"/>
+  		<link rel="stylesheet" href="css/weui2.css"/>
 		<title></title>
 	</head>
-	<body style="background-color: #efeff4;">
-<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-  <div class="mui-scroll">
-		<img src="img/banner.jpg" style="width: 100%;height: 140px;">
-		<button style="width: 90%;margin: 5px 5%;height: 42px;font-size: 1em;" onclick="tocontract()">我的工作</button>
-		<div id="space"></div>
-		<div style="height: 30px;background-color: #efeff4;"></div>	
+<body style="background-color: #efeff4;">
+	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" >
+			<img src="img/banner.jpg" style="width: 100%; height: 140px;">
+				<div id="space"></div>
+		</div>
 	</div>
-</div>
 
-	</body>
-	<script type="text/javascript" src="js/jquery.min.js" ></script>
-	<script src="js/mui.min.js"></script>
-	<script type="text/javascript" charset="utf-8">
-		function toschedule(id) {
-			window.location.href = "worker_schedule.html?contractId="+id;
-		}
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+	function toschedule(id) {
+		window.location.href = "worker_schedule.html?contractId="+id;
+	}
+
+	function tocontract() {
 		
-		function tocontract(){
-			alert("查看工作");
-		}
-		
-		/**
-		 * 下拉刷新具体业务实现
-		 */
-		function pulldownRefresh() {
-			setTimeout(function() {
-				page = 1;
-				//刷新的业务
-				
-				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
-			}, 1500);
-		}
+	}
 
-		/**
-		 * 上拉加载具体业务实现
-		 */
-		var count = 1; 
-		function pullupRefresh() {
-			setTimeout(function() {
-				$.ajax({
-					type: "post",
-					url: "../../a/api/worker/getAllContracts",
-					data: {
-						"pageNum": count ,// 传过去的页码
-					},
-					dataType: "JSON",
-					success: function(data) {
-						count = count + 1;
-	 					mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.length == 0)); //参数为true代表没有更多数据了。
-	 						for(var i = 0; i < data.length; i++) {
-	 						var div = document.createElement('div');
-	 						div.className = 'divcss';
-							div.innerHTML ="<div style='padding: 8px 10px; border-bottom: 1px solid #ccc; height: 40px;'> <label>合同号:</label> <label id='num'>" +  
-							data[i].contract_number+"</label> <label id='status' style='float: right; border-left: 1px solid #ccc; padding-left: 8px;'>"+
-							data[i].contract_status+"</label> </div> <div style='padding: 8px 10px;'> <label>名称:</label> <label id='num'>"+
-							data[i].name+"</label> </div><div style='padding: 8px 10px;'> <label>客户姓名:</label> <label id='num'>"+
-							data[i].member_name+"</label> </div><div style='padding: 8px 10px;'> <label>施工地址:</label> <label id='num'>"+
-							data[i].address+"</label> </div><div style='padding: 8px 10px;'> <label>开始时间:</label> <label id='num'>"+
-							data[i].review_time+"</label></div>"+
-							"<div style='padding: 8px 10px; border-top: 1px solid #ccc; height: 40px;' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
-							"<label id='status' style='float: right;'>进度详情</label> <img src='img/book.png' style='width: 20px; float: right;'>"+
-							"</div>";
-							
-							$("#space").append(div);
-						}
-					},
-					error: function() {}
-				});
-			}, 1500);
-		}
+	/**
+	 * 下拉刷新具体业务实现
+	 */
+	function pulldownRefresh() {
+		setTimeout(function() {
+			page = 1;
+			//刷新的业务
+			
+			mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+		}, 1500);
+	}
 
-		mui.init({
-			pullRefresh : {
-				container : '#pullrefresh',
-				down : {
-					callback : pulldownRefresh
+	/**
+	 * 上拉加载具体业务实现
+	 */
+	var count = 1; 
+	function pullupRefresh() {
+		setTimeout(function() {
+			$.ajax({
+				type: "post",
+				url: "../../a/api/worker/getAllContracts",
+				data: {
+					"pageNum": count ,// 传过去的页码
 				},
-				up : {
-					contentrefresh : '正在加载...',
-					callback : pullupRefresh
-				}
+				dataType: "JSON",
+				success: function(data) {
+					count = count + 1;
+ 					mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.length == 0)); //参数为true代表没有更多数据了。
+ 						for(var i = 0; i < data.length; i++) {
+ 						var div = document.createElement('div');
+ 						div.className = 'weui-form-preview';
+ 						div.style = 'margin-top: 10px;';	
+						div.innerHTML=
+				    		"<div class='weui-form-preview-hd'>"+
+		                		"<label class='weui-form-preview-label' style='font-size: 1em;height: ;'>合同号</label>"+
+		                		"<em class='weui-form-preview-value' style='font-size: 1em;' id='num'>"+data[i].contract_number+"</em>"+
+		            		"</div>"+
+		            		"<div class='weui-form-preview-bd'>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>状态</label>"+
+		                    		"<span class='weui-form-preview-value' id ='status'>"+data[i].contract_status+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>名称</label>"+
+		                    		"<span class='weui-form-preview-value' id='num'>"+data[i].name+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>客户姓名</label>"+
+		                    		"<span class='weui-form-preview-value' id='name'>"+data[i].member_name+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+	                    			"<label class='weui-form-preview-label'>客户电话</label>"+
+	                    			"<span class='weui-form-preview-value' id='mobile'>"+data[i].member_mobile+"</span>"+
+	                			"</p>"+
+		                		"<p>"+
+		                    		"<label class='weui-form-preview-label'>开始时间</label>"+
+		                    		"<span class='weui-form-preview-value' id='time'>"+data[i].review_time+"</span>"+
+		                		"</p>"+
+		                		"<p>"+
+	                    			"<label class='weui-form-preview-label'>施工地址</label>"+
+	                    			"<span class='weui-form-preview-value' id='time'>"+data[i].address+"</span>"+
+	                			"</p>"+
+		            		"</div>"+
+		            		"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
+		                		"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
+		            		"</div>";
+						
+						$("#space").append(div);
+					}
+				},
+				error: function() {}
+			});
+		}, 1500);
+	}
+
+	mui.init({
+		pullRefresh : {
+			container : '#pullrefresh',
+			down : {
+				callback : pulldownRefresh
+			},
+			up : {
+				contentrefresh : '正在加载...',
+				callback : pullupRefresh
 			}
-		});
-		
-		if(mui.os.plus) {
-			mui.plusReady(function() {
-				setTimeout(function() {
-					mui('#pullrefresh').pullRefresh().pullupLoading();
-				}, 1000);
-
-			});
-		} else {
-			mui.ready(function() {
+		}
+	});
+	
+	if(mui.os.plus) {
+		mui.plusReady(function() {
+			setTimeout(function() {
 				mui('#pullrefresh').pullRefresh().pullupLoading();
-			});
-		}
+			}, 1000);
 
-		mui("#pullrefresh").on('tap', 'div', function(event) {
-			this.click();
 		});
-		mui("#pullrefresh").on('tap', 'button', function(event) {
-			this.click();
+	} else {
+		mui.ready(function() {
+			mui('#pullrefresh').pullRefresh().pullupLoading();
 		});
+	}
 
-		function getQueryString(name) { //输入参数名称
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
-			var r = window.location.search.substr(1).match(reg);
-			if (r != null)
-				return unescape(r[2]);
-			return null; //返回参数值
-		}
+	mui("#pullrefresh").on('tap', 'div', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'button', function(event) {
+		this.click();
+	});
+
+	function getQueryString(name) { //输入参数名称
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null; //返回参数值
+	}
 </script>
 </html>

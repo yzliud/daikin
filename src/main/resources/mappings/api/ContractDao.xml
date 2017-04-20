@@ -10,6 +10,7 @@
 		case when (contract_status = '0' ) then '未签订' when (contract_status = '1' ) then '已签订' when (contract_status = '2' ) then '安装中' when (contract_status = '3' ) then '已完工' else '未知' end as contract_status,
 		DATE_FORMAT(review_time,'%Y-%m-%d') as review_time,
 		member_name,
+		a.mobile as member_mobile,
 		address
 	</sql>
 	

@@ -3,13 +3,11 @@
 <mapper namespace="com.jeeplus.api.dao.ContractScheduleDao">
 
 	<sql id="dkContractScheduleColumns">
+		a.id,
 		DATE_FORMAT(submit_date,'%Y-%m-%d') AS submit_date ,
 		a.percent,
 		a.descript,
-		SUBSTRING_INDEX(a.pic, ',', 1) AS pic1,
-		SUBSTRING_INDEX(SUBSTRING_INDEX(a.pic,',',2),',',-1) AS pic2,
-		SUBSTRING_INDEX(SUBSTRING_INDEX(a.pic,',',-2),',',1) AS pic3,
-		SUBSTRING_INDEX(a.pic,',',-1) AS pic4,
+		a.pic,
  	 	s.`name`,
 		s.mobile
 	</sql>
