@@ -177,9 +177,6 @@
 						<a href="#" onclick="openDialogView('查看合同', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="daikin:dkContract:edit">
-						<c:if test="${dkContract.reviewStatus == '0' || dkContract.reviewStatus == '2'}">
-    					<a href="#" onclick="openDialog('修改合同', '${ctx}/daikin/dkContract/form?id=${dkContract.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
-    					</c:if>
     					<c:if test="${dkContract.reviewStatus == '0' }">
 						<a href="#" onclick="openDialog_check('合同提交审核', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 提交审核</a>
     					</c:if>

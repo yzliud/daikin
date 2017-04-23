@@ -66,28 +66,28 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">主合同：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同ID" labelName="parent.name" 
-						 labelValue="${dkContract.parent.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
+						<sys:gridselect url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同" labelName="parent.name" 
+						 disabled="disabled" labelValue="${dkContract.parent.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">合同类型：</label></td>
 					<td class="width-35">
-						<form:select path="contractFlag" class="form-control ">
+						<form:select path="contractFlag" class="form-control " onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
 							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('contract_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+							<form:options items="${fns:getDictList('contract_flag')}" itemLabel="label" itemValue="value" htmlEscape="false" readonly="true"/>
 						</form:select>
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>报价单：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/daikin/dkContract/selectdkQuotation" id="dkQuotation" name="dkQuotation.id"  value="${dkContract.dkQuotation.id}"  title="选择报价单ID" labelName="dkQuotation.name" 
-						 labelValue="${dkContract.dkQuotation.name}" cssClass="form-control required" fieldLabels="名称|顾客姓名|联系方式|联系地址|金额" fieldKeys="name|memberName|mobile|address|totalFee" searchLabel="名称" searchKey="name" ></sys:gridselect>
+						<sys:gridselect url="${ctx}/daikin/dkContract/selectdkQuotation" id="dkQuotation" name="dkQuotation.id"  value="${dkContract.dkQuotation.id}"  title="选择报价单" labelName="dkQuotation.name" 
+						 disabled="disabled" labelValue="${dkContract.dkQuotation.name}" cssClass="form-control required" fieldLabels="名称|顾客姓名|联系方式|联系地址|金额" fieldKeys="name|memberName|mobile|address|totalFee" searchLabel="名称" searchKey="name" ></sys:gridselect>
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同号：</label></td>
 					<td class="width-35">
-						<form:input path="contractNumber" htmlEscape="false"    class="form-control required"/>
+						<form:input path="contractNumber" htmlEscape="false"    class="form-control required" readonly="true"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>顾客名称：</label></td>
 					<td class="width-35">
@@ -105,14 +105,14 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">会员：</label></td>
-					<td class="width-35">
-						<sys:gridselect url="${ctx}/daikin/dkContract/selectdkMember" id="dkMember" name="dkMember.id"  value="${dkContract.dkMember.id}"  title="选择会员ID" labelName="dkMember.name" 
-						 labelValue="${dkContract.dkMember.name}" cssClass="form-control required" fieldLabels="姓名|联系方式|联系电话" fieldKeys="name|mobile|address" searchLabel="姓名" searchKey="name" ></sys:gridselect>
-					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同金额：</label></td>
 					<td class="width-35">
-						<form:input path="contractFee" htmlEscape="false"    class="form-control required number"/>
+						<form:input path="contractFee" htmlEscape="false"    class="form-control required number" readonly="true"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">工程监理：</label></td>
+					<td class="width-35">
+						<sys:treeselect id="supervisionUser" name="supervisionUser.id" value="${dkContract.supervisionUser.id}" labelName="supervisionUser.name" labelValue="${dkContract.supervisionUser.name}"
+							title="用户" url="/sys/office/treeData?type=3" cssClass="form-control required" allowClear="true" notAllowSelectParent="true"/>
 					</td>
 				</tr>
 				<tr>
@@ -134,9 +134,9 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>商品类型：</label></td>
 					<td class="width-35">
-						<form:select path="productType" class="form-control required">
+						<form:select path="productType" class="form-control required" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
 							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+							<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 					</td>
 				</tr>

@@ -6,7 +6,9 @@ package com.jeeplus.modules.daikin.web;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +35,7 @@ import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.utils.Encodes;
 import com.jeeplus.common.utils.MyBeanUtils;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.persistence.Page;
@@ -44,6 +47,8 @@ import com.jeeplus.modules.daikin.service.DkContractPayService;
 import com.jeeplus.modules.daikin.service.DkContractProductService;
 import com.jeeplus.modules.daikin.service.DkContractScheduleService;
 import com.jeeplus.modules.daikin.service.DkContractService;
+import com.jeeplus.modules.daikin.tools.DocumentHandler;
+import com.jeeplus.modules.daikin.tools.WordUtils;
 
 /**
  * 合同Controller
@@ -132,12 +137,15 @@ public class DkContractController extends BaseController {
 		if (!beanValidator(model, dkContract)){
 			return form(dkContract, model);
 		}
-		dkContract.setReviewStatus(Consts.ReviewStatus_0);
 		if(!dkContract.getIsNewRecord()){//编辑表单保存
+			if(!dkContract.getReviewStatus().equals(Consts.ReviewStatus_9)){
+				dkContract.setReviewStatus(Consts.ReviewStatus_0);
+			}
 			DkContract t = dkContractService.get(dkContract.getId());//从数据库取出记录的值
 			MyBeanUtils.copyBeanNotNull2Bean(dkContract, t);//将编辑表单中的非NULL值覆盖数据库记录中的值
 			dkContractService.save(t);//保存
 		}else{//新增表单保存
+			dkContract.setReviewStatus(Consts.ReviewStatus_0);
 			dkContractService.save(dkContract);//保存
 		}
 		addMessage(redirectAttributes, "保存合同成功");
@@ -497,11 +505,47 @@ public class DkContractController extends BaseController {
 	
 	/**
 	 * 跳转安装设置
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping(value = "forwardWorkOrder")
-	public String forwardWorkOrder(DkContract dkContract, Model model) {
+	public String forwardWorkOrder(HttpServletRequest request, DkContract dkContract, Model model) throws UnsupportedEncodingException {
 		model.addAttribute("dkContract", dkContract);
+		Map<String, Object> dataMap = new HashMap<String, Object>(); 
+		dataMap.put("address", dkContract.getAddress());
+		dataMap.put("installUserName", dkContract.getInstallUser().getName());
+		dataMap.put("memberName", dkContract.getMemberName());
+		dataMap.put("mobile", dkContract.getMobile());
+		dataMap.put("contractName", dkContract.getName());
+		dataMap.put("dkContractProductList", dkContract.getDkContractProductList());
+		dataMap.put("saleUserName", dkContract.getSaleUser().getName());
+		dataMap.put("supervisionUserName", dkContract.getSupervisionUser().getName());
+		
+		DocumentHandler mh = new DocumentHandler();
+		try {
+			mh.createDoc(dataMap, "E:/outFile.doc", request);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		WordUtils.rgModel(request, dkContract);
 		return "modules/daikin/printWorkOrder";
 	}
+	
+	/**
+	 * 下载导入合同派工单
+	 */
+    @RequestMapping(value = "downWorkOrder")
+    public String downWorkOrder(HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		/*try {
+			response.reset();
+	        response.setContentType("application/octet-stream; charset=utf-8");
+	        response.setHeader("Content-Disposition", "attachment; filename="+Encodes.urlEncode(fileName));
+			write(response.getOutputStream());
+			return this;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}*/
+		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/?repage";
+    }
 
 }

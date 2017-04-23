@@ -18,15 +18,6 @@
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
 			</a>
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="fa fa-wrench"></i>
-			</a>
-			<ul class="dropdown-menu dropdown-user">
-				<li><a href="#">选项1</a>
-				</li>
-				<li><a href="#">选项2</a>
-				</li>
-			</ul>
 			<a class="close-link">
 				<i class="fa fa-times"></i>
 			</a>
@@ -93,6 +84,7 @@
 				<th  class="sort-column name">姓名</th>
 				<th  class="sort-column mobile">手机号</th>
 				<th  class="sort-column address">联系地址</th>
+				<th  class="sort-column remark">备注</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
@@ -109,6 +101,9 @@
 				</td>
 				<td>
 					${dkMember.address}
+				</td>
+				<td>
+					${dkMember.remark}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkMember.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

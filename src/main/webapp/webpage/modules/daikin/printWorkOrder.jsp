@@ -4,14 +4,18 @@
 <head>
 	<title>合同管理</title>
 	<meta name="decorator" content="default"/>
-	<!--<script type="text/javascript" src="${ctxStatic}/daikin/jquery.jqprint-0.3.js"></script>-->
+	
+	<!--<script type="text/javascript" src="${ctxStatic}/daikin/jquery.jqprint-0.3.js"></script> 调打印-->
 	<!--<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>-->
-	<script type="text/javascript" src="${ctxStatic}/daikin/FileSaver.js"></script>
-	<script type="text/javascript" src="${ctxStatic}/daikin/jquery.wordexport.js"></script>
+	<!--<script type="text/javascript" src="${ctxStatic}/daikin/FileSaver.js"></script>-->
+	<!--<script type="text/javascript" src="${ctxStatic}/daikin/jquery.wordexport.js"></script>-->
+	
+	<script type="text/javascript" src="${ctxStatic}/daikin/tableExport.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/daikin/base64.js"></script>
+	
 </head>
 <body class="hideScroll">
-<div id="printDiv">
-		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
+		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer" id="tb_doc_m">
 		   <tbody>
 		   		<tr>
 		   		<td class="width-100" colspan=4 align="center">南京舜举楼宇设备有限公司</td>
@@ -84,13 +88,13 @@
 				</tr>
 		 	</tbody>
 		</table>
-</div>
 <script language="javascript">
     function  printDiv(){
         $("#printDiv").jqprint();
     }
     function  wordDiv(){
-        $("#printDiv").wordExport();
+        //$("#printDiv").wordExport();
+        $('#tb_doc_m').tableExport({ type: 'doc', separator: ';', escape: 'false' });
     }
 </script>
 </body>
