@@ -41,6 +41,10 @@
 	function toschedule(id) {
 		window.location.href = "worker_schedule.html?contractId="+id;
 	}
+	
+	function addschedule(id){
+		window.location.href = "scheduleEdit.html?contractId="+id;
+	}
 
 	function tocontract() {
 		
@@ -110,8 +114,9 @@
 	                    			"<span class='weui-form-preview-value' id='time'>"+data[i].address+"</span>"+
 	                			"</p>"+
 		            		"</div>"+
-		            		"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
-		                		"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
+		            		"<div class='weui-form-preview-ft' >"+
+		            			"<button class='weui-form-preview-btn weui-form-preview-btn-primary' onclick='addschedule(&quot;"+data[i].id+"&quot;)'>添加进度</button>"+
+		            			"<button class='weui-form-preview-btn weui-form-preview-btn-primary' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>查看进度</button>"+
 		            		"</div>";
 						
 						$("#space").append(div);
