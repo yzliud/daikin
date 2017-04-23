@@ -105,13 +105,19 @@
                 dataType: 'json', //返回值类型 一般设置为json
                 success: function (data, status)  //服务器成功响应处理函数
                 {
-                	var url = $("#imgUrl").val();
-                	if(url==""){
-                		document.getElementById("imgUrl").value="../../upload/"+data.imgname;	
-                	}else{
-                		document.getElementById("imgUrl").value= url + ",../../upload/"+data.imgname;
-                	}
-                	$('#uploaderFiles').append("<li id = '"+data.imgname.replace(".","_")+"' class='weui-uploader__file' style='background-image:url(../../upload/"+data.imgname+")'></li>");
+                	var fileName = data.imgname.split(',');
+                	for(var i = 0 ;i<fileName.length;i++)
+                	{
+                		if(fileName[i] != "" && typeof(fileName[i]) != "undefined"){
+                        	var url = $("#imgUrl").val();
+                        	if(url==""){
+                        		document.getElementById("imgUrl").value="../../upload/"+fileName[i];	
+                        	}else{
+                        		document.getElementById("imgUrl").value= url + ",../../upload/"+fileName[i];
+                        	}
+                			$('#uploaderFiles').append("<li id = '"+fileName[i].replace(".","_")+"' class='weui-uploader__file' style='background-image:url(../../upload/"+fileName[i]+")'></li>");
+                		}            
+                	}              	
                 }
             });
 	}
