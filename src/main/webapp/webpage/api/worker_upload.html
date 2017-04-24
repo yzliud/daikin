@@ -95,8 +95,10 @@
 		          type:"post",
 		          async: false,
 		          success:function(data){//ajax返回的数据
-		         	alert('保存成功');
-		         	window.location.href = "worker_contract.html";
+			        	var btnArray = [ '确定' ];
+			  			mui.confirm('保存成功!', '', btnArray, function(e) {
+			  				window.location.href = "worker_contract.html";
+			  			})
 		          }
 		     });
 		}

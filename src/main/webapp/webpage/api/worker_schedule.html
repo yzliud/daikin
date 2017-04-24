@@ -4,24 +4,20 @@
 		<meta charset="utf-8">
 		<meta name="viewport"content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/weui.css"/>
+  		<link rel="stylesheet" href="css/weui2.css"/>
 		<title>安装进度详细</title>
 	</head>
 	<body style="background-color: #efeff4;">
 <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
 	<div class="mui-scroll">
-		<button style="width: 70%;margin: 10px 15%;height: 42px;font-size: 1em;" onclick="addSchedule()">添加进度</button>
 		<div id="space"></div>
-		<div style="height: 20px;background-color: #efeff4;"></div>
 	</div>
 </div>
 </body>
 	<script type="text/javascript" src="js/jquery.min.js" ></script>
 	<script src="js/mui.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
-	
-		function addSchedule(){
-			window.location.href = "scheduleEdit.html?contractId="+getQueryString("contractId");
-		}
 		
 		function hidediv() {
     		$("#big-img-div").css("display","none");
@@ -71,21 +67,46 @@ function pulldownRefresh() {
 					mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.length == 0)); //参数为true代表没有更多数据了。
 						for(var i = 0; i < data.length; i++) {
 						var div = document.createElement('div');
-						div.className = 'sdivcss';
-						div.innerHTML ="<div style='padding: 8px 10px;border-bottom: 1px solid #ccc;height: 40px;display: flex;width: 100%;'> <div style='width: 50%;'><label>日期:</label><label id='num'>"+
-						data[i].submit_date+"</label></div><div style='width: 50%;float: right;'><label style='border-left: 1px solid #ccc;padding-left: 15%'>完成度:</label><label id='percent'>"+
-						data[i].percent+"%</label></div></div><div style='padding: 8px 10px;border-bottom: 1px solid #ccc;height: 40px;display: flex;width: 100%;'><label>进度描述:</label><label>"+
-						data[i].descript+"</label></div><div style='width:100%;height:100%;position:fixed;top:0;left:0px;display: none;z-index:998;' id='big-img-div' onclick='hidediv()'>"+
-				    	"<div style='position:absolute;background:black; filter:alpha(opacity:70);opacity:0.7;top:0; z-index:999;left:0px;width:100%;height:100%;display: none;' id='background-img'></div>"+
-				    	"<img id='big-img' src='' style='position: absolute;top:15%;width:90%;height:60%;left:5%;z-index: 1000;display: none;'/></div>"+
-						"<div style='padding: 8px 10px;border-bottom: 1px solid #ccc;width: 100%;'><label>进度图片:</label><div style='text-align: center;'>"+
-				        "<img src='"+data[i].pic1+"' style='width:100px;height: 100px;margin:10px 20px' onclick='showBig(this)'>"+
-				        "<img src='"+data[i].pic2+"' style='width:100px;height: 100px;margin:10px 20px' onclick='showBig(this)'>"+
-				        "<img src='"+data[i].pic3+"' style='width:100px;height: 100px;margin:10px 20px' onclick='showBig(this)'>"+
-				        "<img src='"+data[i].pic4+"' style='width:100px;height: 100px;margin:10px 20px' onclick='showBig(this)'></div></div>"+
-				    	"</div>";
+						div.className = 'weui-form-preview';
+ 						div.style = 'margin-top: 10px;';	
+				    	div.innerHTML =
+				    		"<div class='weui-form-preview-bd'>"+
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>日期</label>"+
+                    				"<span class='weui-form-preview-value' id ='time'>"+data[i].submit_date+"</span>"+
+                				"</p>"+
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>完成度</label>"+
+                    				"<span class='weui-form-preview-value' id='percent'>"+data[i].percent+"%</span>"+
+                				"</p>"+
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>进度描述</label>"+
+                    				"<span class='weui-form-preview-value' id='des'>"+data[i].descript+"</span>"+
+                				"</p>"+
+	               				"<p>"+
+                					"<label class='weui-form-preview-label'>进度图片</label><br>"+
+                					"<div style='padding-left: 10%;' class='weui-uploader__bd'>"+
+                						"<ul class='weui-uploader__files' id='"+data[i].id+"'>"+
+                                    
+                                    	"</ul>"+
+               						"</div>"+
+                				"</p>"+
+							"</div>";
 				    	
 						$("#space").append(div);
+						
+						var imgback_array= data[i].pic.split(',');
+						
+					    for(var j = 0 ;j<imgback_array.length;j++){  
+			                 if(imgback_array[j] == "" || typeof(imgback_array[j]) == "undefined")  
+			                 {  
+			                	 imgback_array.splice(j,1);  
+			                 	j= j-1;     
+			                 }    
+			              }
+						for(var k = 0 ;k<imgback_array.length;k++){
+							$('#'+data[i].id).append("<li class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
+						}
 					}
 				},
 				error: function() {}

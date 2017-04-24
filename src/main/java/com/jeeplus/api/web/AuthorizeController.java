@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jeeplus.api.util.CommonUtil;
+import com.jeeplus.api.util.Emoji;
 import com.jeeplus.modules.daikin.entity.DkWorker;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
 
@@ -88,6 +89,7 @@ public class AuthorizeController {
 					String uuid = UUID.randomUUID().toString().replace("-", "");
 					worker.setId(uuid);
 					worker.setOpenId(openId);
+					nickname = Emoji.filterEmoji(nickname);
 					worker.setNickName(nickname);
 					worker.setCity(city);
 					worker.setProvince(province);

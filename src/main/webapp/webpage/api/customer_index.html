@@ -53,7 +53,24 @@
 	}
 	function enter() {
 		if(isPhoneNum()){
-			window.location.href = "customer_contract.html?mobile="+document.getElementById("mobile").value;	
+		      $.ajax({
+		          url:"../../a/api/customer/getAllContracts",
+		          data:{
+		        	  mobile:$("#mobile").val()
+		          },
+		          type:"post",
+		          dataType: "JSON",
+		          async: false,
+		          success:function(data){//ajax返回的数据
+		        	if(data.length>0){
+		        		window.location.href = "customer_contract.html?mobile="+document.getElementById("mobile").value;
+		  			}else{
+		  				var btnArray = [ '确定' ];
+		  				mui.confirm('此手机号无有效合同!', '', btnArray, function(e) {
+		  				})
+		  			}	
+		          }
+		     });
 		}
 	}
 </script>

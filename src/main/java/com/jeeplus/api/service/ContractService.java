@@ -32,5 +32,10 @@ public class ContractService extends CrudService<ContractDao, DkContract> {
 		// TODO Auto-generated method stub
 		return dao.findListByInstall(sysId,beginNum,pageSize);
 	}
+	
+	public List<HashMap<String, Object>> findListByInstallSecrch(String sysId, Integer beginNum, Integer pageSize,String search) {
+		// TODO Auto-generated method stub
+		return dao.findListByInstallSecrch(sysId,beginNum,pageSize,search);
+	}
 
 }

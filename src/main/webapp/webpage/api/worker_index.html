@@ -103,9 +103,11 @@
 	            	 },
 	             dataType: "json",
 	             success: function(data){
-	            	 alert(data.msg);
-	            	 window.location.href = "worker_contract.html";
-	             	}
+	 	        	var btnArray = [ '确定' ];
+		  			mui.confirm('请输入合法手机号!', '', btnArray, function(e) {
+		  				window.location.href = "worker_contract.html";
+		  			})
+	             }
 	         });
 		}	
 	}

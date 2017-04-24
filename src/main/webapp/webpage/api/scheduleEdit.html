@@ -6,6 +6,20 @@
     <title>WeUI</title>
     <link rel="stylesheet" href="css/weui.css">
     <link rel="stylesheet" href="css/example.css">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <style type="text/css">
+    	.percent {
+  			width: 100%;
+  			border: 0;
+  			outline: 0;
+  			-webkit-appearance: none;
+  			background-color: transparent;
+  			font-size: inherit;
+  			color: inherit;
+  			height: 1.41176471em;
+  			line-height: 1.41176471;
+		}
+    </style>
 </head>
 <body>
 <form id="mainForm" action="" enctype="multipart/form-data">
@@ -14,12 +28,12 @@
 <div>
     <div class="page__bd">
 
-      <div class="weui-cells__title">表单</div>
+      <div class="weui-cells__title">进度添加</div>
         <div class="weui-cells weui-cells_form">
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">进度</label></div>
+            <div class="weui-cell" style="height: 40px;">
+               
                 <div class="weui-cell__bd">
-                    <input name="percent" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
+                    <input name="percent" style="margin-top:15px;width: 100%;border: 0;outline: 0;-webkit-appearance: none;background-color: transparent;font-size: inherit;color: inherit;height: 1.41176471em;line-height: 1.41176471; " type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
                 </div>
             </div>
         </div>
@@ -29,7 +43,6 @@
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     <textarea name="descript" class="weui-textarea" placeholder="请输入进度描述" rows="3"></textarea>
-                    <div class="weui-textarea-counter"><span>0</span>/200</div>
                 </div>
             </div>
         </div>
@@ -48,7 +61,6 @@
                     <div class="weui-uploader">
                         <div class="weui-uploader__hd">
                             <p class="weui-uploader__title">图片上传</p>
-                            <div class="weui-uploader__info">0/2</div>
                         </div>
                         <div class="weui-uploader__bd">
                             <ul class="weui-uploader__files" id="uploaderFiles">
@@ -71,6 +83,7 @@
 <script src="js/zepto.min.js"></script>
     <script type="text/javascript" src="js/jweixin-1.0.0.js"></script>
     <script src="js/weui.min.js"></script>
+    <script src="js/mui.min.js"></script>
     <script src="js/example.js"></script>
     <script type="text/javascript" src="js/jquery.min.js" ></script>
     <script type="text/javascript" src="js/ajaxfileupload.js" ></script>
@@ -92,13 +105,19 @@
                 dataType: 'json', //返回值类型 一般设置为json
                 success: function (data, status)  //服务器成功响应处理函数
                 {
-                	var url = $("#imgUrl").val();
-                	if(url==""){
-                		document.getElementById("imgUrl").value="../../upload/"+data.imgname;	
-                	}else{
-                		document.getElementById("imgUrl").value= url + ",../../upload/"+data.imgname;
-                	}
-                	$('#uploaderFiles').append("<li class='weui-uploader__file' style='background-image:url(../../upload/"+data.imgname+")'></li>");
+                	var fileName = data.imgname.split(',');
+                	for(var i = 0 ;i<fileName.length;i++)
+                	{
+                		if(fileName[i] != "" && typeof(fileName[i]) != "undefined"){
+                        	var url = $("#imgUrl").val();
+                        	if(url==""){
+                        		document.getElementById("imgUrl").value="../../upload/"+fileName[i];	
+                        	}else{
+                        		document.getElementById("imgUrl").value= url + ",../../upload/"+fileName[i];
+                        	}
+                			$('#uploaderFiles').append("<li id = '"+fileName[i].replace(".","_")+"' class='weui-uploader__file' style='background-image:url(../../upload/"+fileName[i]+")'></li>");
+                		}            
+                	}              	
                 }
             });
 	}
@@ -148,8 +167,16 @@
         });
         
         $(".weui-gallery__del").click(function(){
-        	alert(1);
-           
+        	 
+            var imgback = $(this).parent("div").prev().attr("style");
+            var imgback_array= imgback.split(')');
+            imgback_array= imgback_array[0].split('/');
+            var imgName = imgback_array[imgback_array.length-1];
+            $("#"+imgName.replace(".","_")).remove();
+
+            var img_str = $("#imgUrl").val();
+            var img_str_new = img_str.replace("../../upload/"+imgName,"");
+            $("#imgUrl").val(img_str_new);
        });
     
     function upload(){
@@ -159,8 +186,10 @@
 	          type:"post",
 	          async: false,
 	          success:function(data){//ajax返回的数据
-	         	alert('保存成功');
-	         	window.location.href = "worker_contract.html";
+	        	var btnArray = [ '确定' ];
+	  			mui.confirm('上传成功!', '', btnArray, function(e) {
+	  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
+	  			})
 	          }
 	     });
     }
