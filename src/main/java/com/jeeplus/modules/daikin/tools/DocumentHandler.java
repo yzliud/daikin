@@ -26,16 +26,16 @@ public class DocumentHandler {
         configuration.setDefaultEncoding("utf-8");  
     }  
   
-    public void createDoc(Map<String,Object> dataMap,String fileName, HttpServletRequest request) throws IOException {  
+    public void createDoc(Map<String,Object> dataMap,String fileName) throws IOException {  
         //dataMap 要填入模本的数据文件  
         //设置模本装置方法和路径,FreeMarker支持多种模板装载方法。可以重servlet，classpath，数据库装载，  
         //这里我们的模板是放在template包下面  
-        //configuration.setServletContextForTemplateLoading(request.getServletContext(), "/template"); 
-    	configuration.setDirectoryForTemplateLoading(new File("E://"));
-        Template t=null;  
+    	 //configuration.setDirectoryForTemplateLoading(new File("D:\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp11\\wtpwebapps\\daikin\\WEB-INF\\classes\\com\\jeeplus\\modules\\daikin\\tools\\template"));  //FTL文件所存在的位置
+    	 configuration.setClassForTemplateLoading(this.getClass(), "/templates");
+    	 Template t=null;  
         try {  
             //test.ftl为要装载的模板  
-            t = configuration.getTemplate("workorder.html");  
+            t = configuration.getTemplate("workorder.ftl");  
         } catch (IOException e) {  
             e.printStackTrace();  
         }  

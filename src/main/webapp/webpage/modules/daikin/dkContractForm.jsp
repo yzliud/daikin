@@ -67,7 +67,7 @@
 					<td class="width-15 active"><label class="pull-right">主合同：</label></td>
 					<td class="width-35">
 						<sys:gridselect url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同" labelName="parent.name" 
-						 disabled="disabled" labelValue="${dkContract.parent.name}" cssClass="form-control required" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
+						 disabled="disabled" labelValue="${dkContract.parent.name}" cssClass="form-control" fieldLabels="合同名称|合同号|顾客姓名|合同金额" fieldKeys="name|contractNumber|memberName|contractFee" searchLabel="合同名称" searchKey="name" ></sys:gridselect>
 					</td>
 				</tr>
 				<tr>
@@ -194,7 +194,7 @@
 					</td>	
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_price" name="dkContractProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkContractProductList{{idx}}');"  max="1000000"  min="1" class="form-control required number"/>
+						<input id="dkContractProductList{{idx}}_price" name="dkContractProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkContractProductList{{idx}}');"  max="1000000"  class="form-control required number"/>
 					</td>
 					
 					
@@ -204,7 +204,7 @@
 					
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_totalPrice" name="dkContractProductList[{{idx}}].totalPrice" readonly type="text" value="{{row.totalPrice}}"   max="10000000"  min="1" class="form-control required number"/>
+						<input id="dkContractProductList{{idx}}_totalPrice" name="dkContractProductList[{{idx}}].totalPrice" readonly type="text" value="{{row.totalPrice}}"   max="10000000"   class="form-control required number"/>
 					</td>
 					
 					

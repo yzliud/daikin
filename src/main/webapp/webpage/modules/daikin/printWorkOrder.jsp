@@ -10,9 +10,6 @@
 	<!--<script type="text/javascript" src="${ctxStatic}/daikin/FileSaver.js"></script>-->
 	<!--<script type="text/javascript" src="${ctxStatic}/daikin/jquery.wordexport.js"></script>-->
 	
-	<script type="text/javascript" src="${ctxStatic}/daikin/tableExport.js"></script>
-	<script type="text/javascript" src="${ctxStatic}/daikin/base64.js"></script>
-	
 </head>
 <body class="hideScroll">
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer" id="tb_doc_m">
@@ -94,7 +91,7 @@
     }
     function  wordDiv(){
         //$("#printDiv").wordExport();
-        $('#tb_doc_m').tableExport({ type: 'doc', separator: ';', escape: 'false' });
+    	window.location="${projectName}/down/${dkContract.name}派工单.doc"; 
     }
 </script>
 </body>

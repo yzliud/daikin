@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.daikin.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -149,7 +150,7 @@ public class DkContractController extends BaseController {
 			dkContractService.save(dkContract);//保存
 		}
 		addMessage(redirectAttributes, "保存合同成功");
-		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/?repage";
+		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/checkPass";
 	}
 	
 	/**
@@ -520,14 +521,18 @@ public class DkContractController extends BaseController {
 		dataMap.put("saleUserName", dkContract.getSaleUser().getName());
 		dataMap.put("supervisionUserName", dkContract.getSupervisionUser().getName());
 		
+		String projectName = request.getContextPath();
+		model.addAttribute("projectName", projectName);
+		
 		DocumentHandler mh = new DocumentHandler();
+		
+		String fileName = request.getSession().getServletContext().getRealPath("/") + "down"+File.separator + dkContract.getName() + "派工单.doc";
 		try {
-			mh.createDoc(dataMap, "E:/outFile.doc", request);
+			mh.createDoc(dataMap, fileName);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		WordUtils.rgModel(request, dkContract);
 		return "modules/daikin/printWorkOrder";
 	}
 	

@@ -86,6 +86,12 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 				dkContractProductDao.delete(dkContractProduct);
 			}
 		}
+		
+		if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_9)){
+			DkContract d = new DkContract();
+			d.setParent(dkContract.getParent());
+			dao.updateContractTotalFee(d);
+		}
 	}
 	
 	@Transactional(readOnly = false)

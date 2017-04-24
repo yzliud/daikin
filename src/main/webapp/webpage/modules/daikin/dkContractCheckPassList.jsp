@@ -171,7 +171,7 @@
 		    title: title,
 	        maxmin: true, //开启最大化最小化按钮
 		    content: url ,
-		    btn: ['保存', '关闭'],
+		    btn: ['下载', '关闭'],
 		    btn1: function(index, layero){
 		    	 
 		    	 var body = top.layer.getChildFrame('body', index);

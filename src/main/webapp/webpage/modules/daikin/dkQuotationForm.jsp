@@ -201,7 +201,7 @@
 					
 
 					<td>
-						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="100000"  min="1" onchange="" class="form-control required number"/>
+						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="100000"   onchange="" class="form-control required number"/>
 					</td>
 					
 					
@@ -211,7 +211,7 @@
 					
 					
 					<td>
-						<input id="dkQuotationProductList{{idx}}_totalPrice" readonly name="dkQuotationProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="1000000"  min="1" class="form-control  number"/>
+						<input id="dkQuotationProductList{{idx}}_totalPrice" readonly name="dkQuotationProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="1000000"  class="form-control  number"/>
 					</td>
 					
 					
