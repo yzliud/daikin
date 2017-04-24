@@ -11,7 +11,6 @@
 	<body style="background-color: #efeff4;">
 <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
 	<div class="mui-scroll">
-		<button style="width: 70%;margin: 10px 15%;height: 42px;font-size: 1em;" onclick="addSchedule()">添加进度</button>
 		<div id="space"></div>
 	</div>
 </div>
@@ -19,10 +18,6 @@
 	<script type="text/javascript" src="js/jquery.min.js" ></script>
 	<script src="js/mui.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
-	
-		function addSchedule(){
-			window.location.href = "scheduleEdit.html?contractId="+getQueryString("contractId");
-		}
 		
 		function hidediv() {
     		$("#big-img-div").css("display","none");
