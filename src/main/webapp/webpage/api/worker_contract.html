@@ -9,17 +9,17 @@
 		<title></title>
 	</head>
 <body style="background-color: #efeff4;">
-	
-	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-
-		<div class="mui-scroll" >
-			<div class="weui_search_bar">
+			<div class="weui_search_bar" style="z-index:100">
   				<input type="hidden" id="search">
 				<input  class="search-input" id='searchShow' placeholder='请输入合同号或客户手机号' style="box-sizing:content-box"/>
 				<button  class="weui_btn weui_btn_mini weui_btn_primary" onclick="search()">
-					<i class="icon icon-4"></i>
+					<i class="icon icon-4" style="color: white;"></i>
 				</button>  
 			</div>
+			
+	<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top:45px">
+
+		<div class="mui-scroll" >
 			<div id="space"></div>
 		</div>
 	</div>
@@ -40,6 +40,10 @@
 
 	function toschedule(id) {
 		window.location.href = "worker_schedule.html?contractId="+id;
+	}
+	
+	function addschedule(id){
+		window.location.href = "scheduleEdit.html?contractId="+id;
 	}
 
 	function tocontract() {
@@ -110,8 +114,9 @@
 	                    			"<span class='weui-form-preview-value' id='time'>"+data[i].address+"</span>"+
 	                			"</p>"+
 		            		"</div>"+
-		            		"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
-		                		"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
+		            		"<div class='weui-form-preview-ft' >"+
+		            			"<button class='weui-form-preview-btn weui-form-preview-btn-primary' onclick='addschedule(&quot;"+data[i].id+"&quot;)'>添加进度</button>"+
+		            			"<button class='weui-form-preview-btn weui-form-preview-btn-primary' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>查看进度</button>"+
 		            		"</div>";
 						
 						$("#space").append(div);
@@ -149,6 +154,9 @@
 	}
 
 	mui("#pullrefresh").on('tap', 'div', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'input', function(event) {
 		this.click();
 	});
 	mui("#pullrefresh").on('tap', 'button', function(event) {

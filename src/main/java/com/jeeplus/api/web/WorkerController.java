@@ -245,14 +245,15 @@ public class WorkerController extends BaseController {
 	public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
-		String myFileName = "";
+		String allFilesName = "";
 		//创建一个通用的多部分解析器  
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());  
         //判断 request 是否有文件上传,即多部分请求  
-        if(multipartResolver.isMultipart(request)){  
+        if(multipartResolver.isMultipart(request)){ 
+        	String myFileName = "";
         	MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  
             //取得request中的所有文件名  
-        	List<MultipartFile> files = multiRequest.getFiles("uploaderInput");  
+        	List<MultipartFile> files = multiRequest.getFiles("uploaderInput");
             for(MultipartFile file:files ){  
                 //记录上传过程起始时的时间，用来计算上传时间  
                 int pre = (int) System.currentTimeMillis();  
@@ -262,15 +263,17 @@ public class WorkerController extends BaseController {
                     myFileName = file.getOriginalFilename();  
                     //如果名称不为“”,说明该文件存在，否则说明该文件不存在  
                     if(myFileName.trim() !=""){  
-                        System.out.println(myFileName);  
-                        
-                        //重命名上传后的文件名  
-                        String fileName = file.getOriginalFilename();  
+                        System.out.println(myFileName); 
                         //定义上传路径  
                         String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
-                        String path = uploadPath + "/" + fileName;  
+                        String path = uploadPath + "/" + myFileName;  
                         File localFile = new File(path);  
-                        file.transferTo(localFile);  
+                        file.transferTo(localFile);
+                        if(allFilesName.equals("")){
+                        	allFilesName = myFileName;
+                        }else{
+                        	allFilesName = allFilesName + "," + myFileName ;
+                        }
                     }  
                 }  
                 //记录上传该文件后的时间  
@@ -280,7 +283,7 @@ public class WorkerController extends BaseController {
         }
         Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("imgname", myFileName);
+		map.put("imgname", allFilesName);
 		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
