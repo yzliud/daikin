@@ -129,9 +129,7 @@
 					<fmt:formatDate value="${dkQuotation.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					<shiro:hasPermission name="daikin:dkQuotation:view">
     					<a href="#" onclick="openDialog_uncheck('审核报价单', '${ctx}/daikin/dkQuotation/detail?id=${dkQuotation.id}&checkType=1','800px', '600px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 审核</a>
-    				</shiro:hasPermission>
 				</td>
 			</tr>
 		</c:forEach>
