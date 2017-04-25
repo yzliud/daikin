@@ -308,7 +308,7 @@
 													<i class="ace-icon fa fa-google-plus"></i>
 												</a>
 											</div>
-											-->
+											
 											<br/>
 											<br/>
 											<div class="form-options clearfix">
@@ -319,7 +319,7 @@
 												</a>
 											</div>
 
-											
+											-->
 										</div>
 										</div><!-- /.widget-main -->
 
