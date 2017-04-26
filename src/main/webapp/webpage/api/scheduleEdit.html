@@ -183,6 +183,9 @@
     	if($("#percent").val()==""){
     		var btnArray = [ '确定' ];
     		mui.confirm('请填写进度百分比！', '', btnArray, function(e) {	})
+    	}else if($("#percent").val() > 100){
+    		var btnArray = [ '确定' ];
+    		mui.confirm('进度百分比不能大于100!', '', btnArray, function(e) {})
     	}else if($("#descript").val()==""){
     		var btnArray = [ '确定' ];
     		mui.confirm('请填写进度描述！', '', btnArray, function(e) {})
@@ -193,10 +196,15 @@
 	          type:"post",
 	          async: false,
 	          success:function(data){//ajax返回的数据
-	        	var btnArray = [ '确定' ];
-	  			mui.confirm('上传成功', '', btnArray, function(e) {
-	  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
-	  			})
+	        	if(data.msg='success'){
+		        	var btnArray = [ '确定' ];
+		  			mui.confirm('上传成功', '', btnArray, function(e) {
+		  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
+		  			})	
+	        	}else{
+	        		var btnArray = [ '确定' ];
+		  			mui.confirm('新进度百分比需高于之前进度！', '', btnArray, function(e) {})	
+	        	}
 	          }
 	     });
     	}
