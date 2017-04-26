@@ -263,7 +263,6 @@ public class DkQuotationController extends BaseController {
 	/**
 	 * 查看报价单详细
 	 */
-	@RequiresPermissions(value={"daikin:dkQuotation:view","daikin:dkQuotation:add","daikin:dkQuotation:edit"},logical=Logical.OR)
 	@RequestMapping(value = "detail")
 	public String detail(DkQuotation dkQuotation, String checkType, Model model) {
 		model.addAttribute("dkQuotation", dkQuotation);

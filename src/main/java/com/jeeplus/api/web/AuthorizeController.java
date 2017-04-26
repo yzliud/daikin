@@ -27,8 +27,8 @@ public class AuthorizeController {
 	@RequestMapping("/jsauthorize")
 	public void jsauthorize(HttpServletRequest request, HttpServletResponse response, String callback) throws Exception {
 		//共账号及商户相关参数
-		String appid = "wx9efe76f83adbf995";
-		String backUri = "http://daikin.yzliud.top:8080/daikin/a/api/authorize/toauthorize";
+		String appid = "wx14f656e580ff9396";
+		String backUri = "http://daikin.samehope.cn/a/api/authorize/toauthorize";
 		//String appid = "wxcfe5737777fcfd95";
 		//String backUri = "http://manage.wifibao.top/daikin/a/api/authorize/toauthorize";
 		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
@@ -44,8 +44,8 @@ public class AuthorizeController {
 	public void toauthorize(HttpServletRequest request, HttpServletResponse response, String callback) throws Exception {
 		String code = request.getParameter("code");
 		//商户相关资料 
-		String appid = "wx9efe76f83adbf995";
-		String appsecret = "70039d763dc0c5c7ad3d3d7878935b5c";
+		String appid = "wx14f656e580ff9396";
+		String appsecret = "b8f5f782c18a99e11ae1a1fcb5866329";
 		//String appid = "wxcfe5737777fcfd95";
 		//String appsecret = "b6074c880d370cc2d473a50562b49f28";
 		
@@ -105,7 +105,7 @@ public class AuthorizeController {
 			}
 		}
 		
-		response.sendRedirect("http://daikin.yzliud.top:8080/daikin/a/api/worker/index");
+		response.sendRedirect("http://daikin.samehope.cn/a/api/worker/index");
 	}
 
 }
