@@ -63,7 +63,7 @@ public class WorkerController extends BaseController {
 	@RequestMapping(value = "index")
 	public String index(HttpServletRequest request, HttpServletResponse response) {
 		//request.getSession().setAttribute("sysId","001");// XQNtest
-		request.getSession().setAttribute("openId","001");// XQNtest
+		//request.getSession().setAttribute("openId","001");// XQNtest
 		String openId = (String) request.getSession().getAttribute("openId");
 		if (openId == null) {
 			return "redirect:../../../webpage/api/getOpen.html";
