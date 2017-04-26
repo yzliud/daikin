@@ -33,7 +33,7 @@
             <div class="weui-cell" style="height: 40px;">
                
                 <div class="weui-cell__bd">
-                    <input name="percent" style="margin-top:15px;width: 100%;border: 0;outline: 0;-webkit-appearance: none;background-color: transparent;font-size: inherit;color: inherit;height: 1.41176471em;line-height: 1.41176471; " type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
+                    <input id="percent" name="percent" required="required" style="margin-top:15px;width: 100%;border: 0;outline: 0;-webkit-appearance: none;background-color: transparent;font-size: inherit;color: inherit;height: 1.41176471em;line-height: 1.41176471; " type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <textarea name="descript" class="weui-textarea" placeholder="请输入进度描述" rows="3"></textarea>
+                    <textarea id="descript" name="descript" required="required" class="weui-textarea" placeholder="请输入进度描述" rows="3"></textarea>
                 </div>
             </div>
         </div>
@@ -180,18 +180,26 @@
        });
     
     function upload(){
-	      $.ajax({
+    	if($("#percent").val()==""){
+    		var btnArray = [ '确定' ];
+    		mui.confirm('请填写进度百分比！', '', btnArray, function(e) {	})
+    	}else if($("#descript").val()==""){
+    		var btnArray = [ '确定' ];
+    		mui.confirm('请填写进度描述！', '', btnArray, function(e) {})
+    	}else{
+  	      $.ajax({
 	          url:"../../a/api/worker/submitSchedule",
 	          data:$("#mainForm").serialize(),
 	          type:"post",
 	          async: false,
 	          success:function(data){//ajax返回的数据
 	        	var btnArray = [ '确定' ];
-	  			mui.confirm('上传成功!', '', btnArray, function(e) {
+	  			mui.confirm('上传成功', '', btnArray, function(e) {
 	  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
 	  			})
 	          }
 	     });
+    	}
     }
     
 	window.onload=function(){
