@@ -97,15 +97,16 @@
 	$uploaderFiles = $("#uploaderFiles");
 	
 	function upImg(){
+		alert('upImg');
         $.ajaxFileUpload
         ({
-        	
                 url: "../../a/api/worker/upload", //用于文件上传的服务器端请求地址
                 secureuri: false, //是否需要安全协议，一般设置为false
                 fileElementId: 'uploaderInput', //文件上传域的ID
                 dataType: 'json', //返回值类型 一般设置为json
                 success: function (data, status)  //服务器成功响应处理函数
                 {
+                	alert(status);
                 	var fileName = data.imgname.split(',');
                 	for(var i = 0 ;i<fileName.length;i++)
                 	{
@@ -117,48 +118,14 @@
                         		document.getElementById("imgUrl").value= url + ",../../upload/"+fileName[i];
                         	}
                 			$('#uploaderFiles').append("<li id = '"+fileName[i].replace(".","_")+"' class='weui-uploader__file' style='background-image:url(../../upload/"+fileName[i]+")'></li>");
+                			
                 		}            
-                	}              	
+                	} 
+                	$("#uploaderInput").attr("onchange","upImg()");
                 }
             });
 	}
-       
-     /*    $('#uploaderInput').on("change", function(e){
-            var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
-            for (var i = 0, len = files.length; i < len; ++i) {
-                var file = files[i];
-
-                if (url) {
-                    src = url.createObjectURL(file);
-                } else {
-                    src = e.target.result;
-                }
-
-                $uploaderFiles.append($(tmpl.replace('#url#', src)));
-            }
-
-            
-            $.ajaxFileUpload
-            (
-                {
-                    url: '../../a/api/worker/upload', //用于文件上传的服务器端请求地址
-                    secureuri: false, //是否需要安全协议，一般设置为false
-                    fileElementId: 'uploaderInput', //文件上传域的ID
-                    dataType: 'content', //返回值类型 一般设置为json
-                    success: function (data, status)  //服务器成功响应处理函数
-                    {
-                    	var url = $("#imgUrl").val();
-                    	if(url==""){
-                    		document.getElementById("imgUrl").value="../../upload/"+data.imgname;	
-                    	}else{
-                    		document.getElementById("imgUrl").value= url + ",../../upload/"+data.imgname;
-                    	}
-                    	//$('#uploaderFiles').append("<li class='weui-uploader__file' style='background-image:url(../../upload/"+data.imgname+")'></li>'");
-                    }
-                }
-            );
-            
-        }); */
+     
         $uploaderFiles.on("click", "li", function(){
             $galleryImg.attr("style", this.getAttribute("style"));
             $gallery.fadeIn(100);
@@ -195,9 +162,10 @@
 	          url:"../../a/api/worker/submitSchedule",
 	          data:$("#mainForm").serialize(),
 	          type:"post",
+	          dataType: 'json',
 	          async: false,
 	          success:function(data){//ajax返回的数据
-	        	if(data.msg='success'){
+	        	if(data.msg =='success'){
 		        	var btnArray = [ '确定' ];
 		  			mui.confirm('上传成功', '', btnArray, function(e) {
 		  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
