@@ -1,6 +1,13 @@
 package com.jeeplus.api.web;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -12,6 +19,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.ImageIcon;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +41,9 @@ import com.jeeplus.modules.daikin.service.DkContractService;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
 import com.jeeplus.modules.daikin.service.SysUserService;
 import com.jeeplus.modules.sys.entity.User;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/worker")
@@ -270,18 +281,24 @@ public class WorkerController extends BaseController {
                 if(file != null){  
                     //取得当前上传文件的文件名称  
                     myFileName = file.getOriginalFilename();  
-                    //如果名称不为“”,说明该文件存在，否则说明该文件不存在  
+                    //如果名称不为'',说明该文件存在，否则说明该文件不存在  
                     if(myFileName.trim() !=""){  
                         System.out.println(myFileName); 
                         //定义上传路径  
                         String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
-                        String path = uploadPath + "/" + myFileName;  
+                        String file_uuid = UUID.randomUUID().toString().replace("-", ""); 
+                        String[] strs = myFileName.split("\\.");
+                		String file_uuidname = file_uuid + "." + strs[strs.length - 1];
+                        String path = uploadPath + "/" + file_uuidname;  
                         File localFile = new File(path);  
                         file.transferTo(localFile);
+                        
+                        resize(localFile, localFile, 1, 0.5f);
+                        
                         if(allFilesName.equals("")){
-                        	allFilesName = myFileName;
+                        	allFilesName = file_uuidname;
                         }else{
-                        	allFilesName = allFilesName + "," + myFileName ;
+                        	allFilesName = allFilesName + "," + file_uuidname ;
                         }
                     }  
                 }  
@@ -296,52 +313,49 @@ public class WorkerController extends BaseController {
 		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
-
-
-		/*String uuid = request.getParameter("uuid");
-		String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-
-		MultipartFile file1 = multipartRequest.getFile("img1");
-		MultipartFile file2 = multipartRequest.getFile("img2");
-		MultipartFile file3 = multipartRequest.getFile("img3");
-		MultipartFile file4 = multipartRequest.getFile("img4");
-		String nwename = "";
-		if (file1 != null) {
-			nwename = saveImg(file1, uuid, uploadPath, "1");
-		}
-
-		if (file2 != null) {
-			nwename = saveImg(file2, uuid, uploadPath, "2");
-		}
-
-		if (file3 != null) {
-			nwename = saveImg(file3, uuid, uploadPath, "3");
-		}
-
-		if (file4 != null) {
-			nwename = saveImg(file4, uuid, uploadPath, "4");
-		}
-		Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("imgname", nwename);
-		writer.println(gson.toJson(map));
-		writer.flush();
-		writer.close();*/
+		
 	}
-
-//	private String saveImg(MultipartFile file, String uuid, String uploadPath, String code)
-//			throws IllegalStateException, IOException {
-//		String oldName = file.getOriginalFilename();
-//		String[] strs = oldName.split("\\.");
-//		String newname = uuid + "-" + code + "." + strs[strs.length - 1];
-//		System.out.println(uploadPath);
-//		File uploadDir = new File(uploadPath);
-//		if (!uploadDir.exists()) {
-//			uploadDir.mkdirs();
-//		}
-//		File uploadFile = new File(uploadPath + "/" + newname);
-//		file.transferTo(uploadFile);// 上传
-//		return newname;
-//	}
+	
+	 /**
+     * @param originalFile  原文件
+     * @param resizedFile  压缩目标文件
+     * @param quality  压缩质量（越高质量越好）
+     * @param scale  缩放比例;  1等大.
+     * @throws IOException
+     */
+    public static void resize(File originalFile, File resizedFile,double scale, float quality) throws IOException {  
+        ImageIcon ii = new ImageIcon(originalFile.getCanonicalPath());  
+        Image i = ii.getImage();  
+        int iWidth = (int) (i.getWidth(null)*scale);  
+        int iHeight = (int) (i.getHeight(null)*scale); 
+        //在这你可以自定义 返回图片的大小 iWidth iHeight
+        Image resizedImage = i.getScaledInstance(iWidth,iHeight, Image.SCALE_SMOOTH);  
+        // 获取图片中的所有像素
+        Image temp = new ImageIcon(resizedImage).getImage();  
+        // 创建缓冲
+        BufferedImage bufferedImage = new BufferedImage(temp.getWidth(null),  
+                temp.getHeight(null), BufferedImage.TYPE_INT_RGB);  
+        // 复制图片到缓冲流中
+        Graphics g = bufferedImage.createGraphics();  
+        // 清除背景并开始画图
+        g.setColor(Color.white);  
+        g.fillRect(0, 0, temp.getWidth(null), temp.getHeight(null));  
+        g.drawImage(temp, 0, 0, null);  
+        g.dispose();
+        // 柔和图片.  
+        float softenFactor =0.05f;  
+        float[] softenArray = { 0, softenFactor, 0, softenFactor,  
+                1 - (softenFactor * 4), softenFactor, 0, softenFactor, 0 };  
+        Kernel kernel = new Kernel(3, 3, softenArray);  
+        ConvolveOp cOp = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);  
+        bufferedImage = cOp.filter(bufferedImage, null);  
+        FileOutputStream out = new FileOutputStream(resizedFile);  
+        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);  
+        JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bufferedImage);  
+        param.setQuality(quality, true);  
+        encoder.setJPEGEncodeParam(param);  
+        encoder.encode(bufferedImage);
+        bufferedImage.flush();
+        out.close();
+    } 
 }
