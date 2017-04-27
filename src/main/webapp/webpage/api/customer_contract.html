@@ -11,8 +11,7 @@
 <body style="background-color: #efeff4;">
 	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
 		<div class="mui-scroll" >
-			<img src="img/banner.jpg" style="width: 100%; height: 140px;">
-				<div id="space"></div>
+			<div id="space"></div>
 		</div>
 	</div>
 
@@ -62,7 +61,7 @@
  						var div = document.createElement('div');
  						div.className = 'weui-form-preview';
  						div.style = 'margin-top: 10px;';	
-						div.innerHTML=
+						var neirong = 
 				    		"<div class='weui-form-preview-hd'>"+
 		                		"<label class='weui-form-preview-label' style='font-size: 1em;height: ;'>合同号</label>"+
 		                		"<em class='weui-form-preview-value' style='font-size: 1em;' id='num'>"+data[i].contract_number+"</em>"+
@@ -88,10 +87,15 @@
 		                    		"<label class='weui-form-preview-label'>签订时间</label>"+
 		                    		"<span class='weui-form-preview-value' id='time'>"+data[i].review_time+"</span>"+
 		                		"</p>"+
-		            		"</div>"+
-		            		"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
-		                		"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
 		            		"</div>";
+		            		if(data[i].contract_flag=="0"){
+		            			neirong = neirong +
+		            			"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
+		                			"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
+		            			"</div>";	
+		            		}
+		            		
+		            		div.innerHTML = neirong;
 						
 						$("#space").append(div);
 					}

@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jeeplus.api.service.ContractScheduleService;
 import com.jeeplus.api.service.ContractService;
 import com.jeeplus.api.util.Sms;
@@ -63,7 +62,7 @@ public class WorkerController extends BaseController {
 	@RequestMapping(value = "index")
 	public String index(HttpServletRequest request, HttpServletResponse response) {
 		//request.getSession().setAttribute("sysId","001");// XQNtest
-		//request.getSession().setAttribute("openId","001");// XQNtest
+		request.getSession().setAttribute("openId","001");// XQNtest
 		String openId = (String) request.getSession().getAttribute("openId");
 		if (openId == null) {
 			return "redirect:../../../webpage/api/getOpen.html";
@@ -206,32 +205,42 @@ public class WorkerController extends BaseController {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
 
+		Gson gson = new Gson();
+		Map<String, String> map = new HashMap<String, String>();
+		
 		String contractId = request.getParameter("contractId");
 		String descript = request.getParameter("descript");
 		String percent = request.getParameter("percent");
 		String pic = request.getParameter("imgUrl");
 		
-		DkContractSchedule contractSchedule = new DkContractSchedule();
-		String uuid = UUID.randomUUID().toString().replace("-", "");
-		contractSchedule.setId(uuid);
-		contractSchedule.setDkContract(dkContractService.get(contractId));
-		contractSchedule.setDescript(descript);
-		contractSchedule.setSubmitDate(new Date());
-		contractSchedule.setPic(pic);
-		if(percent!=null&&!"".equals(percent)){
-			contractSchedule.setPercent(Integer.valueOf(percent));
+		List<HashMap<String, Object>> list = contractScheduleService.findListByContractId(contractId, 1,
+				1);
+		HashMap<String, Object> last = list.get(0);
+		Integer old_percent = (Integer) last.get("percent");
+		Integer new_percent = Integer.valueOf(percent);
+		if(new_percent>old_percent){
+			DkContractSchedule contractSchedule = new DkContractSchedule();
+			String uuid = UUID.randomUUID().toString().replace("-", "");
+			contractSchedule.setId(uuid);
+			contractSchedule.setDkContract(dkContractService.get(contractId));
+			contractSchedule.setDescript(descript);
+			contractSchedule.setSubmitDate(new Date());
+			contractSchedule.setPic(pic);
+			if(percent!=null&&!"".equals(percent)){
+				contractSchedule.setPercent(Integer.valueOf(percent));
+			}
+			User user = new User();
+			String sysId = (String) request.getSession().getAttribute("sysId");
+			user.setId(sysId);
+			contractSchedule.setCreateBy(user);
+			contractSchedule.setCreateDate(new Date());
+			contractSchedule.setIsNewRecord(true);
+			dkContractScheduleService.save(contractSchedule);
+			map.put("msg", "success");
+		}else{
+			map.put("msg", "fail");
 		}
-		User user = new User();
-		String sysId = (String) request.getSession().getAttribute("sysId");
-		user.setId(sysId);
-		contractSchedule.setCreateBy(user);
-		contractSchedule.setCreateDate(new Date());
-		contractSchedule.setIsNewRecord(true);
-		dkContractScheduleService.save(contractSchedule);
-
-		Gson gson = new Gson();
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("msg", "success");
+		
 		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
@@ -281,7 +290,7 @@ public class WorkerController extends BaseController {
                 System.out.println(finaltime - pre);  
             }
         }
-        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        Gson gson = new Gson();
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("imgname", allFilesName);
 		writer.println(gson.toJson(map));

@@ -9,13 +9,29 @@
 		<title>我的任务</title>
 	</head>
 <body style="background-color: #efeff4;">
-			<div class="weui_search_bar" style="z-index:100">
-  				<input type="hidden" id="search">
-				<input  class="search-input" id='searchShow' placeholder='请输入合同号或客户手机号' style="box-sizing:content-box"/>
-				<button  class="weui_btn weui_btn_mini weui_btn_primary" onclick="search()">
-					<i class="icon icon-4" style="color: white;"></i>
-				</button>  
+<!-- 	<div class="weui_search_bar" style="z-index:100">
+  		<input type="hidden" id="search">
+		<input  class="search-input" id='searchShow' placeholder='请输入合同号或客户手机号' style="box-sizing:content-box"/>
+		<button  class="weui_btn weui_btn_mini weui_btn_primary" onclick="search()">
+			<i class="icon icon-4" style="color: white;"></i>
+		</button>  
+	</div> -->
+	
+	<input type="hidden" id="search">
+	<div class="weui-search-bar" id="searchBar" style="z-index:100;height: 45px">
+		<form class="weui-search-bar__form" onchange="search('1')">
+			<div class="weui-search-bar__box">
+				<i class="weui-icon-search"></i>
+				<input class="weui-search-bar__input" id="searchInput" placeholder="请输入合同或者手机号" required="" type="search">
+				<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
 			</div>
+			<label class="weui-search-bar__label" id="searchText">
+				<i class="weui-icon-search"></i>
+				<span>搜索</span>
+			</label>
+	</form>
+	<a href="javascript:search('0')" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+	</div>
 			
 	<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top:45px">
 
@@ -30,12 +46,16 @@
 <script type="text/javascript" charset="utf-8">
 
 	window.onload=function(){
-	 	document.getElementById("searchShow").value=getQueryString("search");
+	 	document.getElementById("searchInput").value=getQueryString("search");
 	 	document.getElementById("search").value=getQueryString("search");
 	}
 
-	function search(){
-		window.location.href="worker_contract.html?search="+$("#searchShow").val();
+	function search(code){
+		if(code=='1'){
+			window.location.href="worker_contract.html?search="+$("#searchInput").val();	
+		}else{
+			window.location.href="worker_contract.html?search=";
+		}
 	}
 
 	function toschedule(id) {
@@ -170,5 +190,49 @@
 			return unescape(r[2]);
 		return null; //返回参数值
 	}
+	
+    $(function(){
+        var $searchBar = $('#searchBar'),
+            $searchResult = $('#searchResult'),
+            $searchText = $('#searchText'),
+            $searchInput = $('#searchInput'),
+            $searchClear = $('#searchClear'),
+            $searchCancel = $('#searchCancel');
+
+        function hideSearchResult(){
+            $searchResult.hide();
+            $searchInput.val('');
+        }
+        function cancelSearch(){
+            hideSearchResult();
+            $searchBar.removeClass('weui-search-bar_focusing');
+            $searchText.show();
+        }
+
+        $searchText.on('click', function(){
+            $searchBar.addClass('weui-search-bar_focusing');
+            $searchInput.focus();
+        });
+        $searchInput
+            .on('blur', function () {
+                if(!this.value.length) cancelSearch();
+            })
+            .on('input', function(){
+                if(this.value.length) {
+                    $searchResult.show();
+                } else {
+                    $searchResult.hide();
+                }
+            })
+        ;
+        $searchClear.on('click', function(){
+            hideSearchResult();
+            $searchInput.focus();
+        });
+        $searchCancel.on('click', function(){
+            cancelSearch();
+            $searchInput.blur();
+        });
+    });
 </script>
 </html>
