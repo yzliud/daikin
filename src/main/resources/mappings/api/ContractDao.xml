@@ -16,12 +16,12 @@
 	</sql>
 	
     
-	<select id="findListByMobile" resultType="hashmap" >
+	<select id="findListByMobileOrContract" resultType="hashmap" >
 		SELECT 
 			<include refid="dkContractColumns"/>
 		FROM dk_contract a
 		WHERE a.review_status = '9'
-		and a.mobile = #{0}
+		and (a.mobile = #{0} or a.contract_number = #{0})
 		order by a.update_date desc
 		limit #{1},#{2}
 	</select>
