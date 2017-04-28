@@ -112,6 +112,10 @@
 		                    		"<span class='weui-form-preview-value' id='name'>"+data[i].member_name+"</span>"+
 		                		"</p>"+
 		                		"<p>"+
+                    				"<label class='weui-form-preview-label'>客户电话</label>"+
+                    				"<a class='weui-form-preview-value' id='mobile' href='tel:"+data[i].member_mobile+"'>"+data[i].member_mobile+"</a>"+
+                				"</p>"+
+		                		"<p>"+
 		                    		"<label class='weui-form-preview-label'>签订时间</label>"+
 		                    		"<span class='weui-form-preview-value' id='time'>"+data[i].review_time+"</span>"+
 		                		"</p>"+
@@ -165,6 +169,9 @@
 		this.click();
 	});
 	mui("#pullrefresh").on('tap', 'button', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'a', function(event) {
 		this.click();
 	});
 

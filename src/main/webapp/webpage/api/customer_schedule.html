@@ -90,7 +90,7 @@ function pulldownRefresh() {
                 				"</p>"+
                 				"<p>"+
                     				"<label class='weui-form-preview-label'>联系电话</label>"+
-                    				"<span class='weui-form-preview-value' id='mobile'>"+data[i].mobile+"</span>"+
+                    				"<a class='weui-form-preview-value' id='mobile' href='tel:"+data[i].mobile+"'>"+data[i].mobile+"</a>"+
                 				"</p>"+
 							"</div>";
 				    	
@@ -145,6 +145,9 @@ function pulldownRefresh() {
 		this.click();
 	});
 	mui("#pullrefresh").on('tap', 'button', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'a', function(event) {
 		this.click();
 	});
 
