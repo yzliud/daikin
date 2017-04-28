@@ -10,8 +10,13 @@
 	</head>
 	<body style="background-color: #efeff4;">
 <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-	<div class="mui-scroll">
-		<div id="space"></div>
+		<div class="mui-scroll">
+			<div style="width:100%;height:100%;position:fixed;top:0;left:0px;display: none;z-index:998;" id="big-img-div" onclick="hidediv()">
+				<div style="position:absolute;background:black; filter:alpha(opacity:70);opacity:0.7;top:0; z-index:999;left:0px;width:100%;height:100%;display: none;" id="background-img">
+			</div>	
+				<img id="big-img" src="" style="position: absolute;top:100px;width:90%;left:5%;z-index: 1000;display: none;"/>
+			</div>
+			<div id="space"></div>
 	</div>
 </div>
 </body>
@@ -22,11 +27,11 @@
 		function hidediv() {
     		$("#big-img-div").css("display","none");
     	}
-		function showBig(th) {
-		$("#big-img-div").css("display","");
-		$("#background-img").css("display","");
-		$("#big-img").attr("src",$(th).attr("src"));
-		$("#big-img").css("display","");
+		function showBig(src) {
+			$("#big-img-div").css("display","");
+			$("#background-img").css("display","");
+			$("#big-img").attr("src",src);
+			$("#big-img").css("display","");
     	}
 		
 		function toschedule(){
@@ -105,7 +110,7 @@ function pulldownRefresh() {
 			                 }    
 			              }
 						for(var k = 0 ;k<imgback_array.length;k++){
-							$('#'+data[i].id).append("<li class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
+							$('#'+data[i].id).append("<li  onclick='showBig(&quot;"+imgback_array[k]+"&quot;)' class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
 						}
 					}
 				},
@@ -144,6 +149,9 @@ function pulldownRefresh() {
 		this.click();
 	});
 	mui("#pullrefresh").on('tap', 'button', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'li', function(event) {
 		this.click();
 	});
 
