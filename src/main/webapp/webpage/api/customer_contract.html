@@ -63,8 +63,8 @@
 		setTimeout(function() {
 			page = 1;
 			//刷新的业务
-			
-			mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+			document.location.reload();
+			//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 		}, 1500);
 	}
 

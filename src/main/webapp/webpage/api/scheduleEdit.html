@@ -170,11 +170,12 @@
 	        	if(data.msg =='success'){
 		        	var btnArray = [ '确定' ];
 		  			mui.confirm('上传成功', '', btnArray, function(e) {
+		  				$("#imgUrl").val("");
 		  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
 		  			})	
 	        	}else{
 	        		var btnArray = [ '确定' ];
-		  			mui.confirm('新进度百分比需高于之前进度！', '', btnArray, function(e) {})	
+		  			mui.confirm('新进度百分比不能小于之前进度！', '', btnArray, function(e) {})	
 	        	}
 	          }
 	     });

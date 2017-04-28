@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -120,21 +121,23 @@ public class WorkerController extends BaseController {
 		String openId = (String) request.getSession().getAttribute("openId");
 
 		if (code.equals(par_code)) {
-			DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
-			worker.setMobile(mobile);
-			worker.setUpdateDate(new Date());
 			SysUser user = sysUserService.findUniqueByProperty("mobile", mobile);
 			if (user != null) {
+				DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
+				worker.setMobile(mobile);
+				worker.setUpdateDate(new Date());
 				worker.setName(user.getName());
 				worker.setSysUserId(user.getId());
 				User user2 = new User();
 				user2.setId(user.getId());
 				worker.setUpdateBy(user2);
+				workerService.save(worker);
+				msg = "success";
+			}else{
+				msg = "此手机号人员不存在！";
 			}
-			workerService.save(worker);
-			msg = "success";
 		} else {
-			msg = "验证码不正确";
+			msg = "验证码不正确！";
 		}
 		System.out.println(openId);
 
@@ -223,13 +226,24 @@ public class WorkerController extends BaseController {
 		String descript = request.getParameter("descript");
 		String percent = request.getParameter("percent");
 		String pic = request.getParameter("imgUrl");
+		String[] str = pic.split(",");
+		str = removeArrayEmptyTextBackNewArray(str);
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < str.length; i++){
+			if("".equals(sb)){
+				sb.append(str[i]);
+			}else{
+				sb. append(","+str[i]);
+			}
+		}
+		pic = sb.toString();
 		
-		List<HashMap<String, Object>> list = contractScheduleService.findListByContractId(contractId, 1,
+		List<HashMap<String, Object>> list = contractScheduleService.findListByContractId(contractId, 0,
 				1);
 		HashMap<String, Object> last = list.get(0);
 		double old_percent = Double.valueOf((Integer) last.get("percent"));
 		double new_percent = Integer.valueOf(percent);
-		if(new_percent > old_percent){
+		if(new_percent >= old_percent){
 			DkContractSchedule contractSchedule = new DkContractSchedule();
 			String uuid = UUID.randomUUID().toString().replace("-", "");
 			contractSchedule.setId(uuid);
@@ -364,4 +378,16 @@ public class WorkerController extends BaseController {
         bufferedImage.flush();
         out.close();
     } 
+    
+    private String[] removeArrayEmptyTextBackNewArray(String[] strArray) {
+        List<String> strList= Arrays.asList(strArray);
+        List<String> strListNew=new ArrayList<>();
+        for (int i = 0; i <strList.size(); i++) {
+            if (strList.get(i)!=null&&!strList.get(i).equals("")){
+                strListNew.add(strList.get(i));
+            }
+        }
+        String[] strNewArray = strListNew.toArray(new String[strListNew.size()]);
+        return   strNewArray;
+    }
 }

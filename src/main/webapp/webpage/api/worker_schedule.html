@@ -41,10 +41,10 @@
  * 下拉刷新具体业务实现
  */
 function pulldownRefresh() {
-	setTimeout(function() {
-		page=1;
+ 	setTimeout(function() {
 		//刷新的业务
-		mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+		document.location.reload();
+		//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 	}, 1500);
 }
 
