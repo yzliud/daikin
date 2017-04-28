@@ -67,7 +67,7 @@
                                
                             </ul>
                             <div class="weui-uploader__input-box">
-                                <input id="uploaderInput" name="uploaderInput" class="weui-uploader__input js_file" type="file"  accept="image/*" onchange="upImg()" multiple/>
+                                <input id="uploaderInput" name="uploaderInput" class="weui-uploader__input js_file" type="file"  onchange="upImg()" accept="image/*" multiple/>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="weui-btn-area">
-            <a class="weui-btn weui-btn_primary" href="javascript:upload();" id="showTooltips">确定</a>
+            <a class="weui-btn weui-btn_primary" href="javascript:upload();" id="showTooltips">PPPL</a>
         </div>
     </div>
 </div>
@@ -97,7 +97,7 @@
 	$uploaderFiles = $("#uploaderFiles");
 	
 	function upImg(){
-		alert('upImg');
+		alert(getQueryString("random"));
         $.ajaxFileUpload
         ({
                 url: "../../a/api/worker/upload", //用于文件上传的服务器端请求地址
@@ -106,7 +106,7 @@
                 dataType: 'json', //返回值类型 一般设置为json
                 success: function (data, status)  //服务器成功响应处理函数
                 {
-                	alert(status);
+                	alert(data.imgname);
                 	var fileName = data.imgname.split(',');
                 	for(var i = 0 ;i<fileName.length;i++)
                 	{
@@ -121,10 +121,14 @@
                 			
                 		}            
                 	} 
-                	$("#uploaderInput").attr("onchange","upImg()");
-                }
+                },
+                error:function(data,status,e){
+                	alert(data);
+                	alert(status);
+                    alert(e);  
+               } 
             });
-	}
+		} 
      
         $uploaderFiles.on("click", "li", function(){
             $galleryImg.attr("style", this.getAttribute("style"));

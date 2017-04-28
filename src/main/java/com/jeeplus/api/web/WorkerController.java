@@ -227,9 +227,9 @@ public class WorkerController extends BaseController {
 		List<HashMap<String, Object>> list = contractScheduleService.findListByContractId(contractId, 1,
 				1);
 		HashMap<String, Object> last = list.get(0);
-		Integer old_percent = (Integer) last.get("percent");
-		Integer new_percent = Integer.valueOf(percent);
-		if(new_percent>old_percent){
+		double old_percent = Double.valueOf((Integer) last.get("percent"));
+		double new_percent = Integer.valueOf(percent);
+		if(new_percent > old_percent){
 			DkContractSchedule contractSchedule = new DkContractSchedule();
 			String uuid = UUID.randomUUID().toString().replace("-", "");
 			contractSchedule.setId(uuid);
@@ -264,21 +264,26 @@ public class WorkerController extends BaseController {
 	@RequestMapping(value = "upload")
 	public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
+		System.out.println("upload:begin==========0");
 		PrintWriter writer = response.getWriter();
 		String allFilesName = "";
 		//创建一个通用的多部分解析器  
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());  
         //判断 request 是否有文件上传,即多部分请求  
-        if(multipartResolver.isMultipart(request)){ 
+        System.out.println("upload:begin==========1");
+        if(multipartResolver.isMultipart(request)){
+        	  System.out.println("upload:begin==========2");
         	String myFileName = "";
         	MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  
             //取得request中的所有文件名  
         	List<MultipartFile> files = multiRequest.getFiles("uploaderInput");
-            for(MultipartFile file:files ){  
+            for(MultipartFile file:files ){
+            	  System.out.println("upload:begin==========2");
                 //记录上传过程起始时的时间，用来计算上传时间  
                 int pre = (int) System.currentTimeMillis();  
                 //取得上传文件  
                 if(file != null){  
+                	  System.out.println("upload:begin==========3");
                     //取得当前上传文件的文件名称  
                     myFileName = file.getOriginalFilename();  
                     //如果名称不为'',说明该文件存在，否则说明该文件不存在  
@@ -310,6 +315,7 @@ public class WorkerController extends BaseController {
         Gson gson = new Gson();
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("imgname", allFilesName);
+		System.out.println("gson.toJson(map)=========="+gson.toJson(map));
 		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
