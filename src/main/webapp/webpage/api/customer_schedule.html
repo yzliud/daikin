@@ -14,7 +14,7 @@
 		<div style="width:100%;height:100%;position:fixed;top:0;left:0px;display: none;z-index:998;" id="big-img-div" onclick="hidediv()">
 			<div style="position:absolute;background:black; filter:alpha(opacity:70);opacity:0.7;top:0; z-index:999;left:0px;width:100%;height:100%;display: none;" id="background-img">
 		</div>	
-			<img id="big-img" src="" style="position: absolute;top:100px;width:90%;left:5%;z-index: 1000;display: none;"/>
+			<img id="big-img" src="" style="position: absolute;width:90%;left:5%;z-index: 1000;display: none;"/>
 		</div>
 		<div id="space"></div>
 	</div>
@@ -26,11 +26,16 @@
 	function hidediv() {
 		$("#big-img-div").css("display","none");
 	}
-	function showBig(src) {
+	function showBig(src,number,page) {
+		var height = document.body.scrollHeight;
+		alert(number)
+		var realtop = height*(page-1) + height*number/3;
+
 		$("#big-img-div").css("display","");
 		$("#background-img").css("display","");
 		$("#big-img").attr("src",src);
 		$("#big-img").css("display","");
+		$("#big-img").css({'top':realtop+"px"});
 	}
 		
 /**
@@ -111,7 +116,7 @@ function pulldownRefresh() {
 			                 }    
 			              }
 						for(var k = 0 ;k<imgback_array.length;k++){
-							$('#'+data[i].id).append("<li onclick='showBig(&quot;"+imgback_array[k]+"&quot;)' class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
+							$('#'+data[i].id).append("<li  onclick='showBig(&quot;"+imgback_array[k]+"&quot;,&quot;"+i+"&quot;,&quot;"+(count-1)+"&quot;)' class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
 						}
 					}
 				},
