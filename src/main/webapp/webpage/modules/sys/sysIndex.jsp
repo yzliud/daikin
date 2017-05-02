@@ -11,8 +11,8 @@
 	<title>舜举后台管理系统</title>
 	
 	<%@ include file="/webpage/include/head.jsp"%>
-	<script src="${ctxStatic}/common/inspinia.js?v=3.2.0"></script>
-	<script src="${ctxStatic}/common/contabs.js"></script> 
+	<script src="${frontPath}${ctxStatic}/common/inspinia.js?v=3.2.0"></script>
+	<script src="${frontPath}${ctxStatic}/common/contabs.js"></script> 
     <meta name="keywords" content="舜举后台管理系统">
     <meta name="description" content="舜举后台管理系统">
     <script type="text/javascript">
@@ -204,9 +204,9 @@ var wsServer = 'ws://'+window.document.domain+':8668';
 
 </script>
 <!--webscoket接口  -->
-<script src="${ctxStatic}/layer-v2.3/layim/layui/layui.js"></script>
+<script src="${frontPath}${ctxStatic}/layer-v2.3/layim/layui/layui.js"></script>
 
-<script src="${ctxStatic}/layer-v2.3/layim/layim.js"></script>
+<script src="${frontPath}${ctxStatic}/layer-v2.3/layim/layim.js"></script>
 <!-- 即时聊天插件 结束 -->
 <style>
 /*签名样式*/
