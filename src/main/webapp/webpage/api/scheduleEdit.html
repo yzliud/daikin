@@ -114,11 +114,11 @@
                 		if(fileName[i] != "" && typeof(fileName[i]) != "undefined"){
                         	var url = $("#imgUrl").val();
                         	if(url==""){
-                        		document.getElementById("imgUrl").value="../../upload/"+fileName[i];	
+                        		document.getElementById("imgUrl").value="/upload/"+fileName[i];	
                         	}else{
-                        		document.getElementById("imgUrl").value= url + ",../../upload/"+fileName[i];
+                        		document.getElementById("imgUrl").value= url + ",/upload/"+fileName[i];
                         	}
-                			$('#uploaderFiles').append("<li id = '"+fileName[i].replace(".","_")+"' class='weui-uploader__file' style='background-image:url(../../upload/"+fileName[i]+")'></li>");
+                			$('#uploaderFiles').append("<li id = '"+fileName[i].replace(".","_")+"' class='weui-uploader__file' style='background-image:url(/upload/"+fileName[i]+")'></li>");
                 			
                 		}            
                 	} 
