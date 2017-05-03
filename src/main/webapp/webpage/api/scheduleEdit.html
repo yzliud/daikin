@@ -84,9 +84,10 @@
     <script type="text/javascript" src="js/jweixin-1.0.0.js"></script>
     <script src="js/weui.min.js"></script>
     <script src="js/mui.min.js"></script>
-    <script src="js/example.js"></script>
     <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script src="js/example.js"></script>
     <script type="text/javascript" src="js/ajaxfileupload.js" ></script>
+    <script type="text/javascript" src="js/layer/layer.js" ></script>
     <script type="text/javascript" src="js/lay/layui.js" ></script>
     
     
@@ -97,6 +98,7 @@
 	$uploaderFiles = $("#uploaderFiles");
 	
 	function upImg(){
+		var index = layer.load();
         $.ajaxFileUpload
         ({
                 url: "../../a/api/worker/upload", //用于文件上传的服务器端请求地址
@@ -105,6 +107,7 @@
                 dataType: 'json', //返回值类型 一般设置为json
                 success: function (data, status)  //服务器成功响应处理函数
                 {
+                	layer.close(index);
                 	var fileName = data.imgname.split(',');
                 	for(var i = 0 ;i<fileName.length;i++)
                 	{
