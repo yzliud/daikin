@@ -239,11 +239,12 @@ public class WorkerController extends BaseController {
 		pic = sb.toString();
 		
 		double old_percent = 0;
-		List<HashMap<String, Object>> list = contractScheduleService.findListByContractId(contractId, 0,
-				1);
-		if(list!=null&&list.get(0)!=null){
+		List<HashMap<String, Object>> list = contractScheduleService.findListByContractId(contractId, 0, 1);
+		if(list!=null && list.size() > 0 ){
 			HashMap<String, Object> last = list.get(0);
-			old_percent = Double.valueOf((Integer) last.get("percent"));
+			if(last.get("percent") != null){
+				old_percent = Double.valueOf((Integer) last.get("percent"));
+			}
 		}
 		double new_percent = Integer.valueOf(percent);
 		if(new_percent >= old_percent){
