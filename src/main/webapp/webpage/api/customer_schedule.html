@@ -9,13 +9,13 @@
 		<title>安装进度详细</title>
 	</head>
 <body style="background-color: #efeff4;">
+<div style="width:100%;height:100%;position:fixed;top:0;left:0px;display: none;z-index:998;" id="big-img-div" onclick="hidediv()">
+	<div style="position:absolute;background:black; filter:alpha(opacity:70);opacity:0.7;top:0; z-index:999;left:0px;width:100%;height:100%;display: none;" id="background-img">
+	</div>	
+	<img id="big-img" src="" style="position: absolute;top:10%;width:90%;left:5%;z-index: 1000;display: none;"/>
+</div>
 <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
     <div class="mui-scroll">
-		<div style="width:100%;height:100%;position:fixed;top:0;left:0px;display: none;z-index:998;" id="big-img-div" onclick="hidediv()">
-			<div style="position:absolute;background:black; filter:alpha(opacity:70);opacity:0.7;top:0; z-index:999;left:0px;width:100%;height:100%;display: none;" id="background-img">
-		</div>	
-			<img id="big-img" src="" style="position: absolute;width:90%;left:5%;z-index: 1000;display: none;"/>
-		</div>
 		<div id="space"></div>
 	</div>
 </div>
@@ -34,7 +34,7 @@
 		$("#background-img").css("display","");
 		$("#big-img").attr("src",src);
 		$("#big-img").css("display","");
-		$("#big-img").css({'top':realtop+"px"});
+		//$("#big-img").css({'top':realtop+"px"});
 	}
 		
 /**
