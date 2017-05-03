@@ -609,6 +609,7 @@ input.weui-btn_plain-default {
 .weui-form-preview {
   position: relative;
   background-color: #FFFFFF;
+  margin-top: 10px;
 }
 .weui-form-preview:before {
   content: " ";

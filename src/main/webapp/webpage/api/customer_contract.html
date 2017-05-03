@@ -9,10 +9,24 @@
 		<title></title>
 	</head>
 <body style="background-color: #efeff4;">
-	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+	<input type="hidden" id="search">
+	<div class="weui-search-bar" id="searchBar" style="z-index:100;height: 45px">
+		<form class="weui-search-bar__form" onchange="search('1')">
+			<div class="weui-search-bar__box">
+				<i class="weui-icon-search"></i>
+				<input class="weui-search-bar__input" id="searchInput" placeholder="请输入合同号或者手机号" required="" type="search">
+				<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+			</div>
+			<label class="weui-search-bar__label" id="searchText">
+				<i class="weui-icon-search"></i>
+				<span>搜索</span>
+			</label>
+		</form>
+		<a href="javascript:search('0')" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+	</div>
+	<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top:45px">
 		<div class="mui-scroll" >
-			<img src="img/banner.jpg" style="width: 100%; height: 140px;">
-				<div id="space"></div>
+			<div id="space"></div>
 		</div>
 	</div>
 
@@ -20,6 +34,19 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/mui.min.js"></script>
 <script type="text/javascript" charset="utf-8">
+
+	window.onload=function(){
+ 		document.getElementById("searchInput").value=getQueryString("search");
+ 		document.getElementById("search").value=getQueryString("search");
+	}
+
+	function search(code){
+		if(code=='1'){
+			window.location.href="customer_contract.html?search="+$("#searchInput").val();	
+		}else{
+			window.location.href="customer_contract.html?search=";
+		}
+	}
 
 	function toschedule(id) {
 		window.location.href = "customer_schedule.html?contractId="+id;
@@ -36,8 +63,8 @@
 		setTimeout(function() {
 			page = 1;
 			//刷新的业务
-			
-			mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+			document.location.reload();
+			//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 		}, 1500);
 	}
 
@@ -52,7 +79,7 @@
 				url: "../../a/api/customer/getAllContracts",
 				data: {
 					"pageNum": count ,// 传过去的页码
-					"mobile" : getQueryString("mobile")
+					"search" : $("#search").val()
 				},
 				dataType: "JSON",
 				success: function(data) {
@@ -62,7 +89,7 @@
  						var div = document.createElement('div');
  						div.className = 'weui-form-preview';
  						div.style = 'margin-top: 10px;';	
-						div.innerHTML=
+						var neirong = 
 				    		"<div class='weui-form-preview-hd'>"+
 		                		"<label class='weui-form-preview-label' style='font-size: 1em;height: ;'>合同号</label>"+
 		                		"<em class='weui-form-preview-value' style='font-size: 1em;' id='num'>"+data[i].contract_number+"</em>"+
@@ -85,13 +112,22 @@
 		                    		"<span class='weui-form-preview-value' id='name'>"+data[i].member_name+"</span>"+
 		                		"</p>"+
 		                		"<p>"+
+                    				"<label class='weui-form-preview-label'>客户电话</label>"+
+                    				"<a class='weui-form-preview-value' id='mobile' href='tel:"+data[i].member_mobile+"'>"+data[i].member_mobile+"</a>"+
+                				"</p>"+
+		                		"<p>"+
 		                    		"<label class='weui-form-preview-label'>签订时间</label>"+
 		                    		"<span class='weui-form-preview-value' id='time'>"+data[i].review_time+"</span>"+
 		                		"</p>"+
-		            		"</div>"+
-		            		"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
-		                		"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
 		            		"</div>";
+		            		if(data[i].contract_flag=="0"){
+		            			neirong = neirong +
+		            			"<div class='weui-form-preview-ft' onclick='toschedule(&quot;"+data[i].id+"&quot;)'>"+
+		                			"<a class='weui-form-preview-btn weui-form-preview-btn-primary'>查看进度</a>"+
+		            			"</div>";	
+		            		}
+		            		
+		            		div.innerHTML = neirong;
 						
 						$("#space").append(div);
 					}
@@ -126,11 +162,16 @@
 			mui('#pullrefresh').pullRefresh().pullupLoading();
 		});
 	}
+	
+
 
 	mui("#pullrefresh").on('tap', 'div', function(event) {
 		this.click();
 	});
 	mui("#pullrefresh").on('tap', 'button', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'a', function(event) {
 		this.click();
 	});
 
@@ -141,5 +182,49 @@
 			return unescape(r[2]);
 		return null; //返回参数值
 	}
+	
+    $(function(){
+        var $searchBar = $('#searchBar'),
+            $searchResult = $('#searchResult'),
+            $searchText = $('#searchText'),
+            $searchInput = $('#searchInput'),
+            $searchClear = $('#searchClear'),
+            $searchCancel = $('#searchCancel');
+
+        function hideSearchResult(){
+            $searchResult.hide();
+            $searchInput.val('');
+        }
+        function cancelSearch(){
+            hideSearchResult();
+            $searchBar.removeClass('weui-search-bar_focusing');
+            $searchText.show();
+        }
+
+        $searchText.on('click', function(){
+            $searchBar.addClass('weui-search-bar_focusing');
+            $searchInput.focus();
+        });
+        $searchInput
+            .on('blur', function () {
+                if(!this.value.length) cancelSearch();
+            })
+            .on('input', function(){
+                if(this.value.length) {
+                    $searchResult.show();
+                } else {
+                    $searchResult.hide();
+                }
+            })
+        ;
+        $searchClear.on('click', function(){
+            hideSearchResult();
+            $searchInput.focus();
+        });
+        $searchCancel.on('click', function(){
+            cancelSearch();
+            $searchInput.blur();
+        });
+    });
 </script>
 </html>

@@ -45,7 +45,7 @@ public class CustomerController {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
 
-		String mobile = request.getParameter("mobile");
+		String search = request.getParameter("search");
 		String pageNum = request.getParameter("pageNum");
 		if (pageNum == null || "".equals(pageNum)) {
 			pageNum = "1";
@@ -53,7 +53,7 @@ public class CustomerController {
 		Integer pageSize = 3;
 		
 		Integer beginNum = (Integer.valueOf(pageNum)-1)*pageSize;
-		List<HashMap<String, Object>> list = contractService.findListByMobile(mobile,beginNum,pageSize);
+		List<HashMap<String, Object>> list = contractService.findListByMobileOrContract(search,beginNum,pageSize);
 		Gson gson = new Gson();
 		writer.println(gson.toJson(list));
 		writer.flush();

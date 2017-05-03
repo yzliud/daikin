@@ -23,9 +23,9 @@ import com.jeeplus.modules.daikin.entity.DkContract;
 @Transactional(readOnly = true)
 public class ContractService extends CrudService<ContractDao, DkContract> {
 
-	public List<HashMap<String, Object>> findListByMobile(String mobile,int beginNum,int pageSize) {
+	public List<HashMap<String, Object>> findListByMobileOrContract(String mobile,int beginNum,int pageSize) {
 		// TODO Auto-generated method stub
-		return dao.findListByMobile(mobile,beginNum,pageSize);
+		return dao.findListByMobileOrContract(mobile,beginNum,pageSize);
 	}
 
 	public List<HashMap<String, Object>> findListByInstall(String sysId, Integer beginNum, Integer pageSize) {

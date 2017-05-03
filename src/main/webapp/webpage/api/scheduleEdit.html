@@ -67,7 +67,7 @@
                                
                             </ul>
                             <div class="weui-uploader__input-box">
-                                <input id="uploaderInput" name="uploaderInput" class="weui-uploader__input js_file" type="file"  accept="image/*" onchange="upImg()" multiple/>
+                                <input id="uploaderInput" name="uploaderInput" class="weui-uploader__input js_file" type="file"  onchange="upImg()" accept="image/*" multiple/>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="weui-btn-area">
-            <a class="weui-btn weui-btn_primary" href="javascript:upload();" id="showTooltips">确定</a>
+            <a class="weui-btn weui-btn_primary" href="javascript:upload();" id="showTooltips">提交</a>
         </div>
     </div>
 </div>
@@ -99,7 +99,7 @@
 	function upImg(){
         $.ajaxFileUpload
         ({
-                url: '../../a/api/worker/upload', //用于文件上传的服务器端请求地址
+                url: "../../a/api/worker/upload", //用于文件上传的服务器端请求地址
                 secureuri: false, //是否需要安全协议，一般设置为false
                 fileElementId: 'uploaderInput', //文件上传域的ID
                 dataType: 'json', //返回值类型 一般设置为json
@@ -116,48 +116,18 @@
                         		document.getElementById("imgUrl").value= url + ",../../upload/"+fileName[i];
                         	}
                 			$('#uploaderFiles').append("<li id = '"+fileName[i].replace(".","_")+"' class='weui-uploader__file' style='background-image:url(../../upload/"+fileName[i]+")'></li>");
+                			
                 		}            
-                	}              	
-                }
+                	} 
+                },
+                error:function(data,status,e){
+                	alert(data);
+                	alert(status);
+                    alert(e);  
+               } 
             });
-	}
-       
-     /*    $('#uploaderInput').on("change", function(e){
-            var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
-            for (var i = 0, len = files.length; i < len; ++i) {
-                var file = files[i];
-
-                if (url) {
-                    src = url.createObjectURL(file);
-                } else {
-                    src = e.target.result;
-                }
-
-                $uploaderFiles.append($(tmpl.replace('#url#', src)));
-            }
-
-            
-            $.ajaxFileUpload
-            (
-                {
-                    url: '../../a/api/worker/upload', //用于文件上传的服务器端请求地址
-                    secureuri: false, //是否需要安全协议，一般设置为false
-                    fileElementId: 'uploaderInput', //文件上传域的ID
-                    dataType: 'content', //返回值类型 一般设置为json
-                    success: function (data, status)  //服务器成功响应处理函数
-                    {
-                    	var url = $("#imgUrl").val();
-                    	if(url==""){
-                    		document.getElementById("imgUrl").value="../../upload/"+data.imgname;	
-                    	}else{
-                    		document.getElementById("imgUrl").value= url + ",../../upload/"+data.imgname;
-                    	}
-                    	//$('#uploaderFiles').append("<li class='weui-uploader__file' style='background-image:url(../../upload/"+data.imgname+")'></li>'");
-                    }
-                }
-            );
-            
-        }); */
+		} 
+     
         $uploaderFiles.on("click", "li", function(){
             $galleryImg.attr("style", this.getAttribute("style"));
             $gallery.fadeIn(100);
@@ -183,6 +153,9 @@
     	if($("#percent").val()==""){
     		var btnArray = [ '确定' ];
     		mui.confirm('请填写进度百分比！', '', btnArray, function(e) {	})
+    	}else if($("#percent").val() > 100){
+    		var btnArray = [ '确定' ];
+    		mui.confirm('进度百分比不能大于100!', '', btnArray, function(e) {})
     	}else if($("#descript").val()==""){
     		var btnArray = [ '确定' ];
     		mui.confirm('请填写进度描述！', '', btnArray, function(e) {})
@@ -191,12 +164,19 @@
 	          url:"../../a/api/worker/submitSchedule",
 	          data:$("#mainForm").serialize(),
 	          type:"post",
+	          dataType: 'json',
 	          async: false,
 	          success:function(data){//ajax返回的数据
-	        	var btnArray = [ '确定' ];
-	  			mui.confirm('上传成功', '', btnArray, function(e) {
-	  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
-	  			})
+	        	if(data.msg =='success'){
+		        	var btnArray = [ '确定' ];
+		  			mui.confirm('上传成功', '', btnArray, function(e) {
+		  				$("#imgUrl").val("");
+		  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
+		  			})	
+	        	}else{
+	        		var btnArray = [ '确定' ];
+		  			mui.confirm('新进度百分比不能小于之前进度！', '', btnArray, function(e) {})	
+	        	}
 	          }
 	     });
     	}

@@ -11,6 +11,11 @@
 <body style="background-color: #efeff4;">
 <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
     <div class="mui-scroll">
+		<div style="width:100%;height:100%;position:fixed;top:0;left:0px;display: none;z-index:998;" id="big-img-div" onclick="hidediv()">
+			<div style="position:absolute;background:black; filter:alpha(opacity:70);opacity:0.7;top:0; z-index:999;left:0px;width:100%;height:100%;display: none;" id="background-img">
+		</div>	
+			<img id="big-img" src="" style="position: absolute;width:90%;left:5%;z-index: 1000;display: none;"/>
+		</div>
 		<div id="space"></div>
 	</div>
 </div>
@@ -18,15 +23,19 @@
 	<script type="text/javascript" src="js/jquery.min.js" ></script>
 		<script src="js/mui.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
-		function hidediv() {
-    		$("#big-img-div").css("display","none");
-    	}
-		function showBig(th) {
+	function hidediv() {
+		$("#big-img-div").css("display","none");
+	}
+	function showBig(src,number,page) {
+		var height = document.body.scrollHeight;
+		var realtop = height*(page-1) + height*number/3;
+
 		$("#big-img-div").css("display","");
 		$("#background-img").css("display","");
-		$("#big-img").attr("src",$(th).attr("src"));
+		$("#big-img").attr("src",src);
 		$("#big-img").css("display","");
-    	}
+		$("#big-img").css({'top':realtop+"px"});
+	}
 		
 /**
  * 下拉刷新具体业务实现
@@ -35,7 +44,8 @@ function pulldownRefresh() {
 	setTimeout(function() {
 		page=1;
 		//刷新的业务
-		mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+		document.location.reload();
+		//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 	}, 1500);
 }
 
@@ -89,7 +99,7 @@ function pulldownRefresh() {
                 				"</p>"+
                 				"<p>"+
                     				"<label class='weui-form-preview-label'>联系电话</label>"+
-                    				"<span class='weui-form-preview-value' id='mobile'>"+data[i].mobile+"</span>"+
+                    				"<a class='weui-form-preview-value' id='mobile' href='tel:"+data[i].mobile+"'>"+data[i].mobile+"</a>"+
                 				"</p>"+
 							"</div>";
 				    	
@@ -105,7 +115,7 @@ function pulldownRefresh() {
 			                 }    
 			              }
 						for(var k = 0 ;k<imgback_array.length;k++){
-							$('#'+data[i].id).append("<li class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
+							$('#'+data[i].id).append("<li  onclick='showBig(&quot;"+imgback_array[k]+"&quot;,&quot;"+i+"&quot;,&quot;"+(count-1)+"&quot;)' class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
 						}
 					}
 				},
@@ -144,6 +154,12 @@ function pulldownRefresh() {
 		this.click();
 	});
 	mui("#pullrefresh").on('tap', 'button', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'a', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'li', function(event) {
 		this.click();
 	});
 
