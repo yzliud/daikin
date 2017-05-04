@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -282,33 +283,28 @@ public class WorkerController extends BaseController {
 	@RequestMapping(value = "upload")
 	public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
-		System.out.println("upload:begin==========0");
 		PrintWriter writer = response.getWriter();
 		String allFilesName = "";
 		//创建一个通用的多部分解析器  
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());  
         //判断 request 是否有文件上传,即多部分请求  
-        System.out.println("upload:begin==========1");
         if(multipartResolver.isMultipart(request)){
-        	  System.out.println("upload:begin==========2");
         	String myFileName = "";
         	MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  
             //取得request中的所有文件名  
         	List<MultipartFile> files = multiRequest.getFiles("uploaderInput");
         	float imp_cent = 0.5f;
+        	DecimalFormat df=new DecimalFormat("0.00");
             for(MultipartFile file:files ){
-            	  System.out.println("upload:begin==========2");
                 //记录上传过程起始时的时间，用来计算上传时间  
                 int pre = (int) System.currentTimeMillis();  
                 //取得上传文件  
                 if(file != null){  
-                	  System.out.println("upload:begin==========3");
                     //取得当前上传文件的文件名称  
                     myFileName = file.getOriginalFilename();  
                     
                     //如果名称不为'',说明该文件存在，否则说明该文件不存在  
                     if(myFileName.trim() !=""){  
-                        System.out.println(myFileName); 
                         //定义上传路径  
                         String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
                         String file_uuid = UUID.randomUUID().toString().replace("-", ""); 
@@ -319,12 +315,14 @@ public class WorkerController extends BaseController {
                         file.transferTo(localFile);
                         //压缩百分比
                         imp_cent = 0.5f;
+                        double imgd = 0;
                         if (localFile.exists() && localFile.isFile()){  
-                        	imp_cent = 100/localFile.length()/1024;  
-                        	if(imp_cent > 1){
-                        		imp_cent = 1f;
+                        	imgd = new Double(df.format(100/((double)localFile.length()/1024)).toString());
+                        	if(imgd > 1){
+                        		imgd = 1;
                         	}
                         }
+                        imp_cent = (float)imgd;
                         resize(localFile, localFile, 1, imp_cent);
                         
                         if(allFilesName.equals("")){
@@ -336,13 +334,11 @@ public class WorkerController extends BaseController {
                 }  
                 //记录上传该文件后的时间  
                 int finaltime = (int) System.currentTimeMillis();  
-                System.out.println(finaltime - pre);  
             }
         }
         Gson gson = new Gson();
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("imgname", allFilesName);
-		System.out.println("gson.toJson(map)=========="+gson.toJson(map));
 		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();

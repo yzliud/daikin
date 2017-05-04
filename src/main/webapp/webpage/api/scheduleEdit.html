@@ -148,7 +148,7 @@
             $("#"+imgName.replace(".","_")).remove();
 
             var img_str = $("#imgUrl").val();
-            var img_str_new = img_str.replace("../../upload/"+imgName,"");
+            var img_str_new = img_str.replace("/upload/"+imgName,"");
             $("#imgUrl").val(img_str_new);
        });
     
