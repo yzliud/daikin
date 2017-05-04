@@ -1,59 +1,46 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-<link rel="stylesheet" href="css/mui.min.css">
-<link rel="stylesheet" type="text/css" href="css/app.css" />
-<title>中央空调</title>
+  <meta charset="UTF-8">
+  <title>查看合同</title>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="target-densitydpi=device-dpi,width=750, user-scalable=no">
+  <script>
+  /* Fix viewport*/
+  (function(f,u){var o=navigator.userAgent,r=750,e=f.innerWidth||r,g=f.outerHeight||e,q=f.screen.width||e,d=f.screen.availWidth||e,n=f.innerHeight||r,p=f.outerHeight||n,a=f.screen.height||n,k=f.screen.availHeight||n,l=Math.min(e,g,q,d,n,p,a,k),h=l/r,b=f.devicePixelRatio;h=Math.min(h,b);if(h<1){var t=",initial-scale="+h+",maximum-scale="+h,c=u.getElementsByTagName("meta"),j;if(/iphone|ipod/ig.test(o)){j=",user-scalable=no"}if(/android/ig.test(o)){j=""}t+=j||"";if(/zenlife-android-webview/.test(o)&&!/viewport/.test(o)){document.querySelector('html').style.zoom = h}if(top.location!=location){document.querySelector('html').style.zoom = h};for(var s=0,m;s<c.length;s++){m=c[s];if(m.name=="viewport"){m.content+=t}}}}).call(this,window,document);
+  </script>
+  <link rel="stylesheet" type="text/css" href="css/common.css">
+  <link rel="stylesheet" type="text/css" href="css/login.css">
+   
 </head>
-<style>
-.top_img {
-	margin-top: 70px;
-	margin-bottom: 30px;
-	width: 100px;
-}
-</style>
-<body style="background-color: #efeff4;">
-	<div style="text-align: center; width: 100%;">
-		<img SRC="img/user.png" class="top_img" />
-	</div>
-	<div style="padding-left: 8%; width: 100%; padding-right: 8%;">
-		<input placeholder="请输入用户手机号或合同号" type="text"
-			style="-webkit-user-select: auto; width: 100%; padding-left: 10px; height: 40px; font-size: 1em; border-radius: 7px; border: 1px solid #ccc"
-			id="search">
-	</div>
 
-	<button
-		style="margin-top: 25px; width: 84%; margin-left: 8%; height: 40px; font-size: 1em; border-radius: 7px; border: 1px solid #ccc; background-color: white;"
-		onclick="enter()">进入</button>
+<body class="login-bg">
+<!--头部开始-->
+<div class="login-top">
+	<div class="logo-name">
+	 	<div class="name">
+	 	   <img src="img/logo.jpg">
+	 	</div>
+	</div>
+</div>
+<!--头部结束-->
+<div class="main-login">
+	<div class="user-info">	   
+	   <input type="text" name="search" id="search" class="log-box" placeholder="请输入用户手机号或合同号">
+	   <i class="icon-16 gray-x" onclick="javascript:clearInput('search');"></i>
+	</div>
+	<!--  <a href="javascript:login();" class="log-box login-info-btn">登录</a>-->
+	<input type="button" class="log-box login-info-btn" value="查询" onclick="javascript:enter();">
+</div>
 </body>
-<script src="js/mui.min.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" charset="utf-8">
-	//校验手机号是否合法
-	function isPhoneNum() {
-		var phonenum = $("#search").val();
-		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-		if (!myreg.test(phonenum)) {
-			var btnArray = [ '确定' ];
-			mui.confirm('请输入合法手机号!', '', btnArray, function(e) {
-			})
-			return false;
-		} else {
-			return true;
-		}
-	}
-	//弹窗模板
-	function myalert() {
-		var btnArray = [ '确定' ];
-		mui.confirm('现在进入!', '', btnArray, function(e) {
-		})
-	}
 	function enter() {
 		      $.ajax({
-		          url:"../../a/api/customer/getAllContracts",
+		          url:"/a/api/customer/getAllContracts",
 		          data:{
 		        	  search:$("#search").val()
 		          },
@@ -64,12 +51,14 @@
 		        	if(data.length>0){
 		        		window.location.href = "customer_contract.html?search="+document.getElementById("search").value;
 		  			}else{
-		  				var btnArray = [ '确定' ];
-		  				mui.confirm('此手机号或合同号无有效合同!', '', btnArray, function(e) {
-		  				})
+		  				alert('此手机号或合同号无有效合同!');
 		  			}	
 		          }
 		     });
+	}
+	
+	function clearInput(strId){
+		$('#'+strId).val('');
 	}
 </script>
 </html>
