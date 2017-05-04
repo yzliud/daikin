@@ -295,6 +295,7 @@ public class WorkerController extends BaseController {
         	MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  
             //取得request中的所有文件名  
         	List<MultipartFile> files = multiRequest.getFiles("uploaderInput");
+        	float imp_cent = 0.5f;
             for(MultipartFile file:files ){
             	  System.out.println("upload:begin==========2");
                 //记录上传过程起始时的时间，用来计算上传时间  
@@ -304,6 +305,7 @@ public class WorkerController extends BaseController {
                 	  System.out.println("upload:begin==========3");
                     //取得当前上传文件的文件名称  
                     myFileName = file.getOriginalFilename();  
+                    
                     //如果名称不为'',说明该文件存在，否则说明该文件不存在  
                     if(myFileName.trim() !=""){  
                         System.out.println(myFileName); 
@@ -315,8 +317,15 @@ public class WorkerController extends BaseController {
                         String path = uploadPath + "/" + file_uuidname;  
                         File localFile = new File(path);  
                         file.transferTo(localFile);
-                        
-                        resize(localFile, localFile, 1, 0.5f);
+                        //压缩百分比
+                        imp_cent = 0.5f;
+                        if (localFile.exists() && localFile.isFile()){  
+                        	imp_cent = 100/localFile.length()/1024;  
+                        	if(imp_cent > 1){
+                        		imp_cent = 1f;
+                        	}
+                        }
+                        resize(localFile, localFile, 1, imp_cent);
                         
                         if(allFilesName.equals("")){
                         	allFilesName = file_uuidname;
