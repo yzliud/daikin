@@ -324,9 +324,9 @@ public class WorkerController extends BaseController {
                         resize(localFile, localFile, 1, imp_cent);
                         
                         if(allFilesName.equals("")){
-                        	allFilesName = file_uuidname;
+                        	allFilesName = "/upload"+"/"+file_uuidname;
                         }else{
-                        	allFilesName = allFilesName + "," + file_uuidname ;
+                        	allFilesName = allFilesName + ",/upload/" + file_uuidname ;
                         }
                     }  
                 }  
