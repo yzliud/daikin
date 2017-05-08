@@ -27,8 +27,10 @@ public class AuthorizeController {
 	@RequestMapping("/jsauthorize")
 	public void jsauthorize(HttpServletRequest request, HttpServletResponse response, String callback) throws Exception {
 		//共账号及商户相关参数
+		System.out.println("jsauthorize:cmethod==="+request.getParameter("cmethod"));
 		String appid = "wx14f656e580ff9396";
-		String backUri = "http://daikin.samehope.cn/a/api/authorize/toauthorize";
+		String backUri = "http://daikin.samehope.cn/a/api/authorize/toauthorize?cmethod="+request.getParameter("cmethod");
+		System.out.println("backUri=========="+backUri);
 		//String appid = "wxcfe5737777fcfd95";
 		//String backUri = "http://manage.wifibao.top/daikin/a/api/authorize/toauthorize";
 		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
@@ -43,6 +45,7 @@ public class AuthorizeController {
 	@RequestMapping(value = "/toauthorize")
 	public void toauthorize(HttpServletRequest request, HttpServletResponse response, String callback) throws Exception {
 		String code = request.getParameter("code");
+		String cmethod = request.getParameter("cmethod");
 		//商户相关资料 
 		String appid = "wx14f656e580ff9396";
 		String appsecret = "b8f5f782c18a99e11ae1a1fcb5866329";
@@ -104,8 +107,12 @@ public class AuthorizeController {
 				
 			}
 		}
-		
-		response.sendRedirect("http://daikin.samehope.cn/a/api/worker/index");
+		System.out.println("toauthorize:cmethod==="+request.getParameter("cmethod"));
+		if("unbind".equals(cmethod)){
+			response.sendRedirect("http://daikin.samehope.cn/a/api/worker/unbind");
+		}else{
+			response.sendRedirect("http://daikin.samehope.cn/a/api/worker/index");
+		}
 	}
 
 }

@@ -27,6 +27,7 @@
 				${adminPath}/api/worker/upload = anon
 				${adminPath}/api/worker/sendCode = anon
 				${adminPath}/api/worker/banding = anon
+				${adminPath}/api/worker/unbind = anon
 				${adminPath}/api/authorize/toauthorize = anon
 				${adminPath}/api/authorize/jsauthorize = anon
 				${adminPath}/sys/user/infoCareStatus = anon

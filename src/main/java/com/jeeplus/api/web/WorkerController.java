@@ -68,14 +68,35 @@ public class WorkerController extends BaseController {
 	
 	@Autowired
 	private DkContractScheduleService dkContractScheduleService;
+	
+	/**
+	 * 解绑
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "unbind")
+	public String unbind(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String openId = (String) request.getSession().getAttribute("openId");
+		System.out.println("unbind:::::::::"+openId);
+		if (openId == null) {
+			return "redirect:../../../webpage/api/getOpen.html?cmethod=unbind";
+		} else {
+			DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
+			worker.setMobile(null);
+			worker.setSysUserId(null);
+			worker.setName(null);
+			worker.setUpdateDate(new Date());
+			workerService.save(worker);
+			response.sendRedirect("http://daikin.samehope.cn/a/api/worker/index");
+			return null;
+		}
+
+	}
 
 	/**
 	 * 首页跳转
 	 */
 	@RequestMapping(value = "index")
 	public String index(HttpServletRequest request, HttpServletResponse response) {
-		//request.getSession().setAttribute("sysId","001");// XQNtest
-		request.getSession().setAttribute("openId","001");// XQNtest
 		String openId = (String) request.getSession().getAttribute("openId");
 		if (openId == null) {
 			return "redirect:../../../webpage/api/getOpen.html";
@@ -326,9 +347,9 @@ public class WorkerController extends BaseController {
                         resize(localFile, localFile, 1, imp_cent);
                         
                         if(allFilesName.equals("")){
-                        	allFilesName = file_uuidname;
+                        	allFilesName = "/upload"+"/"+file_uuidname;
                         }else{
-                        	allFilesName = allFilesName + "," + file_uuidname ;
+                        	allFilesName = allFilesName + ",/upload/" + file_uuidname ;
                         }
                     }  
                 }  
