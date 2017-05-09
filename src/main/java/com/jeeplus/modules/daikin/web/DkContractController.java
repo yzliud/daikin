@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
+import com.jeeplus.modules.daikin.entity.DkContractInstallCost;
 import com.jeeplus.modules.daikin.entity.DkContractPay;
 import com.jeeplus.modules.daikin.entity.DkContractProduct;
 import com.jeeplus.modules.daikin.entity.DkContractSchedule;
@@ -43,10 +44,12 @@ import com.jeeplus.common.web.BaseController;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
+import com.jeeplus.modules.daikin.service.DkContractInstallCostService;
 import com.jeeplus.modules.daikin.service.DkContractPayService;
 import com.jeeplus.modules.daikin.service.DkContractProductService;
 import com.jeeplus.modules.daikin.service.DkContractScheduleService;
 import com.jeeplus.modules.daikin.service.DkContractService;
+import com.jeeplus.modules.daikin.service.DkContractServiceService;
 import com.jeeplus.modules.daikin.tools.DocumentHandler;
 
 /**
@@ -69,6 +72,12 @@ public class DkContractController extends BaseController {
 	
 	@Autowired
 	private DkContractProductService dkContractProductService;
+	
+	@Autowired
+	private DkContractInstallCostService dkContractInstallCostService;
+	
+	@Autowired
+	private DkContractServiceService dkContractServiceService;
 	
 	@ModelAttribute
 	public DkContract get(@RequestParam(required=false) String id) {
@@ -277,6 +286,34 @@ public class DkContractController extends BaseController {
 	@RequestMapping(value = "selectdkQuotation")
 	public String selectdkQuotation(DkQuotation dkQuotation, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
 		dkQuotation.setReviewStatus(Consts.ReviewStatus_9);
+		dkQuotation.setRemark("1");
+		Page<DkQuotation> page = dkContractService.findPageBydkQuotation(new Page<DkQuotation>(request, response),  dkQuotation);
+		try {
+			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
+			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");
+			searchLabel = URLDecoder.decode(searchLabel, "UTF-8");
+			searchKey = URLDecoder.decode(searchKey, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("labelNames", fieldLabels.split("\\|"));
+		model.addAttribute("labelValues", fieldKeys.split("\\|"));
+		model.addAttribute("fieldLabels", fieldLabels);
+		model.addAttribute("fieldKeys", fieldKeys);
+		model.addAttribute("url", url);
+		model.addAttribute("searchLabel", searchLabel);
+		model.addAttribute("searchKey", searchKey);
+		model.addAttribute("obj", dkQuotation);
+		model.addAttribute("page", page);
+		return "modules/sys/gridselect";
+	}
+	
+	/**
+	 * 选择报价单ID
+	 */
+	@RequestMapping(value = "selectOwnDkQuotation")
+	public String selectOwnDkQuotation(DkQuotation dkQuotation, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkQuotation.setReviewStatus(Consts.ReviewStatus_9);
 		Page<DkQuotation> page = dkContractService.findPageBydkQuotation(new Page<DkQuotation>(request, response),  dkQuotation);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
@@ -423,6 +460,21 @@ public class DkContractController extends BaseController {
 		
 		double payCent = dkContract.getArriveFee()/dkContract.getTotalFee()*100;
 		model.addAttribute("payCent", String.format("%.2f", payCent));
+		
+		//安装付款
+		DkContractInstallCost dkContractInstallCost = new DkContractInstallCost();
+		dkContractInstallCost.setDkContract(dkContract);
+		dkContractInstallCost.setReviewStatus(Consts.ReviewStatus_9);
+		List<DkContractInstallCost> dsicList =  dkContractInstallCostService.findList(dkContractInstallCost);
+		model.addAttribute("dkContractInstallCostList", dsicList);
+		
+		//维保记录
+		com.jeeplus.modules.daikin.entity.DkContractService dkContractServiceEntity = new com.jeeplus.modules.daikin.entity.DkContractService();
+		dkContractServiceEntity.setDkContract(dkContract);
+		dkContractServiceEntity.setReviewStatus(Consts.ReviewStatus_9);
+		List<com.jeeplus.modules.daikin.entity.DkContractService> dcsList =  dkContractServiceService.findList(dkContractServiceEntity);
+		model.addAttribute("dkContractServiceEntityList", dcsList);
+		
 		return "modules/daikin/dkContractTotalDetail";
 	}
 	

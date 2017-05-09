@@ -33,6 +33,7 @@ public class DkContractProductService extends CrudService<DkContractProductDao, 
 	}
 	
 	public Page<DkContractProduct> findPage(Page<DkContractProduct> page, DkContractProduct dkContractProduct) {
+		dkContractProduct.getSqlMap().put("dsf", dataScopeFilter(dkContractProduct.getCurrentUser(), "o", "saleUser"));
 		return super.findPage(page, dkContractProduct);
 	}
 	

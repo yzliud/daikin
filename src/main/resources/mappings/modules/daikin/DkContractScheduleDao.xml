@@ -19,6 +19,8 @@
 	
 	<sql id="dkContractScheduleJoins">
 		LEFT JOIN dk_contract dkContract ON dkContract.id = a.contract_id
+		LEFT JOIN sys_user saleUser ON saleUser.id = dkContract.sale_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
 	</sql>
 	
     
@@ -43,6 +45,8 @@
 			<if test="beginSubmitDate != null and endSubmitDate != null and beginSubmitDate != '' and endSubmitDate != ''">
 				AND a.submit_date BETWEEN #{beginSubmitDate} AND DATE_ADD(#{endSubmitDate}, INTERVAL 1 DAY)
 			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

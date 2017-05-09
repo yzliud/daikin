@@ -36,6 +36,7 @@ import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
 import com.jeeplus.modules.daikin.entity.DkContractPay;
 import com.jeeplus.modules.daikin.service.DkContractPayService;
+import com.jeeplus.modules.daikin.service.DkContractService;
 
 /**
  * 合同到款Controller
@@ -48,6 +49,9 @@ public class DkContractPayController extends BaseController {
 
 	@Autowired
 	private DkContractPayService dkContractPayService;
+	
+	@Autowired
+	private DkContractService dkContractService;
 	
 	@ModelAttribute
 	public DkContractPay get(@RequestParam(required=false) String id) {
@@ -225,8 +229,11 @@ public class DkContractPayController extends BaseController {
 	 */
 	@RequestMapping(value = "selectdkContract")
 	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		//dkContract.setContractFlag(Consts.ContractFlag_0);
+		//Page<DkContract> page = dkContractPayService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
 		dkContract.setContractFlag(Consts.ContractFlag_0);
-		Page<DkContract> page = dkContractPayService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
+		Page<DkContract> page = dkContractService.findPageByparent(new Page<DkContract>(request, response),  dkContract);
+
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
 			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");

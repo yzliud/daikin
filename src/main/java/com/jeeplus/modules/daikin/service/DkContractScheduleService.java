@@ -32,6 +32,7 @@ public class DkContractScheduleService extends CrudService<DkContractScheduleDao
 	}
 	
 	public Page<DkContractSchedule> findPage(Page<DkContractSchedule> page, DkContractSchedule dkContractSchedule) {
+		dkContractSchedule.getSqlMap().put("dsf", dataScopeFilter(dkContractSchedule.getCurrentUser(), "o", "saleUser"));
 		return super.findPage(page, dkContractSchedule);
 	}
 	

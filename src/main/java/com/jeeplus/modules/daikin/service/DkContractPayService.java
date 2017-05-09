@@ -44,6 +44,7 @@ public class DkContractPayService extends CrudService<DkContractPayDao, DkContra
 	}
 	
 	public Page<DkContractPay> findPage(Page<DkContractPay> page, DkContractPay dkContractPay) {
+		dkContractPay.getSqlMap().put("dsf", dataScopeFilter(dkContractPay.getCurrentUser(), "o", "saleUser"));
 		return super.findPage(page, dkContractPay);
 	}
 	
