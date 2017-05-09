@@ -45,7 +45,8 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	private String floor;		// 楼层
 	private Double demandArea;		// 需求面积
 	private String descript;		// 描述
-	
+	private String capacityModel;   //室内机容量型号
+
 	public DkContractProduct() {
 		super();
 	}
@@ -210,7 +211,16 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 		this.demandArea = demandArea;
 	}
 	
-	@ExcelField(title="描述", align=2, sort=16)
+	@ExcelField(title="室内机容量型号", align=2, sort=16)
+	public String getCapacityModel() {
+		return capacityModel;
+	}
+
+	public void setCapacityModel(String capacityModel) {
+		this.capacityModel = capacityModel;
+	}
+	
+	@ExcelField(title="描述", align=2, sort=17)
 	public String getDescript() {
 		return descript;
 	}

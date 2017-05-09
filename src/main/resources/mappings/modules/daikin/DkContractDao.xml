@@ -111,6 +111,10 @@
 			<if test="reviewStatus != null and reviewStatus != ''">
 				AND a.review_status = #{reviewStatus}
 			</if>
+			
+			<if test="beginDate != null and endDate != null and beginDate != '' and endDate != ''">
+				AND a.review_time BETWEEN #{beginDate} AND DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

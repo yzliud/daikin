@@ -228,6 +228,7 @@ public class DkContractServiceController extends BaseController {
 	 */
 	@RequestMapping(value = "selectdkContract")
 	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContract.setContractFlag(Consts.ContractFlag_0);
 		Page<DkContract> page = dkContractServiceService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");

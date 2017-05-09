@@ -76,6 +76,8 @@
                                     <dd>${dkContract.arriveFee }</dd>
                                     <dt>销售人员：</dt>
                                     <dd>${dkContract.saleUser.name }</dd>
+                                    <dt>监理人员：</dt>
+                                    <dd>${dkContract.supervisionUser.name }</dd>
                                     <dt>安装人员：</dt>
                                     <dd>${dkContract.installUser.name }</dd>
                                 </dl>
@@ -146,6 +148,7 @@
 																<th>楼层</th>
 																<th>位置</th>
 																<th>需求面积</th>
+																<th>室内机容量型号</th>
 															  </c:when> 
 															  <c:otherwise>   
 															    <th>产地</th>
@@ -174,6 +177,13 @@
 									                                      <td>${fns:getDictLabel(item.floor,'floor','')}</td>
 									                                      <td>${item.position }</td>
 									                                      <td>${item.demandArea }</td>
+									                                      <td>
+									                                      <c:if test="${item.capacityModel != null }">
+																				<c:forTokens items="${item.capacityModel}" delims="," var="itemCapacityModel">
+																				   ${itemCapacityModel}<br>
+																				</c:forTokens>
+																			</c:if>
+									                                      </td>  
 																	  </c:when> 
 																	  <c:otherwise>   
 																	      <td>${item.place }</td>
@@ -209,6 +219,8 @@
 																<th>楼层</th>
 																<th>位置</th>
 																<th>需求面积</th>
+																<th>室内机容量型号</th>
+																
 															  </c:when> 
 															  <c:otherwise>   
 															    <th>产地</th>
@@ -237,6 +249,13 @@
 									                                      <td>${fns:getDictLabel(subitemPro.floor,'floor','')}</td>
 									                                      <td>${subitemPro.position }</td>
 									                                      <td>${subitemPro.demandArea }</td>
+									                                      <td>
+									                                        <c:if test="${subitemPro.capacityModel != null }">
+																				<c:forTokens items="${subitemPro.capacityModel}" delims="," var="itemCapacityModel">
+																				   ${itemCapacityModel}<br>
+																				</c:forTokens>
+																			</c:if>
+									                                      </td>  
 																	  </c:when> 
 																	  <c:otherwise>   
 																	      <td>${subitemPro.place }</td>

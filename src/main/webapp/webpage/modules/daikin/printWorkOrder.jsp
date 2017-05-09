@@ -76,7 +76,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">工程监理：</label></td>
 					<td class="width-35">
-						
+						${dkContract.supervisionUser.name}
 					</td>
 					<td class="width-15 active"><label class="pull-right">客户签字：</label></td>
 					<td class="width-35">

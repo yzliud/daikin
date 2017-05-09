@@ -36,6 +36,15 @@ public class DkQuotationProduct extends DataEntity<DkQuotationProduct> {
 	private String floor;		// 楼层
 	private Double demandArea;		// 需求面积
 	private String descript;		// 描述
+	private String capacityModel;   //室内机容量型号
+	
+	public String getCapacityModel() {
+		return capacityModel;
+	}
+
+	public void setCapacityModel(String capacityModel) {
+		this.capacityModel = capacityModel;
+	}
 	
 	public DkQuotationProduct() {
 		super();

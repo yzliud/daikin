@@ -31,7 +31,8 @@ public class DkProduct extends DataEntity<DkProduct> {
 	private String brandId;		// 品牌
 	private String unit;		// 单位
 	private String descript;		// 描述
-	
+	private String capacityModel;   //室内机容量型号
+
 	public DkProduct() {
 		super();
 	}
@@ -150,13 +151,22 @@ public class DkProduct extends DataEntity<DkProduct> {
 		this.unit = unit;
 	}
 	
-	@ExcelField(title="描述", align=2, sort=12)
+	@ExcelField(title="描述", align=2, sort=13)
 	public String getDescript() {
 		return descript;
 	}
 
 	public void setDescript(String descript) {
 		this.descript = descript;
+	}
+	
+	@ExcelField(title="室内机容量型号", align=2, sort=12)
+	public String getCapacityModel() {
+		return capacityModel;
+	}
+
+	public void setCapacityModel(String capacityModel) {
+		this.capacityModel = capacityModel;
 	}
 	
 }

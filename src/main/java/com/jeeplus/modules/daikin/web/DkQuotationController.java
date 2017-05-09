@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jeeplus.modules.Consts;
-import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;

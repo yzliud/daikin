@@ -69,6 +69,7 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 			dkQuotationProduct.setBrandId(dkProduct.getBrandId());
 			dkQuotationProduct.setClassifyId(dkProduct.getClassifyId());
 			dkQuotationProduct.setModel(dkProduct.getModel());
+			dkQuotationProduct.setCapacityModel(dkProduct.getCapacityModel());
 			dkQuotationProduct.setName(dkProduct.getName());
 			dkQuotationProduct.setPlace(dkProduct.getPlace());
 			dkQuotationProduct.setUnit(dkProduct.getUnit());

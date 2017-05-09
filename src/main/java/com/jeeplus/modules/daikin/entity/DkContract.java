@@ -48,7 +48,25 @@ public class DkContract extends DataEntity<DkContract> {
 	private String isReview;		// 是否有审核记录(0-没有；1-有)
 	private String remark;		// 备注
 	private List<DkContractProduct> dkContractProductList = Lists.newArrayList();		// 子表列表
+	private Date beginDate;		// 开始 时间
+	private Date endDate;		// 结束 时间
 	
+	public Date getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 	public DkContract() {
 		super();
 	}

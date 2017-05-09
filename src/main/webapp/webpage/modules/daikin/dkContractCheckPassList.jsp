@@ -4,6 +4,20 @@
 <head>
 	<title>合同管理</title>
 	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+	        laydate({
+	            elem: '#beginDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+	            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+	        });
+	        laydate({
+	            elem: '#endDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+	            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+	        });
+					
+		
+		});
+	</script>
 	<script src="${ctxStatic}/common/PrintArea.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -56,6 +70,11 @@
 				<form:input path="memberName" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
 			<span>联系方式：</span>
 				<form:input path="mobile" htmlEscape="false" maxlength="20"  class=" form-control input-sm"/>
+			<span>签订时间：</span>
+				<input id="beginDate" name="beginDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkContract.beginDate}" pattern="yyyy-MM-dd"/>"/> - 
+				<input id="endDate" name="endDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkContract.endDate}" pattern="yyyy-MM-dd"/>"/>
 		 </div>	
 	</form:form>
 	<br/>

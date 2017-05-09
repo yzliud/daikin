@@ -68,6 +68,7 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 			dkContractProduct.setBrandId(dkProduct.getBrandId());
 			dkContractProduct.setClassifyId(dkProduct.getClassifyId());
 			dkContractProduct.setModel(dkProduct.getModel());
+			dkContractProduct.setCapacityModel(dkProduct.getCapacityModel());
 			dkContractProduct.setName(dkProduct.getName());
 			dkContractProduct.setPlace(dkProduct.getPlace());
 			dkContractProduct.setUnit(dkProduct.getUnit());

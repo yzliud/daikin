@@ -178,7 +178,7 @@
 					</shiro:hasPermission>
 					<shiro:hasPermission name="daikin:dkContract:edit">
     					<c:if test="${dkContract.reviewStatus == '0' }">
-						<a href="#" onclick="openDialog_check('合同提交审核', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 提交审核</a>
+						<a href="#" onclick="openDialog_check('合同提交审核', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-danger btn-xs" ><i class="fa fa-edit"></i> 提交审核</a>
     					</c:if>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="daikin:dkContract:del">

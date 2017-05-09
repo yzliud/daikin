@@ -46,7 +46,7 @@
 				AND a.contract_id = #{dkContract.id}
 			</if>
 			<if test="beginPayDate != null and endPayDate != null and beginPayDate != '' and endPayDate != ''">
-				AND a.pay_date BETWEEN #{beginPayDate} AND #{endPayDate}
+				AND a.pay_date BETWEEN #{beginPayDate} AND DATE_ADD(#{endPayDate}, INTERVAL 1 DAY)
 			</if>
 			<if test="installTeam != null and installTeam != ''">
 				AND a.install_team = #{installTeam}

@@ -108,6 +108,7 @@
 				<th  class="sort-column power">功率</th>
 				<th  class="sort-column place">产地</th>
 				<th  class="sort-column unit">单位</th>
+				<th  class="sort-column capacityModel">室内机容量型号</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
@@ -148,6 +149,9 @@
 				</td>
 				<td>
 					${dkProduct.unit}
+				</td>
+				<td>
+					${dkProduct.capacityModel}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkProduct.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

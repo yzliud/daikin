@@ -142,8 +142,16 @@
 					<td class="width-35">
 						<form:input path="unit" htmlEscape="false"    class="form-control "/>
 					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">室内机容量型号：</label></td>
+					<td class="width-35" colspan=3>
+						<form:input path="capacityModel" htmlEscape="false"    class="form-control "/>
+					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right">描述：</label></td>
-					<td class="width-35">
+					<td class="width-35" colspan=3>
 						<form:input path="descript" htmlEscape="false"    class="form-control "/>
 					</td>
 				</tr>

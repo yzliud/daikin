@@ -58,6 +58,7 @@
                                 ${dkContract.address }<br>
                                 <abbr title="Phone">联系方式：</abbr> ${dkContract.mobile }<br>
                                 <abbr title="Phone">销售人员：</abbr> ${dkContract.saleUser.name }<br>
+                                <abbr title="Phone">监理人员：</abbr> ${dkContract.supervisionUser.name }<br>
                                 <abbr title="Phone">安装人员：</abbr> ${dkContract.installUser.name }
                             </address>
                             <p>
@@ -82,6 +83,7 @@
 										<th>楼层</th>
 										<th>位置</th>
 										<th>需求面积</th>
+										<th>室内机容量型号</th>
 									  </c:when> 
 									  <c:otherwise>   
 									    <th>产地</th>
@@ -110,6 +112,13 @@
 			                                      <td>${fns:getDictLabel(item.floor,'floor','')}</td>
 			                                      <td>${item.position }</td>
 			                                      <td>${item.demandArea }</td>
+			                                      <td>
+						                            <c:if test="${item.capacityModel != null }">
+														<c:forTokens items="${item.capacityModel}" delims="," var="itemCapacityModel">
+														   ${itemCapacityModel}<br>
+														</c:forTokens>
+													</c:if>
+													</td>
 											  </c:when> 
 											  <c:otherwise>   
 											      <td>${item.place }</td>

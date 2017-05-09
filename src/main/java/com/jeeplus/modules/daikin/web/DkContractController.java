@@ -36,7 +36,6 @@ import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
-import com.jeeplus.common.utils.Encodes;
 import com.jeeplus.common.utils.MyBeanUtils;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.persistence.Page;
@@ -49,7 +48,6 @@ import com.jeeplus.modules.daikin.service.DkContractProductService;
 import com.jeeplus.modules.daikin.service.DkContractScheduleService;
 import com.jeeplus.modules.daikin.service.DkContractService;
 import com.jeeplus.modules.daikin.tools.DocumentHandler;
-import com.jeeplus.modules.daikin.tools.WordUtils;
 
 /**
  * 合同Controller
@@ -139,9 +137,6 @@ public class DkContractController extends BaseController {
 			return form(dkContract, model);
 		}
 		if(!dkContract.getIsNewRecord()){//编辑表单保存
-			if(!dkContract.getReviewStatus().equals(Consts.ReviewStatus_9)){
-				dkContract.setReviewStatus(Consts.ReviewStatus_0);
-			}
 			DkContract t = dkContractService.get(dkContract.getId());//从数据库取出记录的值
 			MyBeanUtils.copyBeanNotNull2Bean(dkContract, t);//将编辑表单中的非NULL值覆盖数据库记录中的值
 			dkContractService.save(t);//保存
@@ -150,7 +145,11 @@ public class DkContractController extends BaseController {
 			dkContractService.save(dkContract);//保存
 		}
 		addMessage(redirectAttributes, "保存合同成功");
-		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/checkPass";
+		if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_9)){
+			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/checkPass";
+		}else{
+			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/uncheck";
+		}
 	}
 	
 	/**
