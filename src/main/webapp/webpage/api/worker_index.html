@@ -113,7 +113,7 @@
 	            	/* var btnArray = [ '确定' ]; */
 	            	if(data.msg=='success'){
 	            		alert('绑定成功!');
-	            		window.location.href = "worker_contract.html";
+	            		window.location.href = "worker_contract.html?rand="+Math.random();
 	            	}else{
 	            		alert('绑定失败,'+data.msg);
 	            	}

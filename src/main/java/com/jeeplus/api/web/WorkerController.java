@@ -70,7 +70,7 @@ public class WorkerController extends BaseController {
 	private DkContractScheduleService dkContractScheduleService;
 	
 	/**
-	 * 解绑
+	 * 解绑跳转
 	 * @throws IOException 
 	 */
 	@RequestMapping(value = "unbind")
@@ -81,14 +81,39 @@ public class WorkerController extends BaseController {
 			return "redirect:../../../webpage/api/getOpen.html?cmethod=unbind";
 		} else {
 			DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
+			String mobile = worker.getMobile();
+			return "redirect:../../../webpage/api/unbind.html?mobile="+mobile;
+		}
+
+	}
+	
+	/**
+	 * 解绑
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "doUnbind")
+	public void doUnbind(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter writer = response.getWriter();
+		String msg = "success";
+		String openId = (String) request.getSession().getAttribute("openId");
+	    try {
+			DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
 			worker.setMobile(null);
 			worker.setSysUserId(null);
 			worker.setName(null);
 			worker.setUpdateDate(new Date());
 			workerService.save(worker);
-			response.sendRedirect("http://daikin.samehope.cn/a/api/worker/index");
-			return null;
+		} catch (Exception e) {
+			msg="fail";
 		}
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("msg", msg);
+		Gson gson = new Gson();
+		writer.println(gson.toJson(map));
+		writer.flush();
+		writer.close();
 
 	}
 

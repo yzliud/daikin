@@ -24,10 +24,10 @@
 				${adminPath}/api/worker/getContractSchedule = anon
 				${adminPath}/api/worker/submitSchedule = anon
 				${adminPath}/api/worker/binding = anon
+				${adminPath}/api/worker/unbind = anon
+				${adminPath}/api/worker/doUnbind = anon
 				${adminPath}/api/worker/upload = anon
 				${adminPath}/api/worker/sendCode = anon
-				${adminPath}/api/worker/banding = anon
-				${adminPath}/api/worker/unbind = anon
 				${adminPath}/api/authorize/toauthorize = anon
 				${adminPath}/api/authorize/jsauthorize = anon
 				${adminPath}/sys/user/infoCareStatus = anon
