@@ -102,7 +102,7 @@
 				<table:delRow url="" id="contentTable"></table:delRow><!-- 删除按钮 -->
 			</shiro:hasPermission>
 		</div>
-		   <button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="sendMsg('')" title="发送短信"><i class="glyphicon glyphicon-repeat"></i> 发送短信</button>
+		   <button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="sendMsg('')" title="发送短信"><i class="glyphicon glyphicon-envelope"></i> 发送短信</button>
 	       <button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="sortOrRefresh()" title="刷新"><i class="glyphicon glyphicon-repeat"></i> 刷新</button>
 		
 		</div>
@@ -138,7 +138,7 @@
 					${efMember.address}
 				</td>
 				<td>
-					<a onclick="sendMsg('${efMember.id}')"   class="btn btn-success btn-xs"><i class="fa fa-search-plus"></i> 发送短信</a>
+					<a onclick="sendMsg('${efMember.id}')"   class="btn btn-success btn-xs"><i class="fa fa-envelope"></i> 发送短信</a>
 				</td>
 			</tr>
 		</c:forEach>
