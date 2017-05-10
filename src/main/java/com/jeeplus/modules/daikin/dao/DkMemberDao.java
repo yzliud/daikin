@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.daikin.dao;
 
+import java.util.List;
+
 import com.jeeplus.common.persistence.CrudDao;
 import com.jeeplus.common.persistence.annotation.MyBatisDao;
 import com.jeeplus.modules.daikin.entity.DkMember;
@@ -14,6 +16,8 @@ import com.jeeplus.modules.daikin.entity.DkMember;
  */
 @MyBatisDao
 public interface DkMemberDao extends CrudDao<DkMember> {
+
+	List<DkMember> findEffectiveList(String beginTime, String endTime);
 
 	
 }

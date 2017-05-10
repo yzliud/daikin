@@ -43,6 +43,17 @@ public class DkMemberService extends CrudService<DkMemberDao, DkMember> {
 	public void delete(DkMember dkMember) {
 		super.delete(dkMember);
 	}
+
+	/**
+	 * 获取有效客户列表
+	 * @param endTime 有效结束时间
+	 * @param beginTime 有效开始时间
+	 * @return List<DkMember>
+	 */
+	public List<DkMember> findEffectiveList(String beginTime, String endTime) {
+		// TODO Auto-generated method stub
+		return dao.findEffectiveList(beginTime,endTime);
+	}
 	
 	
 	

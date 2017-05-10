@@ -140,4 +140,21 @@
 		select * FROM dk_member  where ${propertyName} = '${value}'
 	</select>
 	
+	<!-- 根据时间获取所有有效客户 -->
+	<select id="findEffectiveList" resultType="DkMember" >
+		SELECT 
+			<include refid="dkMemberColumns"/>
+		FROM
+		dk_contract c
+		INNER JOIN dk_member a ON c.member_id = a.id
+		WHERE
+			c.review_status = '9'
+			AND DATE_FORMAT(c.review_time, '%Y-%m-%d') &gt;= #{0}
+			AND DATE_FORMAT(c.review_time, '%Y-%m-%d') &lt;= #{1}
+		GROUP BY
+			a.id
+		ORDER BY
+			c.review_time DESC
+	</select>
+	
 </mapper>
