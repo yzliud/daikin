@@ -23,6 +23,8 @@
 	<sql id="dkContractPayJoins">
 		LEFT JOIN dk_contract dkContract ON dkContract.id = a.contract_id
 		LEFT JOIN sys_user su ON su.id = a.review_by
+		LEFT JOIN sys_user saleUser ON saleUser.id = dkContract.sale_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
 	</sql>
 	
     
@@ -50,6 +52,8 @@
 			<if test="reviewStatus != null and reviewStatus != ''">
 				AND a.review_status = #{reviewStatus}
 			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

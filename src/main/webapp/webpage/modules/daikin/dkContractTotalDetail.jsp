@@ -123,6 +123,10 @@
                                                 </li>
                                                 <li><a href="#tab-102" data-toggle="tab">安装记录</a>
                                                 </li>
+                                                <li><a href="#tab-103" data-toggle="tab">安装付款</a>
+                                                </li>
+                                                <li><a href="#tab-104" data-toggle="tab">维保记录</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -329,6 +333,62 @@
 
                                                     
                                                 </div>
+
+                                            </div>
+                                            
+                                            
+                                            <div class="tab-pane" id="tab-103">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+						                                    <th>日期</th>
+						                                    <th>付款金额</th>
+						                                    <th>安装队</th>
+															<th>备注</th>
+						                                </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="itemInstallCost" items="${dkContractInstallCostList}">   
+														      <tr>
+															      <td>
+							                                        <fmt:formatDate value="${itemInstallCost.payDate}" pattern="yyyy-MM-dd"/>
+							                                      </td>  
+							                                      <td>&yen;${itemInstallCost.payFee }</td>
+							                                      <td>${itemInstallCost.installTeam }</td>
+							                                      <td>${itemInstallCost.remark }</td>
+														      </tr>   
+														</c:forEach> 
+
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            
+                                            
+                                            <div class="tab-pane" id="tab-104">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+						                                    <th>维保日期</th>
+						                                    <th>维保人员</th>
+															<th>维保记录</th>
+						                                </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="itemService" items="${dkContractServiceEntityList}">   
+														      <tr>
+															      <td>
+							                                        <fmt:formatDate value="${itemInstallCost.serviceDate}" pattern="yyyy-MM-dd"/>
+							                                      </td>  
+							                                      <td>${itemInstallCost.servicePerson }</td>
+							                                      <td>${itemInstallCost.serviceContent }</td>
+														      </tr>   
+														</c:forEach> 
+
+
+                                                    </tbody>
+                                                </table>
 
                                             </div>
                                             

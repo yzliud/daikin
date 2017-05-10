@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.google.common.collect.Lists;
@@ -36,6 +37,7 @@ import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
 import com.jeeplus.modules.daikin.entity.DkContractProduct;
 import com.jeeplus.modules.daikin.service.DkContractProductService;
+import com.jeeplus.modules.daikin.service.DkContractService;
 
 /**
  * 合同商品Controller
@@ -48,6 +50,9 @@ public class DkContractProductController extends BaseController {
 
 	@Autowired
 	private DkContractProductService dkContractProductService;
+	
+	@Autowired
+	private DkContractService dkContractService;
 	
 	@ModelAttribute
 	public DkContractProduct get(@RequestParam(required=false) String id) {
@@ -200,7 +205,9 @@ public class DkContractProductController extends BaseController {
 	 */
 	@RequestMapping(value = "selectdkContract")
 	public String selectdkContract(DkContract dkContract, String url, String fieldLabels, String fieldKeys, String searchLabel, String searchKey, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<DkContract> page = dkContractProductService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
+			//Page<DkContract> page = dkContractProductService.findPageBydkContract(new Page<DkContract>(request, response),  dkContract);
+		dkContract.setContractFlag(Consts.ContractFlag_0);
+		Page<DkContract> page = dkContractService.findPageByparent(new Page<DkContract>(request, response),  dkContract);
 		try {
 			fieldLabels = URLDecoder.decode(fieldLabels, "UTF-8");
 			fieldKeys = URLDecoder.decode(fieldKeys, "UTF-8");

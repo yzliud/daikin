@@ -55,7 +55,7 @@
 				</form:select>
 				<br>
 			<span>报价单：</span>
-				<sys:gridselect url="${ctx}/daikin/dkContract/selectdkQuotation" id="dkQuotation" name="dkQuotation"  value="${dkContract.dkQuotation.id}"  title="选择报价单ID" labelName="dkQuotation.name" 
+				<sys:gridselect url="${ctx}/daikin/dkContract/selectOwnDkQuotation" id="dkQuotation" name="dkQuotation"  value="${dkContract.dkQuotation.id}"  title="选择报价单" labelName="dkQuotation.name" 
 					labelValue="${dkContract.dkQuotation.name}" cssClass="form-control required" fieldLabels="名称|顾客姓名|联系方式|联系地址|金额" fieldKeys="name|memberName|mobile|address|totalFee" searchLabel="名称" searchKey="name" ></sys:gridselect>
 			<span>安装人员：</span>
 				<sys:treeselect id="installUser" name="installUser.id" value="${dkContract.installUser.id}" labelName="installUser.name" labelValue="${dkContract.installUser.name}"

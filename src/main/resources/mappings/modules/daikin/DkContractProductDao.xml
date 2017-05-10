@@ -34,6 +34,8 @@
 	
 	<sql id="dkContractProductJoins">
 		LEFT JOIN dk_contract dkContract ON dkContract.id = a.contract_id
+		LEFT JOIN sys_user saleUser ON saleUser.id = dkContract.sale_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
 	</sql>
 	
     
@@ -61,6 +63,8 @@
 			<if test="productId != null and productId != ''">
 				AND a.product_id = #{productId}
 			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
