@@ -4,6 +4,7 @@
 <head>
 	<title>有效会员</title>
 	<meta name="decorator" content="default"/>
+	<script src="${ctxStatic}/layer-v2.3/layer/layer.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 	        laydate({
