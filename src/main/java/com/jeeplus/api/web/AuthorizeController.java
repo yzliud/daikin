@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jeeplus.api.util.CommonUtil;
 import com.jeeplus.api.util.Emoji;
+import com.jeeplus.common.config.Global;
 import com.jeeplus.modules.daikin.entity.DkWorker;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
 
@@ -26,10 +27,10 @@ public class AuthorizeController {
 	
 	@RequestMapping("/jsauthorize")
 	public void jsauthorize(HttpServletRequest request, HttpServletResponse response, String callback) throws Exception {
-		//共账号及商户相关参数
+		//共账号及商户相关参数 daikin.samehope.cn
 		System.out.println("jsauthorize:cmethod==="+request.getParameter("cmethod"));
 		String appid = "wx14f656e580ff9396";
-		String backUri = "http://daikin.samehope.cn/a/api/authorize/toauthorize?cmethod="+request.getParameter("cmethod");
+		String backUri = Global.getFrontPath()+"/a/api/authorize/toauthorize?cmethod="+request.getParameter("cmethod");
 		System.out.println("backUri=========="+backUri);
 		//String appid = "wxcfe5737777fcfd95";
 		//String backUri = "http://manage.wifibao.top/daikin/a/api/authorize/toauthorize";
@@ -109,9 +110,9 @@ public class AuthorizeController {
 		}
 		System.out.println("toauthorize:cmethod==="+request.getParameter("cmethod"));
 		if("unbind".equals(cmethod)){
-			response.sendRedirect("http://daikin.samehope.cn/a/api/worker/unbind");
+			response.sendRedirect(Global.getFrontPath()+"/a/api/worker/unbind");
 		}else{
-			response.sendRedirect("http://daikin.samehope.cn/a/api/worker/index");
+			response.sendRedirect(Global.getFrontPath()+"/a/api/worker/index");
 		}
 	}
 
