@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!-- saved from url=(0016)https://weui.io/ -->
+<html lang="zh-cmn-Hans"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>上传进度</title>
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/example.css">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <style type="text/css">
+    	.percent {
+  			width: 100%;
+  			border: 0;
+  			outline: 0;
+  			-webkit-appearance: none;
+  			background-color: transparent;
+  			font-size: inherit;
+  			color: inherit;
+  			height: 1.41176471em;
+  			line-height: 1.41176471;
+		}
+    </style>
+</head>
+<body>
+<form id="mainForm" action="" enctype="multipart/form-data">
+<input type="hidden" name="contractId" id="contractId">
+<input type="hidden" name="imgUrl" id="imgUrl">
+<div>
+    <div class="page__bd">
+
+      <div class="weui-cells__title"></div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell" style="height: 40px;">
+               
+                <div class="weui-cell__bd">
+                    <input id="percent" name="percent" required="required" style="margin-top:15px;width: 100%;border: 0;outline: 0;-webkit-appearance: none;background-color: transparent;font-size: inherit;color: inherit;height: 1.41176471em;line-height: 1.41176471; " type="number" pattern="[0-9]*" placeholder="请输入进度百分比"/>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea id="descript" name="descript" required="required" class="weui-textarea" placeholder="请输入进度描述" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-gallery" id="gallery">
+            <span class="weui-gallery__img" id="galleryImg"></span>
+            <div class="weui-gallery__opr">
+                <a href="javascript:" class="weui-gallery__del">
+                    <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                </a>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">图片上传</p>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files" id="uploaderFiles">
+                               
+                            </ul>
+                            <div class="weui-uploader__input-box">
+                                <input id="uploaderInput" name="uploaderInput" class="weui-uploader__input js_file" type="file"  onchange="upImg()" accept="image/*" multiple/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:upload();" id="showTooltips">提交</a>
+        </div>
+    </div>
+</div>
+</form>
+<script src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/jweixin-1.0.0.js"></script>
+    <script src="js/weui.min.js"></script>
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script src="js/example.js"></script>
+    <script type="text/javascript" src="js/ajaxfileupload.js" ></script>
+    <script type="text/javascript" src="js/layer/layer.js" ></script>
+    <script type="text/javascript" src="js/lay/layui.js" ></script>
+    
+    
+<script type="text/javascript">
+	var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+	$gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
+	$uploaderInput = $("#uploaderInput"),
+	$uploaderFiles = $("#uploaderFiles");
+	
+	function upImg(){
+		var index = layer.load();
+        $.ajaxFileUpload
+        ({
+                url: "../../a/api/worker/upload", //用于文件上传的服务器端请求地址
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: 'uploaderInput', //文件上传域的ID
+                dataType: 'json', //返回值类型 一般设置为json
+                success: function (data, status)  //服务器成功响应处理函数
+                {
+                	layer.close(index);
+                	var fileName = data.imgname.split(',');
+                	for(var i = 0 ;i<fileName.length;i++)
+                	{
+                		if(fileName[i] != "" && typeof(fileName[i]) != "undefined"){
+                        	var url = $("#imgUrl").val();
+                        	if(url==""){
+                        		document.getElementById("imgUrl").value = fileName[i];	
+                        	}else{
+                        		document.getElementById("imgUrl").value = url + ","+fileName[i];
+                        	}
+                        	var fn = fileName[i].replace(".","_").split('/');
+                        	var liid = fn[fn.length-1];
+                			$('#uploaderFiles').append("<li id = '"+liid+"' class='weui-uploader__file' style='background-image:url("+fileName[i]+")'></li>");
+                			
+                		}            
+                	} 
+                },
+                error:function(data,status,e){
+                	alert(data);
+                	alert(status);
+                    alert(e);  
+               } 
+            });
+		} 
+     
+        $uploaderFiles.on("click", "li", function(){
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        $gallery.on("click", function(){
+            $gallery.fadeOut(100);
+        });
+        
+        $(".weui-gallery__del").click(function(){
+        	 
+            var imgback = $(this).parent("div").prev().attr("style");
+            var imgback_array= imgback.split(')');
+            imgback_array= imgback_array[0].split('/');
+            var imgName = imgback_array[imgback_array.length-1];
+            $("#"+imgName.replace(".","_")).remove();
+
+            var imgUrl = '/'+imgback_array[imgback_array.length-2]+'/'+imgback_array[imgback_array.length-1];
+            var img_str = $("#imgUrl").val();
+            var img_str_new = img_str.replace(imgUrl,"");
+            $("#imgUrl").val(img_str_new);
+       });
+    
+    function upload(){
+    	if($("#percent").val()==""){
+    		var btnArray = [ '确定' ];
+    		mui.confirm('请填写进度百分比！', '', btnArray, function(e) {	})
+    	}else if($("#percent").val() > 100){
+    		var btnArray = [ '确定' ];
+    		mui.confirm('进度百分比不能大于100!', '', btnArray, function(e) {})
+    	}else if($("#descript").val()==""){
+    		var btnArray = [ '确定' ];
+    		mui.confirm('请填写进度描述！', '', btnArray, function(e) {})
+    	}else{
+  	      $.ajax({
+	          url:"../../a/api/worker/submitSchedule",
+	          data:$("#mainForm").serialize(),
+	          type:"post",
+	          dataType: 'json',
+	          async: false,
+	          success:function(data){//ajax返回的数据
+	        	if(data.msg =='success'){
+		        	var btnArray = [ '确定' ];
+		  			mui.confirm('上传成功', '', btnArray, function(e) {
+		  				$("#imgUrl").val("");
+		  				window.location.href = "worker_schedule.html?contractId="+ $("#contractId").val();
+		  			})	
+	        	}else{
+	        		var btnArray = [ '确定' ];
+		  			mui.confirm('新进度百分比不能小于之前进度！', '', btnArray, function(e) {})	
+	        	}
+	          }
+	     });
+    	}
+    }
+    
+	window.onload=function(){
+		 document.getElementById("contractId").value=getQueryString("contractId");
+	}
+	
+	function getQueryString(name) { //输入参数名称
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null; //返回参数值
+	}
+   
+</script>
+
+    
+</body></html>

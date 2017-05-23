@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkQuotationProductDao">
+    
+	<sql id="dkQuotationProductColumns">
+		a.id AS "id",
+		a.quotation_id AS "quotationId",
+		a.product_id AS "productId",
+		a.name AS "name",
+		a.model AS "model",
+		a.capacity_model AS "capacityModel",
+		a.price AS "price",
+		a.cost_price AS "costPrice",
+		a.amount AS "amount",
+		a.total_price AS "totalPrice",
+		a.classify_id AS "classifyId",
+		a.power AS "power",
+		a.place AS "place",
+		a.brand_id AS "brandId",
+		a.unit AS "unit",
+		a.product_type AS "productType",
+		a.position AS "position",
+		a.floor AS "floor",
+		a.demand_area AS "demandArea",
+		a.descript AS "descript",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="dkQuotationProductJoins">
+		LEFT JOIN dk_quotation b ON b.id = a.quotation_id
+	</sql>
+	
+    
+	<select id="get" resultType="DkQuotationProduct" >
+		SELECT 
+			<include refid="dkQuotationProductColumns"/>
+		FROM dk_quotation_product a
+		<include refid="dkQuotationProductJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DkQuotationProduct" >
+		SELECT 
+			<include refid="dkQuotationProductColumns"/>
+		FROM dk_quotation_product a
+		<include refid="dkQuotationProductJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="quotationId != null and quotationId != ''">
+				AND a.quotation_id = #{quotationId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DkQuotationProduct" >
+		SELECT 
+			<include refid="dkQuotationProductColumns"/>
+		FROM dk_quotation_product a
+		<include refid="dkQuotationProductJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dk_quotation_product(
+			id,
+			quotation_id,
+			product_id,
+			name,
+			model,
+			capacity_model,
+			price,
+			cost_price,
+			amount,
+			total_price,
+			classify_id,
+			power,
+			place,
+			brand_id,
+			unit,
+			product_type,
+			position,
+			floor,
+			demand_area,
+			descript,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{quotationId},
+			#{productId},
+			#{name},
+			#{model},
+			#{capacityModel},
+			#{price},
+			#{costPrice},
+			#{amount},
+			#{totalPrice},
+			#{classifyId},
+			#{power},
+			#{place},
+			#{brandId},
+			#{unit},
+			#{productType},
+			#{position},
+			#{floor},
+			#{demandArea},
+			#{descript},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dk_quotation_product SET 	
+			quotation_id = #{quotationId},
+			product_id = #{productId},
+			name = #{name},
+			model = #{model},
+			capacity_model = #{capacityModel},
+			price = #{price},
+			cost_price = #{costPrice},
+			amount = #{amount},
+			total_price = #{totalPrice},
+			classify_id = #{classifyId},
+			power = #{power},
+			place = #{place},
+			brand_id = #{brandId},
+			unit = #{unit},
+			product_type = #{productType},
+			position = #{position},
+			floor = #{floor},
+			demand_area = #{demandArea},
+			descript = #{descript},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM dk_quotation_product
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE quotation_id = #{quotationId}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE dk_quotation_product SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE quotation_id = #{quotationId}
+			</otherwise>
+		</choose>
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="DkQuotationProduct" statementType="STATEMENT">
+		select * FROM dk_quotation_product  where ${propertyName} = '${value}'
+	</select>
+	
+	<select id="findListByproductId" resultType="String">
+		SELECT 
+			*
+		FROM dk_product a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+</mapper>
