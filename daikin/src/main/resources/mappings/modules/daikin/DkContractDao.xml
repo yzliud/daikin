@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkContractDao">
+    
+	<sql id="dkContractColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.parent_id AS "parent.id",
+		a.contract_flag AS "contractFlag",
+		a.quotation_id AS "dkQuotation.id",
+		a.contract_number AS "contractNumber",
+		a.member_name AS "memberName",
+		a.mobile AS "mobile",
+		a.address AS "address",
+		a.member_id AS "dkMember.id",
+		a.contract_fee AS "contractFee",
+		a.total_fee AS "totalFee",
+		a.arrive_fee AS "arriveFee",
+		a.connection_ratio AS "connectionRatio",
+		a.install_by AS "installUser.id",
+		a.sale_by AS "saleUser.id",
+		a.supervision_by AS "supervisionUser.id",
+		a.product_type AS "productType",
+		a.review_status AS "reviewStatus",
+		a.review_by AS "reviewUser.id",
+		a.review_time AS "reviewTime",
+		a.is_review AS "isReview",
+		a.remark AS "remark",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		parent.name AS "parent.name",
+		dkQuotation.name AS "dkQuotation.name",
+		dkMember.name AS "dkMember.name",
+		installUser.name AS "installUser.name",
+		saleUser.name AS "saleUser.name",
+		reviewUser.name AS "reviewUser.name",
+		supervisionUser.name AS "supervisionUser.name"
+	</sql>
+	
+	<sql id="dkContractJoins">
+		LEFT JOIN dk_contract parent ON parent.id = a.parent_id
+		LEFT JOIN dk_quotation dkQuotation ON dkQuotation.id = a.quotation_id
+		LEFT JOIN dk_member dkMember ON dkMember.id = a.member_id
+		LEFT JOIN sys_user installUser ON installUser.id = a.install_by
+		LEFT JOIN sys_user saleUser ON saleUser.id = a.sale_by
+		LEFT JOIN sys_user reviewUser ON reviewUser.id = a.review_by
+		LEFT JOIN sys_user supervisionUser ON supervisionUser.id = a.supervision_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
+	</sql>
+	
+    
+	<select id="get" resultType="DkContract" >
+		SELECT 
+			<include refid="dkContractColumns"/>
+		FROM dk_contract a
+		<include refid="dkContractJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DkContract" >
+		SELECT 
+			<include refid="dkContractColumns"/>
+		FROM dk_contract a
+		<include refid="dkContractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="parent != null and parent.id != null and parent.id != ''">
+				AND a.parent_id = #{parent.id}
+			</if>
+			<if test="contractFlag != null and contractFlag != ''">
+				AND a.contract_flag = #{contractFlag}
+			</if>
+			<if test="dkQuotation != null and dkQuotation.id != null and dkQuotation.id != ''">
+				AND a.quotation_id = #{dkQuotation.id}
+			</if>
+			<if test="contractNumber != null and contractNumber != ''">
+				AND a.contract_number LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractNumber}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractNumber}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractNumber},'%')</if>
+			</if>
+			<if test="memberName != null and memberName != ''">
+				AND a.member_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{memberName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{memberName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{memberName},'%')</if>
+			</if>
+			<if test="mobile != null and mobile != ''">
+				AND a.mobile LIKE 
+					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{mobile}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{mobile},'%')</if>
+			</if>
+			<if test="installUser != null and installUser.id != null and installUser.id != ''">
+				AND a.install_by = #{installUser.id}
+			</if>
+			<if test="saleUser != null and saleUser.id != null and saleUser.id != ''">
+				AND a.sale_by = #{saleUser.id}
+			</if>
+			<if test="productType != null and productType != ''">
+				AND a.product_type = #{productType}
+			</if>
+			<if test="reviewStatus != null and reviewStatus != ''">
+				AND a.review_status = #{reviewStatus}
+			</if>
+			
+			<if test="beginDate != null and endDate != null and beginDate != '' and endDate != ''">
+				AND a.review_time BETWEEN #{beginDate} AND DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+			</if>
+			
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DkContract" >
+		SELECT 
+			<include refid="dkContractColumns"/>
+		FROM dk_contract a
+		<include refid="dkContractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dk_contract(
+			id,
+			name,
+			parent_id,
+			contract_flag,
+			quotation_id,
+			contract_number,
+			member_name,
+			mobile,
+			address,
+			member_id,
+			contract_fee,
+			total_fee,
+			arrive_fee,
+			connection_ratio,
+			install_by,
+			sale_by,
+			product_type,
+			review_status,
+			review_by,
+			review_time,
+			is_review,
+			remark,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{parent.id},
+			#{contractFlag},
+			#{dkQuotation.id},
+			#{contractNumber},
+			#{memberName},
+			#{mobile},
+			#{address},
+			#{dkMember.id},
+			#{contractFee},
+			#{totalFee},
+			#{arriveFee},
+			#{connectionRatio},
+			#{installUser.id},
+			#{saleUser.id},
+			#{productType},
+			#{reviewStatus},
+			#{reviewUser.id},
+			#{reviewTime},
+			#{isReview},
+			#{remark},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dk_contract SET 	
+			name = #{name},
+			parent_id = #{parent.id},
+			contract_flag = #{contractFlag},
+			quotation_id = #{dkQuotation.id},
+			contract_number = #{contractNumber},
+			member_name = #{memberName},
+			mobile = #{mobile},
+			address = #{address},
+			member_id = #{dkMember.id},
+			contract_fee = #{contractFee},
+			total_fee = #{contractFee},
+			arrive_fee = #{arriveFee},
+			connection_ratio = #{connectionRatio},
+			install_by = #{installUser.id},
+			sale_by = #{saleUser.id},
+			product_type = #{productType},
+			review_status = #{reviewStatus},
+			review_by = #{reviewUser.id},
+			review_time = #{reviewTime},
+			is_review = #{isReview},
+			remark = #{remark},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM dk_contract
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE dk_contract SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="DkContract" statementType="STATEMENT">
+		select * FROM dk_contract  where ${propertyName} = '${value}'
+	</select>
+	
+	<select id="findListByparent" resultType="DkContract">
+		SELECT 
+			a.*
+		FROM dk_contract a
+		LEFT JOIN sys_user saleUser ON saleUser.id = a.sale_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
+			</if>
+			<if test="contractFlag != null and contractFlag != ''">
+				AND a.contract_flag = #{contractFlag}
+			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findListBydkQuotation" resultType="DkQuotation">
+		SELECT 
+			a.*
+		FROM dk_quotation a
+		LEFT JOIN sys_user saleUser ON saleUser.id = a.sale_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
+			</if>
+			and a.review_status = #{reviewStatus}
+			<if test="remark != null and remark != ''">
+			and not exists(select 1 from dk_contract dc where dc.quotation_id = a.id)
+			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findListBydkMember" resultType="DkMember">
+		SELECT 
+			*
+		FROM dk_member a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="add">
+		INSERT INTO dk_contract(
+			id,
+			name,
+			parent_id,
+			contract_flag,
+			quotation_id,
+			contract_number,
+			member_name,
+			mobile,
+			address,
+			member_id,
+			contract_fee,
+			total_fee,
+			arrive_fee,
+			connection_ratio,
+			sale_by,
+			product_type,
+			review_status,
+			remark,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) 
+			SELECT 
+				#{id},
+				#{name},
+				#{parent.id},
+				#{contractFlag},
+				#{dkQuotation.id},
+				#{contractNumber},
+				member_name,
+				mobile,
+				address,
+				member_id,
+				total_fee,
+				total_fee,
+				0,
+				connection_ratio,
+				sale_by,
+				product_type,
+				#{reviewStatus},
+				remark,
+				#{createBy.id},
+				#{createDate},
+				#{updateBy.id},
+				#{updateDate},
+				#{delFlag}
+			FROM dk_quotation 
+			WHERE id = #{dkQuotation.id}
+	</insert>
+	
+	<select id="getSingle" resultType="DkContract" >
+		SELECT 
+			*
+		FROM dk_contract a
+		WHERE 1 = 1
+		<if test="name != null and name != ''">
+			AND a.name = #{name}
+		</if>
+		<if test="contractNumber != null and contractNumber != ''">
+			AND a.contract_number = #{contractNumber} 
+		</if>
+		<if test="id != null and id != ''">
+			AND a.id != #{id}
+		</if>
+		<if test="contractFlag != null and contractFlag != ''">
+			AND a.contract_flag = #{contractFlag}
+		</if>
+	</select>
+	
+	<update id="reviewContract">
+		UPDATE dk_contract SET 
+			review_status = #{reviewStatus},
+			<if test="reviewStatus == '2'.toString() or reviewStatus == '9'.toString() ">
+			is_review = #{isReview},
+			review_by = #{updateBy.id},
+			review_time = #{updateDate},
+			</if>
+			<if test="reviewStatus == '9'.toString() ">
+				contract_status = 1,
+			</if>
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateContractPay">
+		UPDATE dk_contract SET 
+			arrive_fee = arrive_fee + #{arriveFee}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="assignInstall">
+		UPDATE dk_contract SET 
+			install_by = #{installUser.id},
+			supervision_by = #{supervisionUser.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateContractTotalFee">
+		UPDATE dk_contract 
+			SET     total_fee = 
+(SELECT a.totalFee FROM (SELECT IFNULL(SUM(contract_fee ),0) totalFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) a ) 
+		WHERE id  = #{parent.id}
+	</update>
+</mapper>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>微信授权</title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+var url="http://bj.njsjln.com/a";
+window.location.href=url+"/api/authorize/jsauthorize?cmethod="+getQueryString("cmethod");
+
+
+function getQueryString(name) { //输入参数名称
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null)
+		return unescape(r[2]);
+	return null; //返回参数值
+}
+</script>
+</html>

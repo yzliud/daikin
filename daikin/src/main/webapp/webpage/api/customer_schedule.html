@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport"content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/weui.css"/>
+  		<link rel="stylesheet" href="css/weui2.css"/>
+		<title>合同进度</title>
+	</head>
+<body style="background-color: #efeff4;">
+<div style="width:100%;height:100%;position:fixed;top:0;left:0px;display: none;z-index:998;" id="big-img-div" onclick="hidediv()">
+	<div style="position:absolute;background:black; filter:alpha(opacity:70);opacity:0.7;top:0; z-index:999;left:0px;width:100%;height:100%;display: none;" id="background-img">
+	</div>	
+	<img id="big-img" src="" style="position: absolute;top:10%;width:90%;left:5%;z-index: 1000;display: none;"/>
+</div>
+<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+		<div id="space"></div>
+	</div>
+</div>
+</body>
+	<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script src="js/mui.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	function hidediv() {
+		$("#big-img-div").css("display","none");
+	}
+	function showBig(src,number,page) {
+		var height = document.body.scrollHeight;
+		var realtop = height*(page-1) + height*number/3;
+
+		$("#big-img-div").css("display","");
+		$("#background-img").css("display","");
+		$("#big-img").attr("src",src);
+		$("#big-img").css("display","");
+		//$("#big-img").css({'top':realtop+"px"});
+	}
+		
+/**
+ * 下拉刷新具体业务实现
+ */
+function pulldownRefresh() {
+	setTimeout(function() {
+		page=1;
+		//刷新的业务
+		document.location.reload();
+		//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+	}, 1500);
+}
+
+/**
+ * 上拉加载具体业务实现
+ */
+ var count = 1; 
+	function pullupRefresh() {
+		setTimeout(function() {
+			$.ajax({
+				type: "post",
+				url: "../../a/api/customer/getContractSchedule",
+				data: {
+					"pageNum": count ,// 传过去的页码
+					"contractId" : getQueryString("contractId")
+				},
+				dataType: "JSON",
+				success: function(data) {
+					count = count + 1;
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.length == 0)); //参数为true代表没有更多数据了。
+						for(var i = 0; i < data.length; i++) {
+						var div = document.createElement('div');
+						div.className = 'weui-form-preview';
+ 						div.style = 'margin-top: 10px;';	
+				    	div.innerHTML =
+				    		"<div class='weui-form-preview-bd'>"+
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>日期</label>"+
+                    				"<span class='weui-form-preview-value' id ='time'>"+data[i].submit_date+"</span>"+
+                				"</p>"+
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>完成度</label>"+
+                    				"<span class='weui-form-preview-value' id='percent'>"+data[i].percent+"%</span>"+
+                				"</p>"+
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>进度描述</label>"+
+                    				"<span class='weui-form-preview-value' id='des'>"+data[i].descript+"</span>"+
+                				"</p>"+
+	               				"<p>"+
+                					"<label class='weui-form-preview-label'>进度图片</label><br>"+
+                					"<div style='padding-left: 10%;' class='weui-uploader__bd'>"+
+                						"<ul class='weui-uploader__files' id='"+data[i].id+"'>"+
+                                    
+                                    	"</ul>"+
+               						"</div>"+
+                				"</p>"+
+                
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>安装师傅</label>"+
+                    				"<span class='weui-form-preview-value' id='name'>"+data[i].name+"</span>"+
+                				"</p>"+
+                				"<p>"+
+                    				"<label class='weui-form-preview-label'>联系电话</label>"+
+                    				"<a class='weui-form-preview-value' id='mobile' href='tel:"+data[i].mobile+"'>"+data[i].mobile+"</a>"+
+                				"</p>"+
+							"</div>";
+				    	
+						$("#space").append(div);
+						
+						var imgback_array= data[i].pic.split(',');
+						
+					    for(var j = 0 ;j<imgback_array.length;j++){  
+			                 if(imgback_array[j] == "" || typeof(imgback_array[j]) == "undefined")  
+			                 {  
+			                	 imgback_array.splice(j,1);  
+			                 	j= j-1;     
+			                 }    
+			              }
+						for(var k = 0 ;k<imgback_array.length;k++){
+							$('#'+data[i].id).append("<li  onclick='showBig(&quot;"+imgback_array[k]+"&quot;,&quot;"+i+"&quot;,&quot;"+(count-1)+"&quot;)' class='weui-uploader__file' style='background-image:url("+imgback_array[k]+")'></li>");
+						}
+					}
+				},
+				error: function() {}
+			});
+		}, 1500);
+	}
+
+	mui.init({
+		pullRefresh : {
+			container : '#pullrefresh',
+			down : {
+				callback : pulldownRefresh
+			},
+			up : {
+				contentrefresh : '正在加载...',
+				callback : pullupRefresh
+			}
+		}
+	});
+	
+	if(mui.os.plus) {
+		mui.plusReady(function() {
+			setTimeout(function() {
+				mui('#pullrefresh').pullRefresh().pullupLoading();
+			}, 1000);
+
+		});
+	} else {
+		mui.ready(function() {
+			mui('#pullrefresh').pullRefresh().pullupLoading();
+		});
+	}
+
+	mui("#pullrefresh").on('tap', 'div', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'button', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'a', function(event) {
+		this.click();
+	});
+	mui("#pullrefresh").on('tap', 'li', function(event) {
+		this.click();
+	});
+
+	function getQueryString(name) { //输入参数名称
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null; //返回参数值
+	}
+ 
+mui("#pullrefresh").on('tap', 'img', function (event) {
+this.click();
+});
+</script>
+</html>

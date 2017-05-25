@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>解绑</title>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="target-densitydpi=device-dpi,width=750, user-scalable=no">
+  <script>
+  /* Fix viewport*/
+  (function(f,u){var o=navigator.userAgent,r=750,e=f.innerWidth||r,g=f.outerHeight||e,q=f.screen.width||e,d=f.screen.availWidth||e,n=f.innerHeight||r,p=f.outerHeight||n,a=f.screen.height||n,k=f.screen.availHeight||n,l=Math.min(e,g,q,d,n,p,a,k),h=l/r,b=f.devicePixelRatio;h=Math.min(h,b);if(h<1){var t=",initial-scale="+h+",maximum-scale="+h,c=u.getElementsByTagName("meta"),j;if(/iphone|ipod/ig.test(o)){j=",user-scalable=no"}if(/android/ig.test(o)){j=""}t+=j||"";if(/zenlife-android-webview/.test(o)&&!/viewport/.test(o)){document.querySelector('html').style.zoom = h}if(top.location!=location){document.querySelector('html').style.zoom = h};for(var s=0,m;s<c.length;s++){m=c[s];if(m.name=="viewport"){m.content+=t}}}}).call(this,window,document);
+  </script>
+  <link rel="stylesheet" type="text/css" href="css/common.css">
+  <link rel="stylesheet" type="text/css" href="css/login.css">
+   
+</head>
+
+<body class="login-bg">
+<!--头部开始-->
+<div class="login-top">
+	<div class="logo-name">
+	 	<div class="name">
+	 	   <img src="img/logo.jpg">
+	 	</div>
+	</div>
+</div>
+<!--头部结束-->
+<div class="main-login">
+	<div class="user-info">	   
+	   <input type="text" name="mobile" id="mobile" class="log-box" placeholder="已绑定手机号" disabled="disabled" >
+	</div>
+	<!--  <a href="javascript:login();" class="log-box login-info-btn">登录</a>-->
+<input type="button" class="log-box login-info-btn" value="解绑" onclick="unbind()">
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" charset="utf-8">
+	var mobile = "";
+	window.onload=function(){
+		var mobile = getQueryString("mobile");
+		if(mobile==''||mobile==null||mobile=='null'){
+			$("#mobile").hide();//隐藏
+			if(confirm("未绑定,立即绑定吗?")){	 
+		        location.href="worker_index.html";
+		 	}
+		    else{		 
+		    }
+		}else{
+			$("#mobile").val(mobile);
+		}
+	}
+
+	function unbind(){
+		if($("#mobile").val()==''||$("#mobile").val==null){
+			if(confirm("未绑定,立即绑定吗?")){	 
+		        location.href="worker_index.html";
+		 	}
+		    else{		 
+		    }
+		}else{
+		      $.ajax({
+		    	  type: "post",
+		          url:"/a/api/worker/doUnbind",
+		          data:{
+		        	  "mobile":mobile
+		          },
+		          type:"post",
+		          dataType: "JSON",
+		          success:function(data){//ajax返回的数据
+ 		        	if(data.msg=='success'){
+ 		        		$("#mobile").val("已解绑");
+		        		alert('解绑成功!');
+		  			}else{
+		  				alert('解绑失败!');
+		  			}
+		          },
+		          error: function(XMLHttpRequest, textStatus, errorThrown){
+		         		alert(XMLHttpRequest);
+		         		alert(textStatus);
+		                alert(errorThrown);
+		             }
+		     });
+		}
+	}
+	
+	function getQueryString(name) { //输入参数名称
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null; //返回参数值
+	}
+	
+</script>
+</html>

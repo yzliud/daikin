@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkContractInstallCostDao">
+    
+	<sql id="dkContractInstallCostColumns">
+		a.id AS "id",
+		a.contract_id AS "dkContract.id",
+		a.pay_date AS "payDate",
+		a.pay_fee AS "payFee",
+		a.install_team AS "installTeam",
+		a.review_status AS "reviewStatus",
+		a.review_by AS "reviewBy.id",
+		a.is_review AS "isReview",
+		a.remark AS "remark",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		dkContract.name AS "dkContract.name",
+		reviewBy.name AS "reviewBy.name"
+	</sql>
+	
+	<sql id="dkContractInstallCostJoins">
+		LEFT JOIN dk_contract dkContract ON dkContract.id = a.contract_id
+		LEFT JOIN sys_user reviewBy ON reviewBy.id = a.review_by
+	</sql>
+	
+    
+	<select id="get" resultType="DkContractInstallCost" >
+		SELECT 
+			<include refid="dkContractInstallCostColumns"/>
+		FROM dk_contract_install_cost a
+		<include refid="dkContractInstallCostJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DkContractInstallCost" >
+		SELECT 
+			<include refid="dkContractInstallCostColumns"/>
+		FROM dk_contract_install_cost a
+		<include refid="dkContractInstallCostJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="dkContract != null and dkContract.id != null and dkContract.id != ''">
+				AND a.contract_id = #{dkContract.id}
+			</if>
+			<if test="beginPayDate != null and endPayDate != null and beginPayDate != '' and endPayDate != ''">
+				AND a.pay_date BETWEEN #{beginPayDate} AND DATE_ADD(#{endPayDate}, INTERVAL 1 DAY)
+			</if>
+			<if test="installTeam != null and installTeam != ''">
+				AND a.install_team = #{installTeam}
+			</if>
+			<if test="reviewStatus != null and reviewStatus != ''">
+				AND a.review_status = #{reviewStatus}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DkContractInstallCost" >
+		SELECT 
+			<include refid="dkContractInstallCostColumns"/>
+		FROM dk_contract_install_cost a
+		<include refid="dkContractInstallCostJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dk_contract_install_cost(
+			id,
+			contract_id,
+			pay_date,
+			pay_fee,
+			install_team,
+			review_status,
+			review_by,
+			is_review,
+			remark,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{dkContract.id},
+			#{payDate},
+			#{payFee},
+			#{installTeam},
+			#{reviewStatus},
+			#{reviewBy.id},
+			#{isReview},
+			#{remark},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dk_contract_install_cost SET 	
+			contract_id = #{dkContract.id},
+			pay_date = #{payDate},
+			pay_fee = #{payFee},
+			install_team = #{installTeam},
+			review_status = #{reviewStatus},
+			review_by = #{reviewBy.id},
+			is_review = #{isReview},
+			remark = #{remark},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM dk_contract_install_cost
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE dk_contract_install_cost SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="DkContractInstallCost" statementType="STATEMENT">
+		select * FROM dk_contract_install_cost  where ${propertyName} = '${value}'
+	</select>
+	
+	<select id="findListBydkContract" resultType="DkContract">
+		SELECT 
+			*
+		FROM dk_contract a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">#{name}||'%'</if>
+				<if test="dbName == 'mssql'">#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
+			</if>
+			<if test="contractFlag != null and contractFlag != ''">
+				AND a.contract_flag = #{contractFlag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<update id="checkInstallCost">
+		UPDATE dk_contract_install_cost SET 
+			review_status = #{reviewStatus},
+			<if test="reviewStatus == '2'.toString() or reviewStatus == '9'.toString() ">
+			is_review = #{isReview},
+			review_by = #{updateBy.id},
+			</if>
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+</mapper>
