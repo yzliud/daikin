@@ -16,6 +16,7 @@
 			<value>
 				/static/** = anon
 				/userfiles/** = anon
+				${adminPath}/api/quotation/index = anon
 				${adminPath}/api/customer/index = anon
 				${adminPath}/api/customer/getAllContracts = anon
 				${adminPath}/api/customer/getContractSchedule = anon

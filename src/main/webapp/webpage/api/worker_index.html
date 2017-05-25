@@ -113,7 +113,12 @@
 	            	/* var btnArray = [ '确定' ]; */
 	            	if(data.msg=='success'){
 	            		alert('绑定成功!');
-	            		window.location.href = "worker_contract.html?rand="+Math.random();
+	            		var jump = getQueryString('jump');
+	            		if(jump!=null&&"quotation"==jump){
+	            			window.location.href = "quotation_1.html?rand="+Math.random();
+	            		}else{
+	            			window.location.href = "worker_contract.html?rand="+Math.random();	
+	            		}
 	            	}else{
 	            		alert('绑定失败,'+data.msg);
 	            	}
@@ -124,6 +129,14 @@
 	
 	function clearInput(strId){
 		$('#'+strId).val('');
+	}
+	
+	function getQueryString(name) { //输入参数名称
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null; //返回参数值
 	}
 </script>
 </html>

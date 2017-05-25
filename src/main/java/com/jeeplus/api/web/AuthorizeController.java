@@ -111,6 +111,8 @@ public class AuthorizeController {
 		System.out.println("toauthorize:cmethod==="+request.getParameter("cmethod"));
 		if("unbind".equals(cmethod)){
 			response.sendRedirect(Global.getFrontPath()+"/a/api/worker/unbind");
+		}else if("quotation".equals(cmethod)){
+			response.sendRedirect(Global.getFrontPath()+"/a/api/quotation/index");
 		}else{
 			response.sendRedirect(Global.getFrontPath()+"/a/api/worker/index");
 		}
