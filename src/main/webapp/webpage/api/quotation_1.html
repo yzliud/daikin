@@ -1,10 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<title>报价单生成</title>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,user-scalable=0">
+<link rel="stylesheet" href="css/new_weui/weui.css" />
+<link rel="stylesheet" href="css/new_weui/weui2.css" />
+<link rel="stylesheet" href="css/new_weui/weui3.css" />
+<script src="js/zepto.min.js"></script>
 </head>
-<body>
-暂未开放
+
+<body style="background-color: #f8f8f8;">
+	<form id="mianform">
+		<div class="weui_cells_title">报价单</div>
+		<div class="weui_cells weui_cells_form">
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">名称</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input id="name" class="weui_input" type="text" maxlength=""
+						placeholder="请输入报价单名称">
+				</div>
+			</div>
+		</div>
+
+		<div class="weui_cells_title">顾客</div>
+		<div class="weui_cells weui_cells_form">
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">姓名</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input id="member_name" class="weui_input" type="text" maxlength=""
+						placeholder="请输入顾客姓名">
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">手机</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input id="mobile" class="weui_input" type="tel" required
+						pattern="[0-9]{11}" maxlength="11" placeholder="请输入顾客手机号">
+				</div>
+			</div>
+
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">地址</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input id="address" class="weui_input" type="text" maxlength=""
+						placeholder="请输入顾客地址">
+				</div>
+			</div>
+		</div>
+
+		<div class="weui_cells_title">商品</div>
+		<div class="weui_cells">
+			<div class="weui_cell weui_cell_select weui_select_after">
+				<div class="weui_cell_hd">
+					<label for="" class="weui_label">类型</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<select id="product_type" class="weui_select" name="select2">
+						<option value="2"></option>
+						<option value="0">空调</option>
+						<option value="1">地暖</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="weui_btn_area">
+			<a id="formSubmitBtn" href="javascript:nextStep();"
+				class="weui_btn weui_btn_primary">下一步</a>
+		</div>
+	</form>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="js/weui.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript">
+
+	window.onload=function(){
+	
+	}
+
+    function nextStep(){
+    	
+    	if($("#name").val()==""){
+    		alert("请输入报价单名称");
+    	}else if($("#member_name").val() ==""){
+    		alert("请输入顾客姓名");
+    	}else if($("#mobile").val() ==""){
+    		alert("请输入顾客手机号");
+    	}else if($("#address").val() ==""){
+    		alert("请输入顾客地址");
+    	}else if($("#product_type").val() ==""){
+    		alert("请输入商品类型");
+    	}else{
+    		var result = isPhoneNum();
+    		if (result) {
+     	  		$.ajax({
+    	        	url:"../../a/api/quotation/isExist",
+    	        	data:$("#mainForm").serialize(),
+    	       		type:"post",
+    	        	dataType: 'json',
+    	       		async: false,
+    	       		success:function(data){//ajax返回的数据
+    	        		if(data.msg =='no'){ 
+    		  				window.location.href = "quotation_2.html?name="+ $("#name").val()+"&member_name="+$("#member_name").val()+"&mobile="+$("#mobile").val()+"&address="+$("#address").val()+"&product_type="+$("#product_type").val();
+     	        		}else{ 
+    	        			alert('此报价单名称已存在,请重新输入！');	
+    	        	 	}
+    	          	}
+    	    	});
+    		}	
+    	}
+    }
+	
+	function getQueryString(name) { //输入参数名称
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null; //返回参数值
+	}
+	
+	function isPhoneNum() {
+		var phonenum = $("#mobile").val();
+		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		if (!myreg.test(phonenum)) {
+			alert('请输入合法手机号！');
+			return false;
+		} else {
+			return true;
+		}
+	}
+   
+</script>
 </body>
 </html>
