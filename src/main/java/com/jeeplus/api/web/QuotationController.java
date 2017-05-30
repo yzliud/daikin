@@ -58,7 +58,7 @@ public class QuotationController {
 	 * @throws IOException 
 	 */
 	@RequestMapping(value = "ishave")
-	public void isExist(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void ishave(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
 		Gson gson = new Gson();
@@ -68,8 +68,8 @@ public class QuotationController {
 
 		DkQuotation quotation = new DkQuotation();
 		quotation.setName(name);
-		DkQuotation result = dkQuotationService.getSingle(quotation);
-		if(result==null){
+		DkQuotation quotation1 = dkQuotationService.getSingle(quotation);
+		if(quotation1==null){
 			map.put("msg", "no");//不存在
 		}else{
 			map.put("msg", "yes");//存在

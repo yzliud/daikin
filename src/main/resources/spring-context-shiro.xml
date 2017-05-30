@@ -17,7 +17,7 @@
 				/static/** = anon
 				/userfiles/** = anon
 				${adminPath}/api/quotation/index = anon
-				${adminPath}/api/quotation/isExist = anon
+				${adminPath}/api/quotation/ishave = anon
 				${adminPath}/api/quotation/create = anon
 				${adminPath}/api/customer/index = anon
 				${adminPath}/api/customer/getAllContracts = anon

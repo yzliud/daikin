@@ -219,7 +219,7 @@
 		</choose>
 	</select>
 	
-	<select id="getSingle" resultType="DkContract" >
+	<select id="getSingle" resultType="DkQuotation" >
 		SELECT 
 			*
 		FROM dk_quotation a
