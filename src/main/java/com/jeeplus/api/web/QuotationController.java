@@ -23,14 +23,11 @@ import com.jeeplus.api.service.QuotationService;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
-import com.jeeplus.modules.daikin.entity.DkQuotationProduct;
 import com.jeeplus.modules.daikin.entity.DkWorker;
 import com.jeeplus.modules.daikin.service.DkMemberService;
 import com.jeeplus.modules.daikin.service.DkProductService;
 import com.jeeplus.modules.daikin.service.DkQuotationService;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
-import com.jeeplus.modules.sys.entity.User;
-import com.jeeplus.modules.sys.service.SystemService;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/quotation")
@@ -47,9 +44,6 @@ public class QuotationController {
 	
 	@Autowired
 	private DkProductService dkProductService;
-	
-	@Autowired
-	private SystemService systemService;
 	
 	@Autowired
 	private DkMemberService dkMemberService;
@@ -131,12 +125,10 @@ public class QuotationController {
 		Map<String, String> map = new HashMap<String, String>();
 
 		String sysId = (String) request.getSession().getAttribute("sysId");
-		sysId="001";
+		//sysId="001";
 		if(sysId==null){
 			map.put("msg", "fail");//失败
-		}else{
-			User user = systemService.getUser(sysId);
-			
+		}else{			
 			String name = request.getParameter("name");
 			String member_name = request.getParameter("member_name");
 			String mobile = request.getParameter("mobile");
@@ -184,11 +176,12 @@ public class QuotationController {
 				DkProduct product = dkProductService.get(product_id);
 					
 				QuotationProduct quotationProduct = new QuotationProduct();
+				quotationProduct.setId(UUID.randomUUID().toString().replace("-", ""));
 				quotationProduct.setQuotation_id(quotation_id);
 				quotationProduct.setProduct_id(product_id); 
 				quotationProduct.setPrice(product.getPrice()); 
 				quotationProduct.setAmount(Integer.valueOf(product_num));				
-				quotationProduct.setPrice(product.getPrice()*Integer.valueOf(product_num));
+				quotationProduct.setTotal_price(product.getPrice()*Integer.valueOf(product_num));
 				
 				total_fee = total_fee + product.getPrice()*Integer.valueOf(product_num);
 				
@@ -213,6 +206,7 @@ public class QuotationController {
 				quotationProduct.setDel_flag("0");
 				quotationProductList.add(quotationProduct);
 			}
+			quotation.setQuotationProductList(quotationProductList);
 			quotation.setTotal_fee(total_fee);
 			
 			quotationService.save(quotation);

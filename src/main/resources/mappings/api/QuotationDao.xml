@@ -5,9 +5,110 @@
 	<select id="getAllProduct" resultType="hashmap">
 		SELECT
 		id,name,price
-		FROM dk_product a
+		FROM
+		dk_product a
 		WHERE a.del_flag = '0'
 		order by a.update_date desc
 	</select>
+
+	<insert id="saveQuotation">
+		INSERT INTO dk_quotation(
+		id,
+		name,
+		member_name,
+		mobile,
+		address,
+		member_id,
+		total_fee,
+		product_type,
+		sale_by,
+		connection_ratio,
+		review_status,
+		review_by,
+		is_review,
+		remark,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		del_flag
+	) VALUES (
+		#{id},
+		#{name},
+		#{member_name},
+		#{mobile},
+		#{address},
+		#{member_id},
+		#{total_fee},
+		#{product_type},
+		#{sale_by},
+		#{connection_ratio},
+		#{review_status},
+		#{review_by},
+		#{is_review},
+		#{remark},
+		#{create_by},
+		#{create_date},
+		#{update_by},
+		#{update_date},
+		#{del_flag}
+		)
+	</insert>
+
+	<insert id="saveQuotationProduct">
+		INSERT INTO dk_quotation_product(
+		id,
+		quotation_id,
+		product_id,
+		name,
+		model,
+		capacity_model,
+		price,
+		cost_price,
+		amount,
+		total_price,
+		classify_id,
+		power,
+		place,
+		brand_id,
+		unit,
+		product_type,
+		position,
+		floor,
+		demand_area,
+		descript,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		del_flag
+	) VALUES (
+		#{id},
+		#{quotation_id},
+		#{product_id},
+		#{name},
+		#{model},
+		#{capacity_model},
+		#{price},
+		#{cost_price},
+		#{amount},
+		#{total_price},
+		#{classify_id},
+		#{power},
+		#{place},
+		#{brand_id},
+		#{unit},
+		#{product_type},
+		#{position},
+		#{floor},
+		#{demand_area},
+		#{descript},
+		#{create_by},
+		#{create_date},
+		#{update_by},
+		#{update_date},
+		#{del_flag}
+		)
+	</insert>
 
 </mapper>
