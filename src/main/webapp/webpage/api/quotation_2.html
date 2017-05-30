@@ -57,35 +57,7 @@
 </head>
 
 <body style="background-color: #f8f8f8;">
-	<div class="weui_cells weui_cells_form ">
-
-		<div class="weui_cell">
-			<div class="weui_cell_bd weui_cell_primary">
-				<p>VRV住宅用P系列室内机超薄风管式BBBBBB</p>
-			</div>
-			<div style="font-size: 0px;" class="weui_cell_ft">
-				<a class="weui-number weui-number-sub needsclick"> - </a> <input
-					id="bbb" pattern="[0-9]*" class="weui-number-input"
-					style="width: 50px;" value='0' data-min="0" data-max="999"
-					data-step="1"> <a
-					class="weui-number weui-number-plus needsclick"> + </a>
-			</div>
-			<div class="weui_cell_ft" style="display: none;">0</div>
-		</div>
-
-		<div class="weui_cell">
-			<div class="weui_cell_bd weui_cell_primary">
-				<p>VRV住宅用P系列室内机超薄风管式AAAAAAAA</p>
-			</div>
-			<div style="font-size: 0px;" class="weui_cell_ft">
-				<a class="weui-number weui-number-sub needsclick"> - </a> <input
-					id="aaa" pattern="[0-9]*" class="weui-number-input"
-					style="width: 50px;" value='0' data-min="0" data-max="999"
-					data-step="1"> <a
-					class="weui-number weui-number-plus needsclick"> + </a>
-			</div>
-			<div class="weui_cell_ft" style="display: none;">0</div>
-		</div>
+	<div class="weui_cells weui_cells_form " id="space">
 
 	</div>
 
@@ -96,7 +68,35 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		window.onload = function() {
-
+			$.ajax({
+				type: "post",
+				url: "../../a/api/quotation/getAllProduct",
+				data: {},
+				dataType: "JSON",
+				success: function(data) {
+ 						for(var i = 0; i < data.length; i++) {
+ 						var div = document.createElement('div');
+ 						div.className = 'weui_cell';
+						div.innerHTML=
+							"<div class='weui_cell_bd weui_cell_primary'>"+
+								"<p>"+data[i].name+"</p>"+
+							"</div>"+
+							"<div class='weui_cell_bd weui_cell_primary'>"+
+								"<p>￥"+data[i].price+"</p>"+
+							"</div>"+
+							"<div style='font-size: 0px;' class='weui_cell_ft'>"+
+								"<a class='weui-number weui-number-sub needsclick' onclick='upDownOperation($(this));'> - </a> <input "+
+									"id='"+data[i].id+"' pattern='[0-9]*' class='weui-number-input' "+
+									"style='width: 50px;' value='0' data-min='0' data-max='999' "+
+									"data-step='1'> <a "+
+									"class='weui-number weui-number-plus needsclick' onclick='upDownOperation($(this));'> + </a> "+
+							"</div>"+
+							"<div class='weui_cell_ft' style='display: none;'>0</div> ";
+						$("#space").append(div);
+					}
+				},
+				error: function() {}
+			});
 		}
 
 		function create() {
@@ -111,7 +111,6 @@
 							+ $('#' + input.attr("id")).val() + ",";//查看循环中的每一个input的id  	
 				}
 			});
-			alert(inputid);
 			if (inputid == '') {
 				alert('请选择商品！');
 			} else {

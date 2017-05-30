@@ -2,8 +2,11 @@ package com.jeeplus.api.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,12 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
+import com.jeeplus.api.entity.Quotation;
+import com.jeeplus.api.entity.QuotationProduct;
 import com.jeeplus.api.service.QuotationService;
+import com.jeeplus.modules.daikin.entity.DkMember;
+import com.jeeplus.modules.daikin.entity.DkProduct;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
+import com.jeeplus.modules.daikin.entity.DkQuotationProduct;
 import com.jeeplus.modules.daikin.entity.DkWorker;
+import com.jeeplus.modules.daikin.service.DkMemberService;
+import com.jeeplus.modules.daikin.service.DkProductService;
 import com.jeeplus.modules.daikin.service.DkQuotationService;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.service.SystemService;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/quotation")
@@ -31,7 +44,16 @@ public class QuotationController {
 	
 	@Autowired
 	private DkQuotationService dkQuotationService;
-
+	
+	@Autowired
+	private DkProductService dkProductService;
+	
+	@Autowired
+	private SystemService systemService;
+	
+	@Autowired
+	private DkMemberService dkMemberService;
+	
 	/**
 	 * 首页跳转
 	 */
@@ -80,29 +102,124 @@ public class QuotationController {
 	}
 	
 	/**
+	 * 获取商品列表接口
+	 * 
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "getAllProduct")
+	public void getAllProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter writer = response.getWriter();
+		
+		List<HashMap<String, Object>> list = quotationService.getAllProduct();
+		Gson gson = new Gson();
+		writer.println(gson.toJson(list));
+		writer.flush();
+		writer.close();
+		
+	}
+	
+	/**
 	 * 保存报价单
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = "isExist")
+	@RequestMapping(value = "create")
 	public void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
 		Gson gson = new Gson();
 		Map<String, String> map = new HashMap<String, String>();
 
-		String name = request.getParameter("name");
-		String member_name = request.getParameter("member_name");
-		String mobile = request.getParameter("mobile");
-		String address = request.getParameter("address");
-		String product_type = request.getParameter("product_type");
-		String product = request.getParameter("product");//id:数量,id:数量
+		String sysId = (String) request.getSession().getAttribute("sysId");
+		sysId="001";
+		if(sysId==null){
+			map.put("msg", "fail");//失败
+		}else{
+			User user = systemService.getUser(sysId);
+			
+			String name = request.getParameter("name");
+			String member_name = request.getParameter("member_name");
+			String mobile = request.getParameter("mobile");
+			String address = request.getParameter("address");
+			String product_type = request.getParameter("product_type");
+			String products_str = request.getParameter("product");//id:数量,id:数量,
+			
+			Quotation quotation = new Quotation();
+			String quotation_id = UUID.randomUUID().toString().replace("-", ""); 
+			quotation.setId(quotation_id);
+			quotation.setName(name);
+			quotation.setMember_name(member_name);
+			quotation.setMobile(mobile);
+			quotation.setAddress(address);
+			
+			DkMember member = dkMemberService.findUniqueByProperty("mobile", mobile);
+			if(member==null){
+				member = new DkMember();
+				member.setIsNewRecord(true);
+				member.setId(UUID.randomUUID().toString().replace("-", ""));
+				member.setName(member_name);
+				member.setMobile(mobile);
+				member.setAddress(address);
+				dkMemberService.save(member);
+			}
+			quotation.setMember_id(member.getId());
+			
+			quotation.setProduct_type(product_type);
+			quotation.setSale_by(sysId);
+			quotation.setReview_status("1");
+			quotation.setIs_review("0");
+			quotation.setDel_flag("0");
+			quotation.setCreate_by(sysId);
+			quotation.setCreate_date(new Date());
+			quotation.setUpdate_by(sysId);
+			quotation.setUpdate_date(new Date());
+			
+			List<QuotationProduct> quotationProductList = Lists.newArrayList();
+			double total_fee = 0;
+			String[] products = products_str.split(",");
+			for (String product_str : products) {
+				String product_id = product_str.split(":")[0];
+				String product_num = product_str.split(":")[1];
+				
+				DkProduct product = dkProductService.get(product_id);
+					
+				QuotationProduct quotationProduct = new QuotationProduct();
+				quotationProduct.setQuotation_id(quotation_id);
+				quotationProduct.setProduct_id(product_id); 
+				quotationProduct.setPrice(product.getPrice()); 
+				quotationProduct.setAmount(Integer.valueOf(product_num));				
+				quotationProduct.setPrice(product.getPrice()*Integer.valueOf(product_num));
+				
+				total_fee = total_fee + product.getPrice()*Integer.valueOf(product_num);
+				
+				quotationProduct.setPower(product.getPower()); 
+				quotationProduct.setBrand_id(product.getBrandId());
+				quotationProduct.setClassify_id(product.getClassifyId());
+				quotationProduct.setModel(product.getModel());
+				quotationProduct.setCapacity_model(product.getCapacityModel());
+				quotationProduct.setName(product.getName());
+				quotationProduct.setPlace(product.getPlace());
+				quotationProduct.setUnit(product.getUnit());
+				quotationProduct.setProduct_type(product.getProductType());
+				quotationProduct.setCost_price(product.getCostPrice());
+				//quotationProduct.setPosition();                                        // 位置
+				//quotationProduct.setFloor();                                           // 楼层
+				//quotationProduct.setDemandArea();                                      // 需求面积
+				quotationProduct.setDescript(product.getDescript());                     // 描述
+				quotationProduct.setCreate_by(sysId);
+				quotationProduct.setCreate_date(new Date());
+				quotationProduct.setUpdate_by(sysId);
+				quotationProduct.setUpdate_date(new Date());
+				quotationProduct.setDel_flag("0");
+				quotationProductList.add(quotationProduct);
+			}
+			quotation.setTotal_fee(total_fee);
+			
+			quotationService.save(quotation);
+			
+			map.put("msg", "success");//成功
+		}
 		
-		DkQuotation quotation = new DkQuotation();
-		quotation.setIsNewRecord(true);
-
-		
-		
-		map.put("msg", "success");//成功
 		writer.println(gson.toJson(map));
 		writer.flush();
 		writer.close();
