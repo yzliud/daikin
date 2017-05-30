@@ -13,14 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.gson.Gson;
-import com.jeeplus.api.service.ContractService;
 import com.jeeplus.api.service.QuotationService;
-import com.jeeplus.modules.daikin.dao.DkQuotationDao;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkWorker;
 import com.jeeplus.modules.daikin.service.DkQuotationService;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
-import com.jeeplus.modules.daikin.web.DkQuotationController;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/quotation")
@@ -60,7 +57,7 @@ public class QuotationController {
 	 * 报价单名称是否存在
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = "isExist")
+	@RequestMapping(value = "ishave")
 	public void isExist(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
