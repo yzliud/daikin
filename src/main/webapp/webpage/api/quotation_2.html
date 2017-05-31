@@ -1,16 +1,14 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>报价单生成</title>
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,user-scalable=0">
 <link rel="stylesheet" href="css/new_weui/weui.css" />
 <link rel="stylesheet" href="css/new_weui/weui2.css" />
 <link rel="stylesheet" href="css/new_weui/weui3.css" />
-<script src="js/zepto.min.js">
-	
-</script>
+<script src="js/zepto.min.js"></script>
 </head>
 <script>
 	function upDownOperation(element) {
@@ -60,18 +58,21 @@
 	<div class="weui_cells weui_cells_form " id="space">
 
 	</div>
-
+<div class="page-hd">
 	<div class="weui_btn_area">
 		<a id="formSubmitBtn" href="javascript:create();"
 			class="weui_btn weui_btn_primary">提交</a>
 	</div>
+</div>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		window.onload = function() {
 			$.ajax({
 				type: "post",
 				url: "../../a/api/quotation/getAllProduct",
-				data: {},
+				data: {
+					"product_type":getQueryString("product_type") 
+					},
 				dataType: "JSON",
 				success: function(data) {
  						for(var i = 0; i < data.length; i++) {
@@ -86,7 +87,7 @@
 							"</div>"+
 							"<div style='font-size: 0px;' class='weui_cell_ft'>"+
 								"<a class='weui-number weui-number-sub needsclick' onclick='upDownOperation($(this));'> - </a> <input "+
-									"id='"+data[i].id+"' pattern='[0-9]*' class='weui-number-input' "+
+									"id='"+data[i].id+"' name='"+data[i].price+"' pattern='[0-9]*' class='weui-number-input' "+
 									"style='width: 50px;' value='0' data-min='0' data-max='999' "+
 									"data-step='1'> <a "+
 									"class='weui-number weui-number-plus needsclick' onclick='upDownOperation($(this));'> + </a> "+
@@ -100,7 +101,6 @@
 		}
 
 		function create() {
-			alert("报价单");
 			var inputid = "";
 			var inputArray = $("input");//取到所有的input并且放到一个数组中  
 			inputArray.each(//使用数组的循环函数 循环这个input数组  
@@ -108,7 +108,9 @@
 				var input = $(this);//循环中的每一个input元素  
 				if ($('#' + input.attr("id")).val() > 0) {
 					inputid += input.attr("id") + ":"
-							+ $('#' + input.attr("id")).val() + ",";//查看循环中的每一个input的id  	
+							+ $('#' + input.attr("id")).val() + ":"
+							+ input.attr("name")
+							+ ",";//查看循环中的每一个input的id  	
 				}
 			});
 			if (inputid == '') {
@@ -130,7 +132,12 @@
 					success : function(data) {//ajax返回的数据
 						if (data.msg == 'success') {
 							alert('保存成功');
-							window.location.href = "quotation_1.html";
+							window.location.href = "quotation_show.html?"+
+									"name="+getQueryString("name")+
+									"&member_name="+getQueryString("member_name")+
+									"&mobile="+getQueryString("mobile")+
+									"&products="+inputid
+									;
 						} else {
 							alert('保存失败');
 						}

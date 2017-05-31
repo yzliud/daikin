@@ -17,7 +17,7 @@ import com.jeeplus.modules.daikin.entity.DkQuotation;
 @MyBatisDao
 public interface QuotationDao extends CrudDao<DkQuotation> {
 
-	List<HashMap<String, Object>> getAllProduct();
+	List<HashMap<String, Object>> getAllProduct(String product_type);
 
 	void saveQuotation(Quotation quotation);
 

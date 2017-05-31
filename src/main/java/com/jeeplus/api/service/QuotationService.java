@@ -26,9 +26,9 @@ public class QuotationService  extends CrudService<QuotationDao, DkQuotation>{
 		
 	}
 
-	public List<HashMap<String, Object>> getAllProduct() {
+	public List<HashMap<String, Object>> getAllProduct(String product_type) {
 		// TODO Auto-generated method stub
-		return dao.getAllProduct();
+		return dao.getAllProduct(product_type);
 	}
 
 	public List<HashMap<String, Object>> getAllType() {
