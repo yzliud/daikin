@@ -18,6 +18,7 @@
 				/userfiles/** = anon
 				${adminPath}/api/quotation/index = anon
 				${adminPath}/api/quotation/ishave = anon
+				${adminPath}/api/quotation/getAllType = anon
 				${adminPath}/api/quotation/getAllProduct = anon
 				${adminPath}/api/quotation/create = anon
 				${adminPath}/api/customer/index = anon

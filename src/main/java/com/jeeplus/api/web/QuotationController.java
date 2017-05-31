@@ -100,6 +100,24 @@ public class QuotationController {
 	 * 
 	 * @throws IOException
 	 */
+	@RequestMapping(value = "getAllType")
+	public void getAllType(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter writer = response.getWriter();
+		
+		List<HashMap<String, Object>> list = quotationService.getAllType();
+		Gson gson = new Gson();
+		writer.println(gson.toJson(list));
+		writer.flush();
+		writer.close();
+		
+	}
+	
+	/**
+	 * 获取商品列表接口
+	 * 
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "getAllProduct")
 	public void getAllProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");

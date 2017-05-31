@@ -68,8 +68,6 @@
 				<div class="weui_cell_bd weui_cell_primary">
 					<select id="product_type" name="product_type" class="weui_select" name="select2">
 						<option value=""></option>
-						<option value="0">空调</option>
-						<option value="1">地暖</option>
 					</select>
 				</div>
 			</div>
@@ -85,7 +83,18 @@
 	<script type="text/javascript">
 
 	window.onload=function(){
-	
+		$.ajax({
+			url : "../../a/api/quotation/getAllType",
+            data: {},
+			type : "post",
+			dataType : 'json',
+			async : false,
+			success : function(data) {//ajax返回的数据
+				for(var i = 0; i < data.length; i++) {
+					$("#product_type").append("<option value='"+data[i].value+"'>"+data[i].label+"</option>");
+				}
+			}
+		});
 	}
 
     function nextStep(){

@@ -31,4 +31,9 @@ public class QuotationService  extends CrudService<QuotationDao, DkQuotation>{
 		return dao.getAllProduct();
 	}
 
+	public List<HashMap<String, Object>> getAllType() {
+		// TODO Auto-generated method stub
+		return dao.getAllType();
+	}
+
 }

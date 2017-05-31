@@ -110,5 +110,9 @@
 		#{del_flag}
 		)
 	</insert>
+	
+	<select id="getAllType" resultType="hashmap">
+		SELECT value,label FROM sys_dict WHERE TYPE = 'product_type' order by sort
+	</select>
 
 </mapper>

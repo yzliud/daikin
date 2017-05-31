@@ -23,5 +23,7 @@ public interface QuotationDao extends CrudDao<DkQuotation> {
 
 	void saveQuotationProduct(QuotationProduct quotationProduct);
 
+	List<HashMap<String, Object>> getAllType();
+
 	
 }
