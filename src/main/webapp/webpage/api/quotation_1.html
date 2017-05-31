@@ -67,7 +67,7 @@
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
 					<select id="product_type" name="product_type" class="weui_select" name="select2">
-						<option value="0"></option>
+						<option value=""></option>
 					</select>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script src="js/weui.min.js"></script>
 	<script src="js/mui.min.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" charset="utf-8">
 
 	window.onload=function(){
 		$.ajax({
@@ -120,7 +120,7 @@
     	       		async: false,
     	       		success:function(data){//ajax返回的数据
     	        		if(data.msg =='no'){ 
-    		  				window.location.href = "quotation_2.html?name="+ $("#name").val()+"&member_name="+$("#member_name").val()+"&mobile="+$("#mobile").val()+"&address="+$("#address").val()+"&product_type="+$("#product_type").val();
+    		  				window.location.href = "quotation_2.html?name="+ encodeURI(encodeURI($("#name").val()))+"&member_name="+encodeURI(encodeURI($("#member_name").val()))+"&mobile="+$("#mobile").val()+"&address="+encodeURI(encodeURI($("#address").val()))+"&product_type="+$("#product_type").val();
      	        		}else{ 
     	        			alert('此报价单名称已存在,请重新输入！');	
     	        	 	}
