@@ -27,4 +27,5 @@ public interface DkContractDao extends CrudDao<DkContract> {
 	public void updateContractPay(DkContract dkContract);
 	public void assignInstall(DkContract dkContract);
 	public void updateContractTotalFee(DkContract dkContract);
+	public void updateContractCostFee(DkContract dkContract);
 }

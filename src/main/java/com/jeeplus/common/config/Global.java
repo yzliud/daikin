@@ -24,6 +24,20 @@ import com.jeeplus.common.utils.StringUtils;
  * @version 2014-06-25
  */
 public class Global {
+	
+	/**
+	 * 获取appid
+	 */
+	public static String getAppId() {
+		return getConfig("appid");
+	}
+	
+	/**
+	 * 获取appsecret
+	 */
+	public static String getAppsecret() {
+		return getConfig("appsecret");
+	}
 
 	/**
 	 * 当前对象实例

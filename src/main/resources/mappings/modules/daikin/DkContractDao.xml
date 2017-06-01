@@ -15,6 +15,8 @@
 		a.member_id AS "dkMember.id",
 		a.contract_fee AS "contractFee",
 		a.total_fee AS "totalFee",
+		a.total_cost_fee AS "totalCostFee",
+		a.cost_fee AS "costFee",
 		a.arrive_fee AS "arriveFee",
 		a.connection_ratio AS "connectionRatio",
 		a.install_by AS "installUser.id",
@@ -353,6 +355,8 @@
 			contract_fee,
 			total_fee,
 			arrive_fee,
+			cost_fee,
+			total_cost_fee,
 			connection_ratio,
 			sale_by,
 			product_type,
@@ -377,6 +381,8 @@
 				member_id,
 				total_fee,
 				total_fee,
+				0,
+				0,
 				0,
 				connection_ratio,
 				sale_by,
@@ -419,6 +425,9 @@
 			review_by = #{updateBy.id},
 			review_time = #{updateDate},
 			</if>
+			<if test="reviewStatus == '9'.toString() ">
+				contract_status = 1,
+			</if>
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}
@@ -440,7 +449,16 @@
 	<update id="updateContractTotalFee">
 		UPDATE dk_contract 
 			SET     total_fee = 
-(SELECT a.totalFee FROM (SELECT IFNULL(SUM(contract_fee ),0) totalFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) a ) 
+(SELECT a.totalFee FROM (SELECT IFNULL(SUM(contract_fee ),0) totalFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) a ) ,
+total_cost_fee = 
+(SELECT b.costFee FROM (SELECT IFNULL(SUM(cost_fee ),0) costFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) b ) 
 		WHERE id  = #{parent.id}
+	</update>
+	
+	<update id="updateContractCostFee">
+		UPDATE dk_contract a 
+			SET     cost_fee = 
+(SELECT sum(IFNULL(cost_price,0)*amount) FROM dk_contract_product b WHERE b.contract_id = #{id} ) 
+		WHERE id  = #{id}
 	</update>
 </mapper>

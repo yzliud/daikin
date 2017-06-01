@@ -203,8 +203,6 @@
 								<ul class="dropdown-menu dropdown-user">
 									<li><a id="userPassWordBtn" data-toggle="modal" data-target="#register">更换密码</a>
 									</li>
-									<li><a href="#" data-toggle="modal" data-target="#register">更换手机号</a>
-									</li>
 								</ul>
 							</div>
 						</div>

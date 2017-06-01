@@ -108,5 +108,7 @@ public interface UserDao extends CrudDao<User> {
 	
 	public List<User>  findListByOffice(User user);
 	
+	public User checkMobile(User user);
+	
 	
 }

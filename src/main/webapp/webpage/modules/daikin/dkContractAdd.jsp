@@ -121,7 +121,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">合同类型：</label></td>
 					<td class="width-35">
-						<form:select path="contractFlag" class="form-control " onchange="selChange();" >
+						<form:select path="contractFlag" class="form-control required" onchange="selChange();" >
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('contract_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
