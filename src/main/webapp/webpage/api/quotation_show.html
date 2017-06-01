@@ -43,6 +43,22 @@
 
 	</div>
 
-
+<script type="text/javascript" charset="utf-8">
+		window.onload = function() {
+			alert(getQueryString("products"));
+        	alert(decodeURI(getQueryString("name")));
+			alert(decodeURI(getQueryString("member_name")));
+			alert(getQueryString("mobile"));
+			alert(decodeURI(getQueryString("address")));
+		}
+		
+		function getQueryString(name) { //输入参数名称
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null)
+				return unescape(r[2]);
+			return null; //返回参数值
+		}
+</script>
 </body>
 </html>
