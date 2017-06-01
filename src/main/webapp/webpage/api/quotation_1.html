@@ -67,7 +67,7 @@
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
 					<select id="product_type" name="product_type" class="weui_select" name="select2">
-						<option value="0"></option>
+						<option value=""></option>
 					</select>
 				</div>
 			</div>
@@ -93,7 +93,12 @@
 				for(var i = 0; i < data.length; i++) {
 					$("#product_type").append("<option value='"+data[i].value+"'>"+data[i].label+"</option>");
 				}
-			}
+			},
+            error:function(data,status,e){
+            	alert(data);
+            	alert(status);
+                alert(e);  
+           }
 		});
 	}
 

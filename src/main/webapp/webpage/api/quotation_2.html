@@ -81,7 +81,6 @@
 					});
 		});
 		function create() {
-			alert("报价单");
 			var inputid = "";
 			var inputArray = $("input");//取到所有的input并且放到一个数组中  
 			inputArray.each(//使用数组的循环函数 循环这个input数组  
@@ -106,7 +105,7 @@
 				 	"name":decodeURI(getQueryString("name")),
 				 	"member_name":decodeURI(getQueryString("member_name")),
 				 	"mobile":getQueryString("mobile"),
-				 	"address":getQueryString("address"),
+				 	"address":decodeURI(getQueryString("address")),
 				 	"product_type":getQueryString("product_type"),
 				 		},
 				 	type : "post",
