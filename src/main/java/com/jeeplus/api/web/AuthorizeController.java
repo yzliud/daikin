@@ -29,7 +29,7 @@ public class AuthorizeController {
 	public void jsauthorize(HttpServletRequest request, HttpServletResponse response, String callback) throws Exception {
 		//共账号及商户相关参数 daikin.samehope.cn
 		System.out.println("jsauthorize:cmethod==="+request.getParameter("cmethod"));
-		String appid = "wx14f656e580ff9396";
+		String appid = Global.getAppId();
 		String backUri = Global.getFrontPath()+"/a/api/authorize/toauthorize?cmethod="+request.getParameter("cmethod");
 		System.out.println("backUri=========="+backUri);
 		//String appid = "wxcfe5737777fcfd95";
@@ -39,7 +39,7 @@ public class AuthorizeController {
 				"&redirect_uri=" +
 				backUri+
 				"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
-		System.out.println(url);
+		System.out.println("***********************"+url);
 		response.sendRedirect(url);
 	}
 
@@ -48,8 +48,8 @@ public class AuthorizeController {
 		String code = request.getParameter("code");
 		String cmethod = request.getParameter("cmethod");
 		//商户相关资料 
-		String appid = "wx14f656e580ff9396";
-		String appsecret = "b8f5f782c18a99e11ae1a1fcb5866329";
+		String appid = Global.getAppId();
+		String appsecret = Global.getAppsecret();
 		//String appid = "wxcfe5737777fcfd95";
 		//String appsecret = "b6074c880d370cc2d473a50562b49f28";
 		

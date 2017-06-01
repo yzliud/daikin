@@ -31,10 +31,8 @@ import com.jeeplus.common.beanvalidator.BeanValidators;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.persistence.Page;
-import com.jeeplus.common.sms.SMSUtils;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.FileUtils;
-import com.jeeplus.common.utils.MyBeanUtils;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
@@ -303,6 +301,19 @@ public class UserController extends BaseController {
 		if (loginName !=null && loginName.equals(oldLoginName)) {
 			return "true";
 		} else if (loginName !=null && systemService.getUserByLoginName(loginName) == null) {
+			return "true";
+		}
+		return "false";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "checkMobile")
+	public String checkMobile(String mobile, String oldMobile) {
+		User u=new User();
+		u.setMobile(mobile);
+		if (mobile !=null && mobile.equals(oldMobile)) {
+			return "true";
+		} else if (mobile !=null && userDao.checkMobile(u) == null) {
 			return "true";
 		}
 		return "false";

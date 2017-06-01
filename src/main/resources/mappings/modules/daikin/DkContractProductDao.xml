@@ -124,8 +124,8 @@
 		) VALUES (
 			#{id},
 			#{contractId},
-			#{dkProduct.id},
-			#{suser.id},
+			#{productId},
+			#{name},
 			#{model},
 			#{capacityModel},
 			#{price},

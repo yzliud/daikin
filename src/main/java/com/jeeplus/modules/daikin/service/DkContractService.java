@@ -89,6 +89,8 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 			}
 		}
 		
+		dao.updateContractCostFee(dkContract);
+		
 		if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_9)){
 			DkContract d = new DkContract();
 			d.setParent(dkContract.getParent());
@@ -132,6 +134,7 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 		
 		dao.add(dkContract);
 		dkContractProductDao.add(dkContract);
+		dao.updateContractCostFee(dkContract);
 	}
 	
 	public DkContract getSingle(DkContract dc) {

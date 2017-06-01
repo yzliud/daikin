@@ -47,6 +47,8 @@ public class DkContract extends DataEntity<DkContract> {
 	private Date reviewTime;		// 审核日期
 	private String isReview;		// 是否有审核记录(0-没有；1-有)
 	private String remark;		// 备注
+	private Double costFee;		// 备注
+	private Double totalCostFee;		// 备注
 	private List<DkContractProduct> dkContractProductList = Lists.newArrayList();		// 子表列表
 	private Date beginDate;		// 开始 时间
 	private Date endDate;		// 结束 时间
@@ -172,6 +174,22 @@ public class DkContract extends DataEntity<DkContract> {
 
 	public void setTotalFee(Double totalFee) {
 		this.totalFee = totalFee;
+	}
+	
+	public Double getCostFee() {
+		return costFee;
+	}
+
+	public void setCostFee(Double costFee) {
+		this.costFee = costFee;
+	}
+
+	public Double getTotalCostFee() {
+		return totalCostFee;
+	}
+
+	public void setTotalCostFee(Double totalCostFee) {
+		this.totalCostFee = totalCostFee;
 	}
 	
 	@ExcelField(title="已到账金额", align=2, sort=10)
