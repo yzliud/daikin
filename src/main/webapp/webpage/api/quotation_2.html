@@ -2,37 +2,31 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="format-detection" content="telephone=no" />
-<meta name="viewport"
-	content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="format-detection" content="telephone=no"/>
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>报价单</title>
 <script type="text/javascript" src="shopping/js/jquery-2.1.4.min.js"></script>
-<link type="text/css" rel="stylesheet" href="shopping/css/base.css" />
-<link type="text/css" rel="stylesheet" href="shopping/css/module.css" />
+<link type="text/css" rel="stylesheet" href="shopping/css/base.css"/>
+<link type="text/css" rel="stylesheet" href="shopping/css/module.css"/>
 </head>
-
 <body>
-	<!--头部结束-->
-	<div class="shopping">
-
-		<div class="shop-group-item">
-			<div class="shop-name">
-				<h4>
-					<a href="#">商品列表</a>
-				</h4>
-			</div>
-			<ul id="space">
-
-
-			</ul>
+<!--头部结束-->
+<div class="shopping">
+	<div class="shop-group-item">
+		<div class="shop-name">
+			<h4>
+			<a href="#">商品列表</a>
+			</h4>
 		</div>
+		<ul id="space">
+		</ul>
 	</div>
-
-	<div class="payment-bar">
-		<a href="javascript:create();" class="settlement">生成报价单</a>
-	</div>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" charset="utf-8">
+</div>
+<div class="payment-bar">
+	<a href="javascript:create();" class="settlement">生成报价单</a>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8">
 		$(function() {
 			$
 					.ajax({
@@ -61,7 +55,6 @@
 										+ "</div></div></div></div> ";
 								$("#space").append(div);
 							}
-
 							// 数量减
 							$(".minus").click(function() {
 								var t = $(this).parent().find('.num');
@@ -87,7 +80,6 @@
 						}
 					});
 		});
-
 		function create() {
 			alert("报价单");
 			var inputid = "";
@@ -107,39 +99,34 @@
 			if (inputid == '') {
 				alert('请选择商品！');
 			} else {
-				/* 				$.ajax({
-				 url : "../../a/api/quotation/create",
-				 data: {
-				 "product":inputid,
-				 "name":getQueryString("name"),
-				 "member_name":getQueryString("member_name"),
-				 "mobile":getQueryString("mobile"),
-				 "address":getQueryString("address"),
-				 "product_type":getQueryString("product_type"),
-				 },
-				 type : "post",
-				 dataType : 'json',
-				 async : false,
-				 success : function(data) {//ajax返回的数据
-				 if (data.msg == 'success') {
-				 alert('保存成功'); */
-				window.location.href = "quotation_show.html?" + "name="
-						+ encodeURI(getQueryString("name")) + "&member_name="
-						+ encodeURI(getQueryString("member_name")) + "&mobile="
-						+ getQueryString("mobile") + "&products=" 
-						+   encodeURI(encodeURI(inputid));
-				/* 						} else {					
-				 alert('保存成功');
-				 window.location.href = "quotation_1.html";
-				 } else {
-				 alert('保存失败,请重新进入');
-				 }
-				 }
-				 }); */
+				$.ajax({
+					url : "../../a/api/quotation/create",
+				 	data: {
+				 	"product":inputid,
+				 	"name":getQueryString("name"),
+				 	"member_name":getQueryString("member_name"),
+				 	"mobile":getQueryString("mobile"),
+				 	"address":getQueryString("address"),
+				 	"product_type":getQueryString("product_type"),
+				 		},
+				 	type : "post",
+					dataType : 'json',
+				 	async : false,
+				 	success : function(data) {//ajax返回的数据
+				 		if (data.msg == 'success') {
+				 		alert('保存成功'); 
+						window.location.href = "quotation_show.html?" + "name="
+							+ encodeURI(getQueryString("name")) + "&member_name="
+							+ encodeURI(getQueryString("member_name")) + "&mobile="
+							+ getQueryString("mobile") + "&products=" 
+							+ encodeURI(encodeURI(inputid));
+				 		} else {					
+				 			alert('保存失败,请重新进入');
+				 		}
+				 	}
+				 });
 			}
-
 		}
-
 		function getQueryString(name) { //输入参数名称
 			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
 			var r = window.location.search.substr(1).match(reg);
