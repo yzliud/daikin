@@ -28,6 +28,7 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" charset="utf-8">
 		$(function() {
+			alert(decodeURI(getQueryString("name")));
 			$
 					.ajax({
 						type : "post",
@@ -103,8 +104,8 @@
 					url : "../../a/api/quotation/create",
 				 	data: {
 				 	"product":inputid,
-				 	"name":getQueryString("name"),
-				 	"member_name":getQueryString("member_name"),
+				 	"name":decodeURI(getQueryString("name")),
+				 	"member_name":decodeURI(getQueryString("member_name")),
 				 	"mobile":getQueryString("mobile"),
 				 	"address":getQueryString("address"),
 				 	"product_type":getQueryString("product_type"),
