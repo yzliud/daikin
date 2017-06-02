@@ -1,26 +1,19 @@
 <!doctype html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-<link rel="stylesheet" href="css/new_weui/weui.css"/>
-<link rel="stylesheet" href="css/new_weui/weui2.css"/>
-<link rel="stylesheet" href="css/new_weui/weui3.css"/>
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no"/>
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>报价单</title>
+<script type="text/javascript" src="shopping/js/jquery-2.1.4.min.js"></script>
 <link type="text/css" rel="stylesheet" href="shopping/css/base.css"/>
 <link type="text/css" rel="stylesheet" href="shopping/css/module.css"/>
-<script src="js/zepto.min.js"></script>
 </head>
-<body class="page-bg">
-<div class="weui-form-preview" id="mainPage">
-	<div class="weui-form-preview-hd">
-		<label class="weui-form-preview-label">这是一个报价单名字</label><em class="weui-form-preview-value">¥2400.00</em>
-	</div>
-	<div class="weui-form-preview-bd">
-		<p>
-			<label class="weui-form-preview-label">客户：徐庆宁</label><span class="weui-form-preview-value">18752017255</span>
-		</p>
-	</div>
+<body>
+
+<div class="header">
+	<h1 class="membername" style="margin-left: 10px;"></h1>
+</div>
 	<div class="shopping">
 		<div class="shop-group-item">
 			<div class="shop-name">
@@ -29,97 +22,46 @@
 				</h4>
 			</div>
 			<ul id="space">
-				<li>
-				<div class="shop-info">
-					<div class="shop-info-text">
-						<h4>室外机RPZQ6AAV1</h4>
-						<div class="shop-price">
-							<div class="shop-pices">
-								￥<b class="price">15796 * 30</b>
-							</div>
-						</div>
-					</div>
-				</div>
-				</li>
-				<li>
-				<div class="shop-info">
-					<div class="shop-info-text">
-						<h4>室外机RPZQ6AAV1</h4>
-						<div class="shop-price">
-							<div class="shop-pices">
-								￥<b class="price">15796 * 30</b>
-							</div>
-						</div>
-					</div>
-				</div>
-				</li>
-				<li>
-				<div class="shop-info">
-					<div class="shop-info-text">
-						<h4>室外机RPZQ6AAV1</h4>
-						<div class="shop-price">
-							<div class="shop-pices">
-								￥<b class="price">15796 * 30</b>
-							</div>
-						</div>
-					</div>
-				</div>
-				</li>
+				
 			</ul>
+			<div class="shopPrice">总计：￥<span class="shop-total-amount ShopTotal" id="AllTotal">0.00</span></div>
 		</div>
 	</div>
+<div class="payment-bar">
+	<a href="javascript:create();" class="settlement">重新生成</a>
 </div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-		window.onload = function() {
-			var products = decodeURI(getQueryString("products"));
-			var name = decodeURI(getQueryString("name"));
-			var member_name = decodeURI(getQueryString("member_name"));
-			var mobile = getQueryString("mobile");
-			var total_fee = 0;
-			
-			var html_content = "";
-			var product_arr = products.split(",");
-			for (var i = 0; i < product_arr.length-1; i++) {
-				var product = product_arr[i];
-				var product_info = product.split(":");
-				var product_name = product_info[3];
-				var product_price = parseFloat(product_info[2]);
-				var product_num = parseInt(product_info[1]);
-				total_fee = total_fee + product_num*product_price
-				html_content = html_content + 
-					"<li>"+
-						"<div class='shop-info'>"+
-							"<div class='shop-info-text'>"+
-								"<h4>"+product_name+"</h4>"+
-								"<div class='shop-price'>"+
-									"<div class='shop-pices'>￥<b class='price'>"+product_price+" * "+product_num+"</b></div>"+
-								"</div>"+
-							"</div>"+
-						"</div>"+
-					"</li>";
-			}
-			
-			var html_begin = "<div class='weui-form-preview-hd'>"+
-				"<label class='weui-form-preview-label'>"+name+"</label><em class='weui-form-preview-value'>￥"+total_fee+"</em>"+
-				"</div>"+
-				"<div class='weui-form-preview-bd'>"+
-					"<p>"+
-						"<label class='weui-form-preview-label'>客户："+member_name+"</label><span class='weui-form-preview-value'>"+mobile+"</span>"+
-					"</p>"+
-				"</div>"+
-				"<div class='shopping'>"+
-					"<div class='shop-group-item'>"+
-						"<div class='shop-name'>"+
-							"<h4>"+
-							"<a href='#'>商品列表</a>"+
-							"</h4>"+
-						"</div>"+
-						"<ul id='space'>";
-			
-			var html_end = "</ul>"+
-					"</div>"+
-				"</div>";
-		     $("#mainPage").html(html_begin + html_content + html_end);  
+
+		$(function(){
+			/******------------分割线-----------------******/
+			$.ajax({
+				type: "post",
+				url: "../../a/api/quotation/form",
+				data: {"id":getQueryString("id")},
+				dataType: "JSON",
+				success: function(data) {
+					var datalist = data.dkQuotationProductList;
+					for(var i = 0; i < data.dkQuotationProductList.length; i++) {
+						var div = document.createElement('li');
+						div.innerHTML=
+							"<div class='shop-info'><div class='shop-info-text'>"+
+								"<h4>"+datalist[i].name+"</h4>"+
+							"<div class='shop-price'>"+
+							"<div class='shop-pices'>￥<b class='price'>"+datalist[i].price+"*"+datalist[i].amount
+							"</b></div>"+
+							"</div></div></div> ";
+						$("#space").append(div);
+					}
+					$("#AllTotal").html(data.totalFee);
+					$(".membername").html("顾客:"+data.memberName +"-" + data.mobile);
+				},
+				error: function() {}
+			});
+		});
+		
+		function create() {
+			window.location.href = "../../a/api/quotation/index";
 		}
 		function getQueryString(name) { //输入参数名称
 			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //根据参数格式，正则表达式解析参数
@@ -128,6 +70,6 @@
 				return unescape(r[2]);
 			return null; //返回参数值
 		}
-</script>
+		</script>
 </body>
 </html>

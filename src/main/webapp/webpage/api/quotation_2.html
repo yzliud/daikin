@@ -27,34 +27,33 @@
 </div>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-		$(function() {
-			$
-					.ajax({
-						type : "post",
-						url : "../../a/api/quotation/getAllProduct",
-						data : {
-							"product_type":getQueryString("product_type")
-						},
-						dataType : "JSON",
-						success : function(data) {
-							for (var i = 0; i < data.length; i++) {
-								var div = document.createElement('li');
-								div.innerHTML = "<div class='shop-info'><div class='shop-info-text'>"
-										+ "<h4>"
-										+ data[i].name
-										+ "</h4>"
-										+ "<div class='shop-price'>"
-										+ "<div class='shop-pices'>￥<b class='price'>"
-										+ data[i].price
-										+ "</b></div>"
-										+ "<div class='shop-arithmetic'>"
-										+ "<a href='javascript:;' class='minus'>-</a>    "
-										+ " <span class='num' >0</span>"
-										+ "<input id='"+data[i].id+"' name='"+data[i].price+"' title='"+data[i].name+"' type='hidden' class='hidclass' value='0'> "
-										+ "<a href='javascript:;' class='plus'>+</a>"
-										+ "</div></div></div></div> ";
-								$("#space").append(div);
-							}
+
+		$(function(){
+			
+			/******------------分割线-----------------******/
+			$.ajax({
+				type: "post",
+				url: "../../a/api/quotation/getAllProduct",
+				data: {"product_type":getQueryString("product_type")},
+				dataType: "JSON",
+				success: function(data) {
+							for(var i = 0; i < data.length; i++) {
+							var div = document.createElement('li');
+						div.innerHTML=
+							"<div class='shop-info'><div class='shop-info-text'>"+
+								"<h4>"+data[i].name+"</h4>"+
+							"<div class='shop-price'>"+
+							"<div class='shop-pices'>￥<b class='price'>"+data[i].price+
+							"</b></div>"+
+							"<div class='shop-arithmetic'>"+
+								"<a href='javascript:;' class='minus'>-</a>    "+
+								" <span class='num' >0</span>"+ 
+								"<input id='"+data[i].id+"' name='"+data[i].price+"' title='"+data[i].name+"' type='hidden' class='hidclass' value='0'> "+
+								"<a href='javascript:;' class='plus'>+</a>"+
+							"</div></div></div></div> ";
+						$("#space").append(div);
+					}
+							
 							// 数量减
 							$(".minus").click(function() {
 								var t = $(this).parent().find('.num');
@@ -75,11 +74,11 @@
 								t.text(strnum);
 								$(this).parent().find('.hidclass').val(strnum);
 							});
-						},
-						error : function() {
-						}
-					});
+				},
+				error: function() {}
+			});
 		});
+		
 		function create() {
 			var inputid = "";
 			var inputArray = $("input");//取到所有的input并且放到一个数组中  
@@ -114,11 +113,7 @@
 				 	success : function(data) {//ajax返回的数据
 				 		if (data.msg == 'success') {
 				 		alert('保存成功'); 
-						window.location.href = "quotation_show.html?" + "name="
-							+ encodeURI(getQueryString("name")) + "&member_name="
-							+ encodeURI(getQueryString("member_name")) + "&mobile="
-							+ getQueryString("mobile") + "&products=" 
-							+ encodeURI(encodeURI(inputid));
+						window.location.href = "quotation_show.html?id=" + data.id;
 				 		} else {					
 				 			alert('保存失败,请重新进入');
 				 		}

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.Lists;
@@ -230,9 +231,21 @@ public class QuotationController {
 			quotationService.save(quotation);
 			
 			map.put("msg", "success");//成功
+			map.put("id", quotation_id);
 		}
 		
 		writer.println(gson.toJson(map));
+		writer.flush();
+		writer.close();
+	}
+	
+	@RequestMapping(value = "form")
+	public void form(String id, HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter writer = response.getWriter();
+		DkQuotation dkQuotation = dkQuotationService.get(id);
+		Gson gson = new Gson();
+		writer.println(gson.toJson(dkQuotation));
 		writer.flush();
 		writer.close();
 	}
