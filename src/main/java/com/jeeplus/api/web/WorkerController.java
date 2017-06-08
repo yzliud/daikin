@@ -33,7 +33,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.google.gson.Gson;
 import com.jeeplus.api.service.ContractScheduleService;
 import com.jeeplus.api.service.ContractService;
-import com.jeeplus.api.util.Sms;
+import com.jeeplus.api.util.NewSms;
 import com.jeeplus.common.web.BaseController;
 import com.jeeplus.modules.daikin.entity.DkContractSchedule;
 import com.jeeplus.modules.daikin.entity.DkWorker;
@@ -46,6 +46,7 @@ import com.jeeplus.modules.sys.entity.User;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.taobao.api.ApiException;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/worker")
@@ -140,14 +141,15 @@ public class WorkerController extends BaseController {
 
 	/**
 	 * 发送验证码接口
+	 * @throws ApiException 
 	 */
 	@RequestMapping(value = "sendCode")
-	public void sendCode(HttpServletRequest request, HttpServletResponse response) {
+	public void sendCode(HttpServletRequest request, HttpServletResponse response) throws ApiException {
 		String mobile = request.getParameter("mobile");
 		int code = (int) (Math.random() * 9000 + 1000);
-		String content = "您的验证码是：";
-		String msg = content + code;
-		Sms.send(msg, mobile);
+		//String content = "您的验证码是：";
+		//String msg = content + code;
+		NewSms.sendMsg(mobile, code+"");
 		request.getSession().setAttribute("code", code);
 	}
 
