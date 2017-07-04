@@ -17,7 +17,7 @@ import com.jeeplus.modules.daikin.entity.DkMember;
 @MyBatisDao
 public interface DkMemberDao extends CrudDao<DkMember> {
 
-	List<DkMember> findEffectiveList(String beginTime, String endTime);
+	List<DkMember> findEffectiveList(DkMember d);
 
 	
 }

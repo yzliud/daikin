@@ -350,14 +350,9 @@ public class UserUtils {
 	 * 导出Excel使用，根据名字转换为id
 	 */
 	public static Office getByOfficeName(String name){
-		Office o = new Office();
-		o.setName(name);
-		List<Office> list = officeDao.findList(o);
-		if(list.size()>0){
-			return list.get(0);
-		}else{
-			return new Office();
-		}
+		Office office = new  Office();
+		office = officeDao.findUniqueByProperty("name", name);
+		return office;
 	}
 	/**
 	 * 导出Excel使用，根据名字转换为id

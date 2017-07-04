@@ -267,5 +267,27 @@ public class SysDictController extends BaseController {
 		model.addAttribute("sysDict", sysDict);
 		return "modules/daikin/sysDictForm";
 	}
+	
+	/**
+	 * 短信模板列表页面
+	 */
+	@RequiresPermissions("daikin:sysDict:smsList")
+	@RequestMapping(value = {"smsList"})
+	public String smsList(SysDict sysDict, HttpServletRequest request, HttpServletResponse response, Model model) {
+		sysDict.setType("sms_template");
+		Page<SysDict> page = sysDictService.findPage(new Page<SysDict>(request, response), sysDict); 
+		model.addAttribute("page", page);
+		return "modules/daikin/sysDictSmsList";
+	}
+
+	/**
+	 * 短信模板表单页面
+	 */
+	@RequestMapping(value = "smsForm")
+	public String smsForm(SysDict sysDict, Model model) {
+		sysDict.setType("sms_template");
+		model.addAttribute("sysDict", sysDict);
+		return "modules/daikin/sysDictForm";
+	}
 
 }

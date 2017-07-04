@@ -18,43 +18,37 @@
 		});
 	});
 
-	function sendMsg(id) {
-		if (id != '') {
-		} else {
-			var obj = document.getElementsByName('memberId');
-			for (var i = 0; i < obj.length; i++) {
-				if (obj[i].checked)
-					id += obj[i].value + ',';
-			}
-		}
-		if (id == '') {
-			layer.alert('请选择需要发送的客户');
-		} else {
-			layer.prompt({
-				title : '请输入需要发送的内容，并确认',
-				formType : 2
-			}, function(text, index) {
-				layer.close(index);
-				$.ajax({
-					type : "post",
-					url : "${ctx}/daikin/dkMember/sendMsg",
-					data : {
-						"ids" : id,
-						"msg" : text
-					},
-					dataType : "json",
-					success : function(data) {
-						layer.alert("已发送");
-					},
-					error : function(XMLHttpRequest, textStatus, errorThrown) {
-						layer.alert(XMLHttpRequest);
-						layer.alert(textStatus);
-						layer.alert(errorThrown);
-					}
-				});
+	function sendMsg(){
 
-			});
-		}
+		// var url = $(this).attr('data-url');
+		  var str="";
+		  var ids="";
+		  $("#contentTable tbody tr td input.i-checks:checkbox").each(function(){
+		    if(true == $(this).is(':checked')){
+		      str+=$(this).attr("id")+",";
+		    }
+		  });
+		  if(str.substr(str.length-1)== ','){
+		    ids = str.substr(0,str.length-1);
+		  }
+		  if(ids == ""){
+			top.layer.alert('请至少选择一条数据!', {icon: 0, title:'警告'});
+			return;
+		  }
+		  
+		  openDialog('发送短信', '${ctx}/daikin/dkMember/forwardSend?mobile='+ids,'800px', '500px');
+
+	}
+	
+	function sendAllMsg(){
+		var beginTime = $('#beginTime').val();
+		var endTime = $('#endTime').val();
+		openDialog('发送短信', '${ctx}/daikin/dkMember/forwardSend?beginTime='+beginTime+'&endTime='+endTime,'800px', '500px');
+	}
+	
+	function sendSingleMsg(str){
+		  
+		  openDialog('发送短信', '${ctx}/daikin/dkMember/forwardSend?mobile='+str,'800px', '500px');
 
 	}
 </script>
@@ -77,17 +71,18 @@
 				<!--查询条件-->
 				<div class="row">
 					<div class="col-sm-12">
-						<form:form id="searchForm" modelAttribute="dkMember"
-							action="${ctx}/daikin/dkMember/effective/" method="post"
-							class="form-inline">
+						<form:form id="searchForm" modelAttribute="dkMember" action="${ctx}/daikin/dkMember/effective/" method="post" class="form-inline">
+							<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+							<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+							<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 							<div class="form-group">
 								<span>有效时间：</span> <input id="beginTime" name="beginTime"
 									type="text" maxlength="20"
 									class="laydate-icon form-control layer-date input-sm"
-									value='${beginTime}' /> - <input id="endTime" name="endTime"
+									value='${dkMember.beginTime}' /> - <input id="endTime" name="endTime"
 									type="text" maxlength="20"
 									class="laydate-icon form-control layer-date input-sm"
-									value='${endTime}' />
+									value='${dkMember.endTime}' />
 							</div>
 						</form:form>
 						<br />
@@ -105,7 +100,11 @@
 								</shiro:hasPermission>
 							</div>
 							<button class="btn btn-white btn-sm " data-toggle="tooltip"
-								data-placement="left" onclick="sendMsg('')" title="发送短信">
+								data-placement="left" onclick="sendAllMsg()" title="发送所有">
+								<i class="glyphicon glyphicon-envelope"></i> 发送所有
+							</button>
+							<button class="btn btn-white btn-sm " data-toggle="tooltip"
+								data-placement="left" onclick="sendMsg()" title="发送短信">
 								<i class="glyphicon glyphicon-envelope"></i> 发送短信
 							</button>
 							<button class="btn btn-white btn-sm " data-toggle="tooltip"
@@ -140,20 +139,21 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${efMembers}" var="efMember">
+						<c:forEach items="${page.list}" var="efMember">
 							<tr>
-								<td><input type="checkbox" id="${efMember.id}"
-									class="i-checks" name="memberId" value="${efMember.id}"></td>
+								<td><input type="checkbox" id="${efMember.mobile}" class="i-checks"></td>
 								<td>${efMember.name}</td>
 								<td>${efMember.mobile}</td>
 								<td>${efMember.address}</td>
-								<td><a onclick="sendMsg('${efMember.id}')"
+								<td><a onclick="sendSingleMsg('${efMember.mobile}')"
 									class="btn btn-success btn-xs"><i class="fa fa-envelope"></i>
 										发送短信</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
+					<!-- 分页代码 -->
+	<table:page page="${page}"></table:page>
 				<br /> <br />
 			</div>
 		</div>

@@ -86,12 +86,6 @@
 			<shiro:hasPermission name="daikin:dkContract:add">
 				<table:addRow url="${ctx}/daikin/dkContract/forwardAdd" title="合同"></table:addRow><!-- 增加按钮 -->
 			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkContract:import">
-				<table:importExcel url="${ctx}/daikin/dkContract/import"></table:importExcel><!-- 导入按钮 -->
-			</shiro:hasPermission>
-			<shiro:hasPermission name="daikin:dkContract:export">
-	       		<table:exportExcel url="${ctx}/daikin/dkContract/export"></table:exportExcel><!-- 导出按钮 -->
-	       	</shiro:hasPermission>
 	       <button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="sortOrRefresh()" title="刷新"><i class="glyphicon glyphicon-repeat"></i> 刷新</button>
 		
 			</div>

@@ -4,11 +4,7 @@
 package com.jeeplus.modules.daikin.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,10 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.MyBeanUtils;
-import com.jeeplus.api.util.Sms;
+import com.jeeplus.api.util.NewSms;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.web.BaseController;
@@ -39,7 +34,7 @@ import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.service.DkMemberService;
-import com.jeeplus.modules.sys.entity.User;
+import com.taobao.api.ApiException;
 
 /**
  * 会员Controller
@@ -203,51 +198,49 @@ public class DkMemberController extends BaseController {
 	 */
 	@RequiresPermissions("daikin:dkMember:effective")
 	@RequestMapping(value = "effective")
-	public String effective(HttpServletRequest request, HttpServletResponse response, Model model) {
-		String beginTime = request.getParameter("beginTime");
-		String endTime = request.getParameter("endTime");
-		model.addAttribute("beginTime",beginTime);
-		model.addAttribute("endTime",endTime);
-		
-		if(beginTime==null||"".equals(beginTime)){
-			beginTime = "2000-1-1";
-		}
-		if(endTime==null||"".equals(endTime)){
-			endTime = "3000-1-1";
-		}
+	public String effective(DkMember dkMember, HttpServletRequest request, HttpServletResponse response, Model model) {
 
-		List<DkMember> efMembers = new ArrayList<>();
-		efMembers = dkMemberService.findEffectiveList(beginTime,endTime);
-		
-		model.addAttribute("efMembers", efMembers);
+		Page<DkMember> page = dkMemberService.findEffectivePage(new Page<DkMember>(request, response), dkMember);
+		model.addAttribute("page", page);
 		return "modules/daikin/effectiveList";
+	}
+	
+	@RequestMapping(value = "forwardSend")
+	public String forwardSend(DkMember dkMember, HttpServletRequest request, HttpServletResponse response, Model model) {
+		model.addAttribute("dkMember", dkMember);
+		return "modules/daikin/effectiveForm";
 	}
 	
 	/**
 	 * 发送短信
 	 * @throws IOException 
+	 * @throws ApiException 
 	 */
-	@RequiresPermissions("daikin:dkMember:effective")
 	@RequestMapping(value = "sendMsg")
-	public void sendMsg(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter writer = response.getWriter();
-		
-		String ids = request.getParameter("ids");
-		String msg = request.getParameter("msg");
-		
-		String[] allId = ids.split(",");
-		for (String id : allId) {
-			DkMember member = dkMemberService.get(id);
-			Sms.send(msg, member.getMobile());
+	public String sendMsg(DkMember dkMember, Model model, RedirectAttributes redirectAttributes) throws IOException, ApiException {
+				
+//		String[] allId = ids.split(",");
+//		for (String id : allId) {
+//			DkMember member = dkMemberService.get(id);
+//			Sms.send(msg, member.getMobile());
+//		}
+//		
+		String mobiles = "";
+		mobiles =dkMember.getMobile();
+		if(null == mobiles || ("").equals(mobiles)){
+			List<DkMember> dmList = dkMemberService.findEffectiveList(dkMember);
+			for(DkMember dm : dmList){
+				if(("").equals(mobiles)){
+					mobiles = dm.getMobile();
+				}else{
+					mobiles = mobiles + "," + dm.getMobile();
+				}
+			}
 		}
+		//NewSms.sendTemplateMsg(mobiles, dkMember.getRemark());
 		
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("result", "");
-		Gson gson = new Gson();
-		writer.println(gson.toJson(map));
-		writer.flush();
-		writer.close();
+		addMessage(redirectAttributes, "短信发送成功");
+		return "redirect:"+Global.getAdminPath()+"/daikin/dkMember/effective";
 	}
 	
 

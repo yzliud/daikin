@@ -115,6 +115,13 @@
 				AND a.review_status = #{reviewStatus}
 			</if>
 			
+			<if test="address != null and address != ''">
+				AND a.address LIKE 
+					<if test="dbName == 'oracle'">'%'||#{address}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{address}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{address},'%')</if>
+			</if>
+			
 			<if test="beginDate != null and endDate != null and beginDate != '' and endDate != ''">
 				AND a.review_time BETWEEN #{beginDate} AND DATE_ADD(#{endDate}, INTERVAL 1 DAY)
 			</if>
@@ -168,6 +175,7 @@
 			connection_ratio,
 			install_by,
 			sale_by,
+			supervision_by,
 			product_type,
 			review_status,
 			review_by,
@@ -196,6 +204,7 @@
 			#{connectionRatio},
 			#{installUser.id},
 			#{saleUser.id},
+			#{supervisionUser.id},
 			#{productType},
 			#{reviewStatus},
 			#{reviewUser.id},

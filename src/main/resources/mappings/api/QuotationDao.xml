@@ -9,7 +9,7 @@
 		dk_product a
 		WHERE a.del_flag = '0'
 		AND a.product_type = #{0}
-		order by a.update_date desc
+		order by a.name desc
 	</select>
 
 	<insert id="saveQuotation">

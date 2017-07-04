@@ -50,9 +50,14 @@ public class DkMemberService extends CrudService<DkMemberDao, DkMember> {
 	 * @param beginTime 有效开始时间
 	 * @return List<DkMember>
 	 */
-	public List<DkMember> findEffectiveList(String beginTime, String endTime) {
-		// TODO Auto-generated method stub
-		return dao.findEffectiveList(beginTime,endTime);
+	public Page<DkMember> findEffectivePage(Page<DkMember> page, DkMember d) {
+		d.setPage(page);
+		page.setList(dao.findEffectiveList(d));
+		return page;
+	}
+	
+	public List<DkMember> findEffectiveList(DkMember d) {
+		return dao.findEffectiveList(d);
 	}
 	
 	

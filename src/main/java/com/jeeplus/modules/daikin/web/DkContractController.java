@@ -205,7 +205,6 @@ public class DkContractController extends BaseController {
 
 	/**
 	 * 导入Excel数据
-
 	 */
 	@RequiresPermissions("daikin:dkContract:import")
     @RequestMapping(value = "import", method=RequestMethod.POST)
@@ -233,7 +232,7 @@ public class DkContractController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入合同失败！失败信息："+e.getMessage());
 		}
-		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/?repage";
+		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/checkPass?repage";
     }
 	
 	/**
