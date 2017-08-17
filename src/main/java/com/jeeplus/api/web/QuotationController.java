@@ -29,6 +29,8 @@ import com.jeeplus.modules.daikin.service.DkMemberService;
 import com.jeeplus.modules.daikin.service.DkProductService;
 import com.jeeplus.modules.daikin.service.DkQuotationService;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.daikin.service.SysUserService;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/quotation")
@@ -48,6 +50,9 @@ public class QuotationController {
 	
 	@Autowired
 	private DkMemberService dkMemberService;
+	
+	@Autowired
+	private SysUserService SysUserService;
 	
 	/**
 	 * 首页跳转
@@ -152,6 +157,7 @@ public class QuotationController {
 			String member_name = request.getParameter("member_name");
 			String mobile = request.getParameter("mobile");
 			String address = request.getParameter("address");
+			String remark = request.getParameter("remark");
 			String product_type = request.getParameter("product_type");
 			String products_str = request.getParameter("product");//id:数量,id:数量,
 			
@@ -165,12 +171,19 @@ public class QuotationController {
 			
 			DkMember member = dkMemberService.findUniqueByProperty("mobile", mobile);
 			if(member==null){
+				String openId = (String) request.getSession().getAttribute("openId");
+				DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
+				User createBy = new User();
+				createBy.setId(worker.getSysUserId());
 				member = new DkMember();
 				member.setIsNewRecord(true);
 				member.setId(UUID.randomUUID().toString().replace("-", ""));
 				member.setName(member_name);
 				member.setMobile(mobile);
 				member.setAddress(address);
+				member.setRemark(remark);
+				member.setCreateBy(createBy);
+				member.setUpdateBy(createBy);
 				dkMemberService.save(member);
 			}
 			quotation.setMember_id(member.getId());

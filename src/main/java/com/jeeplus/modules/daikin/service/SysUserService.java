@@ -44,7 +44,10 @@ public class SysUserService extends CrudService<SysUserDao, SysUser> {
 		super.delete(sysUser);
 	}
 	
-	
+	@Transactional(readOnly = false)
+	public SysUser findUniqueByProperty(String propertyName, String value) {
+		return super.findUniqueByProperty(propertyName, value);
+	}
 	
 	
 }

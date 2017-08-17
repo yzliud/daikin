@@ -52,6 +52,7 @@ public class DkContract extends DataEntity<DkContract> {
 	private List<DkContractProduct> dkContractProductList = Lists.newArrayList();		// 子表列表
 	private Date beginDate;		// 开始 时间
 	private Date endDate;		// 结束 时间
+	private String isPay;         	//是否支付完
 	
 	public Date getBeginDate() {
 		return beginDate;
@@ -306,5 +307,13 @@ public class DkContract extends DataEntity<DkContract> {
 
 	public void setDkContractProductList(List<DkContractProduct> dkContractProductList) {
 		this.dkContractProductList = dkContractProductList;
+	}
+
+	public String getIsPay() {
+		return isPay;
+	}
+
+	public void setIsPay(String isPay) {
+		this.isPay = isPay;
 	}
 }

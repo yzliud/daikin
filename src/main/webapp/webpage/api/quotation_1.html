@@ -19,7 +19,7 @@
 					<label class="weui_label">名称</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input id="name"  name="name" class="weui_input" type="text" maxlength=""
+					<input id="name"  name="name" class="weui_input" type="text" maxlength="20"
 						placeholder="请输入报价单名称">
 				</div>
 			</div>
@@ -32,7 +32,7 @@
 					<label class="weui_label">姓名</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input id="member_name" name="member_name" class="weui_input" type="text" maxlength=""
+					<input id="member_name" name="member_name" class="weui_input" type="text" maxlength="10"
 						placeholder="请输入顾客姓名">
 				</div>
 			</div>
@@ -52,8 +52,18 @@
 					<label class="weui_label">地址</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input id="address" name="address" class="weui_input" type="text" maxlength=""
+					<input id="address" name="address" class="weui_input" type="text" maxlength="50"
 						placeholder="请输入顾客地址">
+				</div>
+			</div>
+			
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">信息来源</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
+					<input id="remark" name="remark" class="weui_input" type="text" maxlength="100"
+						placeholder="请输入信息来源">
 				</div>
 			</div>
 		</div>
@@ -66,7 +76,6 @@
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
 					<select id="product_type" name="product_type" class="weui_select" name="select2">
-						<option value=""></option>
 					</select>
 				</div>
 			</div>
@@ -111,6 +120,8 @@
     		alert("请输入顾客手机号");
     	}else if($("#address").val() ==""){
     		alert("请输入顾客地址");
+    	}else if($("#remark").val() ==""){
+    		alert("请输入信息来源");
     	}else if($("#product_type").val() ==""){
     		alert("请输入商品类型");
     	}else{
@@ -124,7 +135,7 @@
     	       		async: false,
     	       		success:function(data){//ajax返回的数据
     	        		if(data.msg =='no'){ 
-    		  				window.location.href = "quotation_2.html?name="+ encodeURI(encodeURI($("#name").val()))+"&member_name="+encodeURI(encodeURI($("#member_name").val()))+"&mobile="+$("#mobile").val()+"&address="+encodeURI(encodeURI($("#address").val()))+"&product_type="+$("#product_type").val();
+    		  				window.location.href = "quotation_2.html?name="+ encodeURI(encodeURI($("#name").val()))+"&member_name="+encodeURI(encodeURI($("#member_name").val()))+"&mobile="+$("#mobile").val()+"&address="+encodeURI(encodeURI($("#address").val()))+"&product_type="+$("#product_type").val()+"&remark="+encodeURI(encodeURI($("#remark").val()));
      	        		}else{ 
     	        			alert('此报价单名称已存在,请重新输入！');	
     	        	 	}

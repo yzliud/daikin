@@ -39,6 +39,7 @@
 		<form:hidden path="mobile"/>
 		<form:hidden path="beginTime"/>
 		<form:hidden path="endTime"/>
+		<form:hidden path="productType"/>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>

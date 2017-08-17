@@ -84,7 +84,7 @@
 				<th  class="sort-column name">姓名</th>
 				<th  class="sort-column mobile">手机号</th>
 				<th  class="sort-column address">联系地址</th>
-				<th  class="sort-column remark">备注</th>
+				<th  class="sort-column remark">信息来源</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>

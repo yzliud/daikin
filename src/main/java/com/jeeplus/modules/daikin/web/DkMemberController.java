@@ -23,9 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
+import com.jeeplus.api.util.NewSms;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.MyBeanUtils;
-import com.jeeplus.api.util.NewSms;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.web.BaseController;
@@ -237,7 +237,7 @@ public class DkMemberController extends BaseController {
 				}
 			}
 		}
-		//NewSms.sendTemplateMsg(mobiles, dkMember.getRemark());
+		NewSms.sendTemplateMsg(mobiles, dkMember.getRemark());
 		
 		addMessage(redirectAttributes, "短信发送成功");
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkMember/effective";

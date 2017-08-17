@@ -77,6 +77,11 @@
 					value="<fmt:formatDate value="${dkContract.beginDate}" pattern="yyyy-MM-dd"/>"/> - 
 				<input id="endDate" name="endDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
 					value="<fmt:formatDate value="${dkContract.endDate}" pattern="yyyy-MM-dd"/>"/>
+			<span>回款状态：</span>
+				<form:select path="isPay"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('contract_is_pay')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 		 </div>	
 	</form:form>
 	<br/>
@@ -118,7 +123,7 @@
 				<th  class="sort-column contractFee">合同金额</th>
 				<th  class="sort-column saleUser.name">销售人员</th>
 				<th  class="sort-column productType">商品类型</th>
-				<th  class="sort-column updateDate">update_date</th>
+				<th  class="sort-column reviewTime">签订日期</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -159,7 +164,7 @@
 					${fns:getDictLabel(dkContract.productType, 'product_type', '')}
 				</td>
 				<td>
-					<fmt:formatDate value="${dkContract.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${dkContract.reviewTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>				
 					<a href="#" onclick="openDialogView('查看合同', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>

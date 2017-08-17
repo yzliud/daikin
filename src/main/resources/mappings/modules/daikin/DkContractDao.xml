@@ -126,6 +126,11 @@
 				AND a.review_time BETWEEN #{beginDate} AND DATE_ADD(#{endDate}, INTERVAL 1 DAY)
 			</if>
 			
+			<if test="isPay != null and isPay != ''">
+				<if test="isPay == '1'.toString()">AND a.total_fee = a.arrive_fee AND a.contract_flag = 0</if>
+				<if test="isPay == '2'.toString()">AND a.total_fee != a.arrive_fee AND a.contract_flag = 0</if>
+			</if>
+			
 			<!-- 数据范围过滤 -->
 			${sqlMap.dsf}
 		</where>

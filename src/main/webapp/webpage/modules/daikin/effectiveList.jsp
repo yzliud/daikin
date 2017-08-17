@@ -43,7 +43,8 @@
 	function sendAllMsg(){
 		var beginTime = $('#beginTime').val();
 		var endTime = $('#endTime').val();
-		openDialog('发送短信', '${ctx}/daikin/dkMember/forwardSend?beginTime='+beginTime+'&endTime='+endTime,'800px', '500px');
+		var productType = $('#productType').val();
+		openDialog('发送短信', '${ctx}/daikin/dkMember/forwardSend?beginTime='+beginTime+'&endTime='+endTime+'&productType='+productType,'800px', '500px');
 	}
 	
 	function sendSingleMsg(str){
@@ -76,13 +77,15 @@
 							<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 							<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/><!-- 支持排序 -->
 							<div class="form-group">
-								<span>有效时间：</span> <input id="beginTime" name="beginTime"
-									type="text" maxlength="20"
-									class="laydate-icon form-control layer-date input-sm"
-									value='${dkMember.beginTime}' /> - <input id="endTime" name="endTime"
-									type="text" maxlength="20"
-									class="laydate-icon form-control layer-date input-sm"
-									value='${dkMember.endTime}' />
+								<span>有效时间：</span> 
+									<input id="beginTime" name="beginTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm" value='${dkMember.beginTime}' />
+									 - <input id="endTime" name="endTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm" value='${dkMember.endTime}' />
+								
+								<span>商品类型：</span>
+									<form:select path="productType"  class="form-control m-b">
+										<form:option value="" label=""/>
+										<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+									</form:select>
 							</div>
 						</form:form>
 						<br />

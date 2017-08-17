@@ -107,7 +107,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同金额：</label></td>
 					<td class="width-35">
-						<form:input path="contractFee" htmlEscape="false"    class="form-control required number" readonly="true"/>
+						<form:input path="contractFee" htmlEscape="false"    class="form-control required number" />
 					</td>
 					<td class="width-15 active"><label class="pull-right">工程监理：</label></td>
 					<td class="width-35">

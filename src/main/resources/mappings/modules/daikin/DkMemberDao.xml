@@ -18,6 +18,7 @@
 	<sql id="dkMemberJoins">
 		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
 		LEFT JOIN sys_user updateBy ON updateBy.id = a.update_by
+		LEFT JOIN sys_office o ON o.id = createBy.office_id
 	</sql>
 	
     
@@ -54,6 +55,9 @@
 					<if test="dbName == 'mssql'">'%'+#{address}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{address},'%')</if>
 			</if>
+			
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -154,6 +158,9 @@
 			</if>
 			<if test="endTime != null and endTime != ''">
 				AND DATE_FORMAT(c.review_time, '%Y-%m-%d') &lt;= #{endTime}
+			</if>
+			<if test="productType != null and productType != ''">
+				AND c.product_type = #{productType}
 			</if>
 			)
 			

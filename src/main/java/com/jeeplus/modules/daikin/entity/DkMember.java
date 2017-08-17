@@ -23,6 +23,7 @@ public class DkMember extends DataEntity<DkMember> {
 	
 	private String beginTime;
 	private String endTime;
+	private String productType;
 	
 	public String getBeginTime() {
 		return beginTime;
@@ -78,13 +79,21 @@ public class DkMember extends DataEntity<DkMember> {
 		this.address = address;
 	}
 	
-	@ExcelField(title="备注", align=2, sort=4)
+	@ExcelField(title="信息来源", align=2, sort=4)
 	public String getRemark() {
 		return remark;
 	}
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 	
 }

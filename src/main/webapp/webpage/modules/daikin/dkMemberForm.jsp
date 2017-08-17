@@ -68,9 +68,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>信息来源：</label></td>
 					<td class="width-35" colspan=3>
-						<form:input path="remark" htmlEscape="false" maxlength="200"    class="form-control "/>
+						<form:input path="remark" htmlEscape="false" maxlength="200"    class="form-control required"/>
 					</td>
 				</tr>
 		 	</tbody>
