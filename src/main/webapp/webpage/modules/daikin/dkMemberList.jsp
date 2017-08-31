@@ -85,6 +85,7 @@
 				<th  class="sort-column mobile">手机号</th>
 				<th  class="sort-column address">联系地址</th>
 				<th  class="sort-column remark">信息来源</th>
+				<th  class="sort-column recordBy.name">录入者</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
 			</tr>
@@ -104,6 +105,9 @@
 				</td>
 				<td>
 					${dkMember.remark}
+				</td>
+				<td>
+					${dkMember.recordBy.name}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkMember.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

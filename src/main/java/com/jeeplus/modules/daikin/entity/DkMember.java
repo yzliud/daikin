@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.sys.entity.User;
 
 /**
  * 会员Entity
@@ -24,6 +25,8 @@ public class DkMember extends DataEntity<DkMember> {
 	private String beginTime;
 	private String endTime;
 	private String productType;
+	
+	private User recordBy;		// 录入者
 	
 	public String getBeginTime() {
 		return beginTime;
@@ -94,6 +97,15 @@ public class DkMember extends DataEntity<DkMember> {
 
 	public void setProductType(String productType) {
 		this.productType = productType;
+	}
+
+	@ExcelField(title="录入者", fieldType=User.class, value="recordBy.name", align=2, sort=5)
+	public User getRecordBy() {
+		return recordBy;
+	}
+
+	public void setRecordBy(User recordBy) {
+		this.recordBy = recordBy;
 	}
 	
 }

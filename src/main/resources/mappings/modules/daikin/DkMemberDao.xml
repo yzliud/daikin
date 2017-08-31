@@ -8,6 +8,7 @@
 		a.mobile AS "mobile",
 		a.address AS "address",
 		a.remark AS "remark",
+		a.record_by AS "recordBy.id",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -16,6 +17,7 @@
 	</sql>
 	
 	<sql id="dkMemberJoins">
+		LEFT JOIN sys_user recordBy ON recordBy.id = a.record_by
 		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
 		LEFT JOIN sys_user updateBy ON updateBy.id = a.update_by
 		LEFT JOIN sys_office o ON o.id = createBy.office_id
@@ -32,6 +34,7 @@
 	
 	<select id="findList" resultType="DkMember" >
 		SELECT 
+			recordBy.name AS "recordBy.name",
 			<include refid="dkMemberColumns"/>
 		FROM dk_member a
 		<include refid="dkMemberJoins"/>
@@ -94,6 +97,7 @@
 			mobile,
 			address,
 			remark,
+			record_by,
 			create_by,
 			create_date,
 			update_by,
@@ -105,6 +109,7 @@
 			#{mobile},
 			#{address},
 			#{remark},
+			#{recordBy.id},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -119,6 +124,7 @@
 			mobile = #{mobile},
 			address = #{address},
 			remark = #{remark},
+			record_by = #{recordBy.id},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}

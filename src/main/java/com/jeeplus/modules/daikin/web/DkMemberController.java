@@ -34,6 +34,8 @@ import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.service.DkMemberService;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import com.taobao.api.ApiException;
 
 /**
@@ -95,6 +97,8 @@ public class DkMemberController extends BaseController {
 			MyBeanUtils.copyBeanNotNull2Bean(dkMember, t);//将编辑表单中的非NULL值覆盖数据库记录中的值
 			dkMemberService.save(t);//保存
 		}else{//新增表单保存
+			User user = UserUtils.getUser();
+			dkMember.setRecordBy(user);
 			dkMemberService.save(dkMember);//保存
 		}
 		addMessage(redirectAttributes, "保存会员成功");

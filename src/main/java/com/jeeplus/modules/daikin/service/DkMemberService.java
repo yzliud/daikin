@@ -31,7 +31,7 @@ public class DkMemberService extends CrudService<DkMemberDao, DkMember> {
 	}
 	
 	public Page<DkMember> findPage(Page<DkMember> page, DkMember dkMember) {
-		dkMember.getSqlMap().put("dsf", dataScopeFilter(dkMember.getCurrentUser(), "o", "createBy"));
+		dkMember.getSqlMap().put("dsf", dataScopeFilter(dkMember.getCurrentUser(), "o", "recordBy"));
 		return super.findPage(page, dkMember);
 	}
 	

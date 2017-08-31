@@ -182,6 +182,7 @@ public class QuotationController {
 				member.setMobile(mobile);
 				member.setAddress(address);
 				member.setRemark(remark);
+				member.setRecordBy(createBy);
 				member.setCreateBy(createBy);
 				member.setUpdateBy(createBy);
 				dkMemberService.save(member);
