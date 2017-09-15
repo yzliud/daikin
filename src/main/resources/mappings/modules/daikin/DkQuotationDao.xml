@@ -10,6 +10,8 @@
 		a.address AS "address",
 		a.member_id AS "dkMember.id",
 		a.total_fee AS "totalFee",
+		a.cost_fee AS "costFee",
+		a.sign_fee AS "signFee",
 		a.product_type AS "productType",
 		a.sale_by AS "tuser.id",
 		a.connection_ratio AS "connectionRatio",
@@ -112,6 +114,8 @@
 			address,
 			member_id,
 			total_fee,
+			cost_fee,
+		    sign_fee,
 			product_type,
 			sale_by,
 			connection_ratio,
@@ -131,6 +135,8 @@
 			#{address},
 			#{dkMember.id},
 			#{totalFee},
+			#{costFee},
+			#{signFee},
 			#{productType},
 			#{tuser.id},
 			#{connectionRatio},
@@ -153,6 +159,8 @@
 			address = #{address},
 			member_id = #{dkMember.id},
 			total_fee = #{totalFee},
+			cost_fee = #{costFee},
+		    sign_fee = #{signFee},
 			product_type = #{productType},
 			sale_by = #{tuser.id},
 			connection_ratio = #{connectionRatio},
@@ -198,8 +206,10 @@
 	
 	<select id="findListBydkMember" resultType="DkMember">
 		SELECT 
-			*
+			a.*
 		FROM dk_member a
+		LEFT JOIN sys_user tuser ON tuser.id = a.record_by
+		LEFT JOIN sys_office o ON o.id = tuser.office_id
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="name != null and name != ''">
@@ -208,6 +218,9 @@
 				<if test="dbName == 'mssql'">#{name}+'%'</if>
 				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
 			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

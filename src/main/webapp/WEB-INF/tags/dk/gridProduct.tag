@@ -37,6 +37,7 @@ function searchGrid${id}(){
 	    	 $("#${id}Name").val(item.split('_item_')[1]);
 	    	 $("#${rowkeys}_price").val(item.split('_item_')[3]);
 	    	 $("#${rowkeys}_power").val(item.split('_item_')[4]);
+	    	 $("#${rowkeys}_costPrice").val(item.split('_item_')[5]);
 	    	 
 	    	 var num1 = $("#${rowkeys}_price").val();
 			 var num2 = $('#${rowkeys}_amount').val();

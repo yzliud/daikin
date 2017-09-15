@@ -106,8 +106,8 @@
 				<th  class="sort-column contractNumber">合同号</th>
 				<th  class="sort-column memberName">顾客名称</th>
 				<th  class="sort-column mobile">联系方式</th>
-				<th  class="sort-column contractFee">合同金额</th>
-				<th  class="sort-column totalFee">合同总金额</th>
+				<th  class="sort-column contractFee">签单价</th>
+				<th  class="sort-column totalFee">签单总价</th>
 				<th  class="sort-column arriveFee">已到账金额</th>
 				<th  class="sort-column installUser.name">安装人员</th>
 				<th  class="sort-column saleUser.name">销售人员</th>
@@ -140,10 +140,10 @@
 					${dkContract.mobile}
 				</td>
 				<td>
-					${dkContract.contractFee}
+					${dkContract.signFee}
 				</td>
 				<td>
-					${dkContract.totalFee}
+					${dkContract.totalSignFee}
 				</td>
 				<td>
 					${dkContract.arriveFee}

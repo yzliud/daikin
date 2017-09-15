@@ -19,5 +19,5 @@ public interface DkMemberDao extends CrudDao<DkMember> {
 
 	List<DkMember> findEffectiveList(DkMember d);
 
-	
+	DkMember checkAddress(DkMember d);
 }

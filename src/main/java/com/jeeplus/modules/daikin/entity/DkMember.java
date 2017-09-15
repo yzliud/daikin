@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.daikin.entity;
 
+import java.io.Serializable;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.jeeplus.common.persistence.DataEntity;
@@ -14,7 +16,7 @@ import com.jeeplus.modules.sys.entity.User;
  * @author LD
  * @version 2017-04-01
  */
-public class DkMember extends DataEntity<DkMember> {
+public class DkMember extends DataEntity<DkMember> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;		// 姓名

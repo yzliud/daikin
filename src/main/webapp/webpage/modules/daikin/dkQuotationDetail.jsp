@@ -71,9 +71,10 @@
                                     <th>商品</th>
                                     <th>规格</th>
                                     <th>成本价</th>
-									<th>单价</th>
+									<th>销售价</th>
 									<th>数量</th>
-									<th>总价</th>
+									<th>成本总价</th>
+									<th>销售总价</th>
 									<c:choose> 
 									  <c:when test="${dkQuotation.productType == '0' }">   
 									    <th>功率</th>
@@ -103,6 +104,7 @@
 	                                      <td>&yen;${item.costPrice }</td>
 	                                      <td>&yen;${item.price }</td>
 	                                      <td>${item.amount }</td>
+	                                      <td>&yen;${item.totalCostPrice }</td>
 	                                      <td>&yen;${item.totalPrice }</td>
 	                                      <c:choose> 
 											  <c:when test="${dkQuotation.productType == '0' }">   
@@ -138,9 +140,19 @@
                     <table class="table invoice-total">
                         <tbody>
                             <tr>
-                                <td><strong>总价：</strong>
+                                <td><strong>销售价：</strong>
                                 </td>
                                 <td>&yen;${dkQuotation.totalFee }</td>
+                            </tr>
+                            <tr>
+                                <td><strong>成本价：</strong>
+                                </td>
+                                <td>&yen;${dkQuotation.costFee }</td>
+                            </tr>
+                            <tr>
+                                <td><strong>签单价：</strong>
+                                </td>
+                                <td>&yen;${dkQuotation.signFee }</td>
                             </tr>
                         </tbody>
                     </table>

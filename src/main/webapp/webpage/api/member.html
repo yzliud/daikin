@@ -2,9 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>报价单生成</title>
-<meta name="viewport"
-	content="width=device-width,initial-scale=1,user-scalable=0">
+<title>新增会员</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <link rel="stylesheet" href="css/new_weui/weui.css" />
 <link rel="stylesheet" href="css/new_weui/weui2.css" />
 <link rel="stylesheet" href="css/new_weui/weui3.css" />
@@ -13,26 +12,15 @@
 
 <body style="background-color: #f8f8f8;">
 	<form id="mainForm">
-		<div class="weui_cells weui_cells_form">
-			<div class="weui_cell">
-				<div class="weui_cell_hd">
-					<label class="weui_label">名称</label>
-				</div>
-				<div class="weui_cell_bd weui_cell_primary">
-					<input id="name"  name="name" class="weui_input" type="text" maxlength="20"
-						placeholder="请输入报价单名称">
-				</div>
-			</div>
-		</div>
 
-		<div class="weui_cells_title">顾客</div>
+		<div class="weui_cells_title">会员</div>
 		<div class="weui_cells weui_cells_form">
 			<div class="weui_cell">
 				<div class="weui_cell_hd">
 					<label class="weui_label">姓名</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input id="member_name" name="member_name" class="weui_input" type="text" maxlength="10"
+					<input id="name" name="name" class="weui_input" type="text" maxlength="10"
 						placeholder="请输入顾客姓名">
 				</div>
 			</div>
@@ -68,21 +56,9 @@
 			</div>
 		</div>
 
-		<div class="weui_cells_title">商品</div>
-		<div class="weui_cells">
-			<div class="weui_cell weui_cell_select weui_select_after">
-				<div class="weui_cell_hd">
-					<label for="" class="weui_label">类型</label>
-				</div>
-				<div class="weui_cell_bd weui_cell_primary">
-					<select id="product_type" name="product_type" class="weui_select" name="select2">
-					</select>
-				</div>
-			</div>
-		</div>
 		<div class="weui_btn_area">
 			<a id="formSubmitBtn" href="javascript:nextStep();"
-				class="weui_btn weui_btn_primary">下一步</a>
+				class="weui_btn weui_btn_primary">保存</a>
 		</div>
 	</form>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
@@ -90,31 +66,9 @@
 	<script src="js/mui.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
 
-	window.onload=function(){
-		$.ajax({
-			url : "../../a/api/quotation/getAllType",
-            data: {},
-			type : "post",
-			dataType : 'json',
-			async : false,
-			success : function(data) {//ajax返回的数据
-				for(var i = 0; i < data.length; i++) {
-					$("#product_type").append("<option value='"+data[i].value+"'>"+data[i].label+"</option>");
-				}
-			},
-            error:function(data,status,e){
-            	alert(data);
-            	alert(status);
-                alert(e);  
-           }
-		});
-	}
-
     function nextStep(){
     	
-    	if($("#name").val()==""){
-    		alert("请输入报价单名称");
-    	}else if($("#member_name").val() ==""){
+    	if($("#name").val() ==""){
     		alert("请输入顾客姓名");
     	}else if($("#mobile").val() ==""){
     		alert("请输入顾客手机号");
@@ -122,30 +76,44 @@
     		alert("请输入顾客地址");
     	}else if($("#remark").val() ==""){
     		alert("请输入信息来源");
-    	}else if($("#product_type").val() ==""){
-    		alert("请输入商品类型");
     	}else{
     		var result = isPhoneNum();
     		if (result) {
-     	  		$.ajax({
-    	        	url:"../../a/api/quotation/ishave",
+    			
+    			$.ajax({
+    	        	url:"../../a/api/member/checkAddress",
     	        	data:$("#mainForm").serialize(),
     	       		type:"post",
     	        	dataType: 'json',
     	       		async: false,
     	       		success:function(data){//ajax返回的数据
-    	        		if(data.msg =='no'){ 
-    		  				window.location.href = "quotation_2.html?name="+ encodeURI(encodeURI($("#name").val()))+"&member_name="+encodeURI(encodeURI($("#member_name").val()))+"&mobile="+$("#mobile").val()+"&address="+encodeURI(encodeURI($("#address").val()))+"&product_type="+$("#product_type").val()+"&remark="+encodeURI(encodeURI($("#remark").val()));
-     	        		}else{ 
-    	        			alert('此报价单名称已存在,请重新输入！');	
+    	       			if(data.rtnCode == '0'){ 
+    	        			$.ajax({
+    	        	        	url:"../../a/api/member/save",
+    	        	        	data:$("#mainForm").serialize(),
+    	        	       		type:"post",
+    	        	        	dataType: 'json',
+    	        	       		async: false,
+    	        	       		success:function(data){//ajax返回的数据
+    	        	        		if(data.rtnCode == '0'){ 
+    	        		  				alert("保存成功");
+    	        		  				window.location.href = "member.html";
+    	         	        		}else{ 
+    	        	        			alert('处理失败');	
+    	        	        	 	}
+    	        	          	},
+    	                        error:function(data,status,e){ 
+    	                       }     	     				
+    	        	    	});
+    	       			}else{ 
+    	        			alert('该地址已存在，请重新输入');	
     	        	 	}
-    	          	},
-                    error:function(data,status,e){
-                    	alert(data);
-                    	alert(status);
-                        alert(e);  
+    	       		},
+                    error:function(data,status,e){ 
                    }     	     				
     	    	});
+    		  				
+     	        		
     		}	
     	}
     }

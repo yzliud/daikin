@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jeeplus.modules.daikin.dao.DkMemberDao">
+<mapper namespace="com.jeeplus.modules.daikin.dao.DkVisitDao">
     
-	<sql id="dkMemberColumns">
+	<sql id="dkVisitColumns">
 		a.id AS "id",
-		a.name AS "name",
 		a.mobile AS "mobile",
 		a.address AS "address",
-		a.remark AS "remark",
+		a.name AS "name",
 		a.record_by AS "recordBy.id",
+		recordBy.name AS "recordBy.name",
+		a.content AS "content",
+		a.visit_date AS "visitDate",
+		a.remark AS "remark",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -16,36 +19,27 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="dkMemberJoins">
+	<sql id="dkVisitJoins">
 		LEFT JOIN sys_user recordBy ON recordBy.id = a.record_by
-		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
-		LEFT JOIN sys_user updateBy ON updateBy.id = a.update_by
-		LEFT JOIN sys_office o ON o.id = createBy.office_id
+		LEFT JOIN sys_office o ON o.id = recordBy.office_id
 	</sql>
 	
     
-	<select id="get" resultType="DkMember" >
+	<select id="get" resultType="DkVisit" >
 		SELECT 
-			<include refid="dkMemberColumns"/>
-		FROM dk_member a
-		<include refid="dkMemberJoins"/>
+			<include refid="dkVisitColumns"/>
+		FROM dk_visit a
+		<include refid="dkVisitJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="DkMember" >
+	<select id="findList" resultType="DkVisit" >
 		SELECT 
-			recordBy.name AS "recordBy.name",
-			<include refid="dkMemberColumns"/>
-		FROM dk_member a
-		<include refid="dkMemberJoins"/>
+			<include refid="dkVisitColumns"/>
+		FROM dk_visit a
+		<include refid="dkVisitJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="name != null and name != ''">
-				AND a.name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
-			</if>
 			<if test="mobile != null and mobile != ''">
 				AND a.mobile LIKE 
 					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>
@@ -58,8 +52,17 @@
 					<if test="dbName == 'mssql'">'%'+#{address}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{address},'%')</if>
 			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
 			<if test="recordBy != null and recordBy.id != null and recordBy.id != ''">
 				AND a.record_by = #{recordBy.id}
+			</if>
+			<if test="beginVisitDate != null and endVisitDate != null and beginVisitDate != '' and endVisitDate != ''">
+				AND a.visit_date BETWEEN #{beginVisitDate} AND DATE_ADD(#{endVisitDate}, INTERVAL 1 DAY)
 			</if>
 			
 			<!-- 数据范围过滤 -->
@@ -75,11 +78,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="DkMember" >
+	<select id="findAllList" resultType="DkVisit" >
 		SELECT 
-			<include refid="dkMemberColumns"/>
-		FROM dk_member a
-		<include refid="dkMemberJoins"/>
+			<include refid="dkVisitColumns"/>
+		FROM dk_visit a
+		<include refid="dkVisitJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -94,13 +97,15 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO dk_member(
+		INSERT INTO dk_visit(
 			id,
-			name,
 			mobile,
 			address,
-			remark,
+			name,
 			record_by,
+			content,
+			visit_date,
+			remark,
 			create_by,
 			create_date,
 			update_by,
@@ -108,11 +113,13 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{name},
 			#{mobile},
 			#{address},
-			#{remark},
+			#{name},
 			#{recordBy.id},
+			#{content},
+			#{visitDate},
+			#{remark},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -122,12 +129,14 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE dk_member SET 	
-			name = #{name},
+		UPDATE dk_visit SET 	
 			mobile = #{mobile},
 			address = #{address},
-			remark = #{remark},
+			name = #{name},
 			record_by = #{recordBy.id},
+			content = #{content},
+			visit_date = #{visitDate},
+			remark = #{remark},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}
@@ -136,65 +145,21 @@
 	
 	<!--物理删除-->
 	<update id="delete">
-		DELETE FROM dk_member
+		DELETE FROM dk_visit
 		WHERE id = #{id}
 	</update>
 	
 	<!--逻辑删除-->
 	<update id="deleteByLogic">
-		UPDATE dk_member SET 
+		UPDATE dk_visit SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 	
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="DkMember" statementType="STATEMENT">
-		select * FROM dk_member  where ${propertyName} = '${value}'
-	</select>
-	
-	<!-- 根据时间获取所有有效客户 -->
-	<select id="findEffectiveList" resultType="DkMember" >
-		SELECT 
-		<include refid="dkMemberColumns"/>
-		FROM
-		dk_member a 
-		WHERE
-			EXISTS(SELECT 1 FROM dk_contract c WHERE c.review_status = '9' 
-			and c.member_id = a.id
-			<if test="beginTime != null and beginTime != ''">
-				AND DATE_FORMAT(c.review_time, '%Y-%m-%d') &gt;= #{beginTime}
-			</if>
-			<if test="endTime != null and endTime != ''">
-				AND DATE_FORMAT(c.review_time, '%Y-%m-%d') &lt;= #{endTime}
-			</if>
-			<if test="productType != null and productType != ''">
-				AND c.product_type = #{productType}
-			</if>
-			)
-			
-			<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.mobile DESC
-			</otherwise>
-		</choose>
-	</select>
-	
-	<select id="checkAddress" resultType="DkMember" >
-		SELECT 
-			*
-		FROM dk_member a
-		WHERE 1 = 1
-		<if test="address != null and address != ''">
-			AND a.address = #{address}
-		</if>
-		<if test="id != null and id != ''">
-			AND a.id != #{id}
-		</if>
-		LIMIT 1
+	<select id="findUniqueByProperty" resultType="DkVisit" statementType="STATEMENT">
+		select * FROM dk_visit  where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

@@ -12,6 +12,7 @@
 		a.price AS "price",
 		a.cost_price AS "costPrice",
 		a.amount AS "amount",
+		a.total_cost_price AS "totalCostPrice",
 		a.total_price AS "totalPrice",
 		a.classify_id AS "classifyId",
 		a.power AS "power",
@@ -93,6 +94,7 @@
 			price,
 			cost_price,
 			amount,
+			total_cost_price,
 			total_price,
 			classify_id,
 			power,
@@ -119,6 +121,7 @@
 			#{price},
 			#{costPrice},
 			#{amount},
+			#{totalCostPrice},
 			#{totalPrice},
 			#{classifyId},
 			#{power},
@@ -148,6 +151,7 @@
 			price = #{price},
 			cost_price = #{costPrice},
 			amount = #{amount},
+			total_cost_price = #{totalCostPrice},
 			total_price = #{totalPrice},
 			classify_id = #{classifyId},
 			power = #{power},
@@ -220,4 +224,5 @@
 			</otherwise>
 		</choose>
 	</select>
+
 </mapper>

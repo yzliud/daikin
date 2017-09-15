@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.service.CrudService;
-import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.dao.DkAuditRecordDao;
@@ -61,8 +60,12 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 	public void save(DkQuotation dkQuotation) {
 		dkQuotation.setReviewStatus(Consts.ReviewStatus_0);
 		super.save(dkQuotation);
+		DkQuotationProduct dqpEntity = new DkQuotationProduct();
+		dqpEntity.setQuotationId(dkQuotation.getId());
+		dkQuotationProductDao.delete(dqpEntity);
+		
 		for (DkQuotationProduct dkQuotationProduct : dkQuotation.getDkQuotationProductList()){
-			if (dkQuotationProduct.getId() == null){
+			/*if (dkQuotationProduct.getId() == null){
 				continue;
 			}
 			DkProduct dkProduct = dkProductDao.get(dkQuotationProduct.getProductId());
@@ -87,7 +90,26 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 				}
 			}else{
 				dkQuotationProductDao.delete(dkQuotationProduct);
+			}*/
+			if(dkQuotationProduct.getProductId() != null && !dkQuotationProduct.getProductId().equals("") ){
+				if(dkQuotation.getDeleteIds().equals("") ||( !dkQuotation.getDeleteIds().contains(dkQuotationProduct.getId()) )){
+					DkProduct dkProduct = dkProductDao.get(dkQuotationProduct.getProductId());
+					dkQuotationProduct.setBrandId(dkProduct.getBrandId());
+					dkQuotationProduct.setClassifyId(dkProduct.getClassifyId());
+					dkQuotationProduct.setModel(dkProduct.getModel());
+					dkQuotationProduct.setCapacityModel(dkProduct.getCapacityModel());
+					dkQuotationProduct.setName(dkProduct.getName());
+					dkQuotationProduct.setPlace(dkProduct.getPlace());
+					dkQuotationProduct.setUnit(dkProduct.getUnit());
+					dkQuotationProduct.setProductType(dkProduct.getProductType());
+					//dkQuotationProduct.setCostPrice(dkProduct.getCostPrice());
+					dkQuotationProduct.setId("");
+					dkQuotationProduct.setQuotationId(dkQuotation.getId());
+					dkQuotationProduct.preInsert();
+					dkQuotationProductDao.insert(dkQuotationProduct);
+				}
 			}
+			
 		}
 	}
 	
@@ -99,6 +121,7 @@ public class DkQuotationService extends CrudService<DkQuotationDao, DkQuotation>
 	
 	public Page<DkMember> findPageBydkMember(Page<DkMember> page, DkMember dkMember) {
 		dkMember.setPage(page);
+		dkMember.getSqlMap().put("dsf", dataScopeFilter(dkMember.getCurrentUser(), "o", "tuser"));
 		page.setList(dao.findListBydkMember(dkMember));
 		return page;
 	}

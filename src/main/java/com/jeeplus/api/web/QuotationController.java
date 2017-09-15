@@ -60,6 +60,7 @@ public class QuotationController {
 	@RequestMapping(value = "index")
 	public String index(HttpServletRequest request, HttpServletResponse response) {
 		String openId = (String) request.getSession().getAttribute("openId");
+		System.out.println("-----q------"+openId);
 		if (openId == null) {
 			return "redirect:../../../webpage/api/getOpen.html?cmethod=quotation";
 		} else {
@@ -169,7 +170,7 @@ public class QuotationController {
 			quotation.setMobile(mobile);
 			quotation.setAddress(address);
 			
-			DkMember member = dkMemberService.findUniqueByProperty("mobile", mobile);
+			DkMember member = dkMemberService.findUniqueByProperty("address", address);
 			if(member==null){
 				String openId = (String) request.getSession().getAttribute("openId");
 				DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
@@ -201,22 +202,33 @@ public class QuotationController {
 			
 			List<QuotationProduct> quotationProductList = Lists.newArrayList();
 			double total_fee = 0;
+			double total_cost_fee = 0;
 			String[] products = products_str.split(",");
 			for (String product_str : products) {
 				String product_id = product_str.split(":")[0];
 				String product_num = product_str.split(":")[1];
 				
+				
+				
 				DkProduct product = dkProductService.get(product_id);
+				
+				int amount = Integer.valueOf(product_num);
+				double price = product.getPrice();
+				double costPrice = product.getCostPrice();
+				
+				
 					
 				QuotationProduct quotationProduct = new QuotationProduct();
 				quotationProduct.setId(UUID.randomUUID().toString().replace("-", ""));
 				quotationProduct.setQuotation_id(quotation_id);
 				quotationProduct.setProduct_id(product_id); 
-				quotationProduct.setPrice(product.getPrice()); 
-				quotationProduct.setAmount(Integer.valueOf(product_num));				
-				quotationProduct.setTotal_price(product.getPrice()*Integer.valueOf(product_num));
-				
-				total_fee = total_fee + product.getPrice()*Integer.valueOf(product_num);
+				quotationProduct.setPrice(price); 
+				quotationProduct.setCost_price(costPrice);
+				quotationProduct.setAmount(amount);				
+				quotationProduct.setTotal_price(price * amount);
+				quotationProduct.setTotal_cost_price(costPrice * amount);
+				total_cost_fee = total_cost_fee + costPrice * amount;
+				total_fee = total_fee + price * amount;
 				
 				quotationProduct.setPower(product.getPower()); 
 				quotationProduct.setBrand_id(product.getBrandId());
@@ -241,6 +253,8 @@ public class QuotationController {
 			}
 			quotation.setQuotationProductList(quotationProductList);
 			quotation.setTotal_fee(total_fee);
+			quotation.setCost_fee(total_cost_fee);
+			quotation.setSign_fee(total_fee);
 			
 			quotationService.save(quotation);
 			

@@ -74,9 +74,11 @@
                                 <tr>
                                     <th>商品</th>
                                     <th>规格</th>
-									<th>单价</th>
+									<th>成本价</th>
+									<th>销售价</th>
 									<th>数量</th>
-									<th>总价</th>
+									<th>成本总价</th>
+									<th>销售总价</th>
 									<th>功率</th>
 									<th>楼层</th>
 									<th>位置</th>
@@ -93,8 +95,10 @@
 	                                        </div>
 	                                      </td>  
 	                                      <td>${item.model }</td>
+	                                      <td>&yen;${item.costPrice }</td>
 	                                      <td>&yen;${item.price }</td>
 	                                      <td>${item.amount }</td>
+	                                      <td>&yen;${item.totalCostPrice }</td>
 	                                      <td>&yen;${item.totalPrice }</td>
 	                                      <td>${item.power }</td>
 	                                      <td>${item.floor }</td>
@@ -121,9 +125,19 @@
                     <table class="table invoice-total">
                         <tbody>
                             <tr>
-                                <td><strong>总价：</strong>
+                                <td><strong>销售总价：</strong>
                                 </td>
                                 <td>&yen;${dkContract.totalFee }</td>
+                            </tr>
+                            <tr>
+                                <td><strong>成本总价：</strong>
+                                </td>
+                                <td>&yen;${dkContract.costFee }</td>
+                            </tr>
+                            <tr>
+                                <td><strong>签单价：</strong>
+                                </td>
+                                <td>&yen;${dkContract.totalCostFee }</td>
                             </tr>
                         </tbody>
                     </table>

@@ -119,8 +119,10 @@
 				<th  class="sort-column memberName">顾客名称</th>
 				<th  class="sort-column mobile">联系方式</th>
 				<th  class="sort-column address">地址</th>
-				<th  class="sort-column contractFee">成本金额</th>
-				<th  class="sort-column contractFee">合同金额</th>
+				<th  class="sort-column costFee">成本价</th>
+				<th  class="sort-column contractFee">销售价</th>
+				<th  class="sort-column signFee">签单价</th>
+				<th  class="sort-column noPayFee">尾款</th>
 				<th  class="sort-column saleUser.name">销售人员</th>
 				<th  class="sort-column productType">商品类型</th>
 				<th  class="sort-column reviewTime">签订日期</th>
@@ -156,6 +158,12 @@
 				</td>
 				<td>
 					${dkContract.contractFee}
+				</td>
+				<td>
+					${dkContract.signFee}
+				</td>
+				<td>
+					${dkContract.noPayFee}
 				</td>
 				<td>
 					${dkContract.saleUser.name}

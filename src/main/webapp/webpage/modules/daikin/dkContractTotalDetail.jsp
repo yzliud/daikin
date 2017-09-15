@@ -70,8 +70,8 @@
                             <div class="col-sm-7" id="cluster_info">
                                 <dl class="dl-horizontal">
 
-                                    <dt>合同总金额：</dt>
-                                    <dd>${dkContract.totalFee }</dd>
+                                    <dt>合同签单总价：</dt>
+                                    <dd>${dkContract.totalSignFee }</dd>
                                     <dt>已到账金额：</dt>
                                     <dd>${dkContract.arriveFee }</dd>
                                     <dt>销售人员：</dt>
@@ -143,9 +143,10 @@
 						                                    <th>商品</th>
 						                                    <th>规格</th>
 						                                    <th>成本价</th>
-															<th>单价</th>
+															<th>销售价</th>
 															<th>数量</th>
-															<th>总价</th>
+															<th>成本总价</th>
+															<th>销售总价</th>
 															<c:choose> 
 															  <c:when test="${dkContract.productType == '0' }">   
 															    <th>功率</th>
@@ -174,6 +175,7 @@
 							                                      <td>&yen;${item.costPrice }</td>
 							                                      <td>&yen;${item.price }</td>
 							                                      <td>${item.amount }</td>
+							                                      <td>&yen;${item.totalCostPrice }</td>
 							                                      <td>&yen;${item.totalPrice }</td>
 							                                      <c:choose> 
 																	  <c:when test="${dkContract.productType == '0' }">   
@@ -202,6 +204,28 @@
 
                                                     </tbody>
                                                 </table>
+                                                
+                                                
+                                                
+                                                <table class="table invoice-total">
+							                        <tbody>
+							                            <tr>
+							                                <td><strong>销售价：</strong>
+							                                </td>
+							                                <td>&yen;${dkContract.contractFee }</td>
+							                            </tr>
+							                            <tr>
+							                                <td><strong>成本价：</strong>
+							                                </td>
+							                                <td>&yen;${dkContract.costFee }</td>
+							                            </tr>
+							                            <tr>
+							                                <td><strong>签单价：</strong>
+							                                </td>
+							                                <td>&yen;${dkContract.signFee }</td>
+							                            </tr>
+							                        </tbody>
+							                    </table>
 
                                             </div>
                                             
@@ -214,9 +238,10 @@
 						                                    <th>商品</th>
 						                                    <th>规格</th>
 						                                    <th>成本价</th>
-															<th>单价</th>
+															<th>销售价</th>
 															<th>数量</th>
-															<th>总价</th>
+															<th>成本总价</th>
+															<th>销售总价</th>
 															<c:choose> 
 															  <c:when test="${dkContract.productType == '0' }">   
 															    <th>功率</th>
@@ -246,6 +271,7 @@
 							                                      <td>&yen;${subitemPro.costPrice }</td>
 							                                      <td>&yen;${subitemPro.price }</td>
 							                                      <td>${subitemPro.amount }</td>
+							                                      <td>&yen;${subitemPro.totalCostPrice }</td>
 							                                      <td>&yen;${subitemPro.totalPrice }</td>
 							                                      <c:choose> 
 																	  <c:when test="${dkContract.productType == '0' }">   
@@ -275,6 +301,27 @@
 
                                                     </tbody>
                                                 </table>
+                                                
+                                                
+                                                <table class="table invoice-total">
+							                        <tbody>
+							                            <tr>
+							                                <td><strong>销售价：</strong>
+							                                </td>
+							                                <td>&yen;${subitem.contractFee }</td>
+							                            </tr>
+							                            <tr>
+							                                <td><strong>成本价：</strong>
+							                                </td>
+							                                <td>&yen;${subitem.costFee }</td>
+							                            </tr>
+							                            <tr>
+							                                <td><strong>签单价：</strong>
+							                                </td>
+							                                <td>&yen;${subitem.signFee }</td>
+							                            </tr>
+							                        </tbody>
+							                    </table>
 
                                             </div>
                                             </c:forEach>

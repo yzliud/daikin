@@ -1,9 +1,14 @@
 package com.jeeplus.api.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class QuotationProduct {
+public class QuotationProduct implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String quotation_id;
 	private String product_id;
@@ -14,6 +19,7 @@ public class QuotationProduct {
 	private Double price;
 	private Integer amount;
 	private Double total_price;
+	private Double total_cost_price;
 	private String classify_id;
 	private Double power;
 	private String place;
@@ -178,6 +184,12 @@ public class QuotationProduct {
 	}
 	public void setDel_flag(String del_flag) {
 		this.del_flag = del_flag;
+	}
+	public Double getTotal_cost_price() {
+		return total_cost_price;
+	}
+	public void setTotal_cost_price(Double total_cost_price) {
+		this.total_cost_price = total_cost_price;
 	}
 	
 	

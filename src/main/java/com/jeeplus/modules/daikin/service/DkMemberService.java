@@ -61,7 +61,9 @@ public class DkMemberService extends CrudService<DkMemberDao, DkMember> {
 		return dao.findEffectiveList(d);
 	}
 	
-	
+	public DkMember checkAddress(DkMember d) {
+		return dao.checkAddress(d);
+	}
 	
 	
 }

@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>会员管理</title>
+	<title>记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		var validateForm;
@@ -21,38 +21,10 @@
 				return this.optional(element) || (length == 11 && mobile.test(value));
 			}, "请正确填写您的手机号码");
 			
-			jQuery.validator.addMethod("checkAddress", function(value, element) {
-				var checkFlag = 0;
-				$.ajax({
-		 			url:'${ctx}/daikin/dkMember/checkAddress',
-		 			dataType:'json',
-		 			async:false,
-		 			data:{
-		 				address:$('#address').val(),
-		 				id:$('#id').val()
-					},
-		 			type:'post',
-		 			success:function(data){
-		 				if(data.rtnCode == '0'){
-		 					checkFlag = 1;
-		 				}
-		 			}
-			    });
-			    if(checkFlag == 1){
-			        return true;
-			    }else{
-			        return false;
-			    }
-			
-			}, "该地址已存在,请重新输入！");
-			
 			validateForm = $("#inputForm").validate({
 				rules: {
 					mobile:{
 				    	isMobile: true
-		            },
-		            address:{
-		            	checkAddress: true
 		            }
 		        },
 				submitHandler: function(form){
@@ -70,37 +42,52 @@
 				}
 			});
 			
+					laydate({
+			            elem: '#visitDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+			            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+			        });
 		});
 	</script>
 </head>
 <body class="hideScroll">
-		<form:form id="inputForm" modelAttribute="dkMember" action="${ctx}/daikin/dkMember/save" method="post" class="form-horizontal">
+		<form:form id="inputForm" modelAttribute="dkVisit" action="${ctx}/daikin/dkVisit/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>姓名：</label></td>
-					<td class="width-35">
-						<form:input path="name" htmlEscape="false" maxlength="20"  minlength="1"   class="form-control required"/>
-					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>手机号：</label></td>
 					<td class="width-35">
-						<form:input path="mobile" htmlEscape="false" maxlength="20"  minlength="1"   class="form-control required"/>
+						<form:input path="mobile" htmlEscape="false" maxlength="20"    class="form-control required number"/>
 					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>联系地址：</label></td>
-					<td class="width-35" colspan=3>
-						<form:input path="address" htmlEscape="false" maxlength="100"  minlength="1"   class="form-control required"/>
+					<td class="width-35">
+						<form:input path="address" htmlEscape="false" maxlength="100"    class="form-control required"/>
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>信息来源：</label></td>
-					<td class="width-35" colspan=3>
-						<form:input path="remark" htmlEscape="false" maxlength="200"  placeholder="请填写有无介绍费"  class="form-control required"/>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>姓名：</label></td>
+					<td class="width-35">
+						<form:input path="name" htmlEscape="false" maxlength="20"    class="form-control required"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>上门时间：</label></td>
+					<td class="width-35">
+						<input id="visitDate" name="visitDate" type="text" maxlength="20" class="laydate-icon form-control layer-date required"
+							value="<fmt:formatDate value="${dkVisit.visitDate}" pattern="yyyy-MM-dd"/>"/>
 					</td>
 				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>咨询内容：</label></td>
+					<td class="width-35" colspan=3>
+						<form:textarea path="content" htmlEscape="false" rows="4" maxlength="200"    class="form-control required"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-35" colspan=3>
+						<form:input path="remark" htmlEscape="false" maxlength="200"    class="form-control "/>
+					</td>
+		  		</tr>
 		 	</tbody>
 		</table>
 	</form:form>

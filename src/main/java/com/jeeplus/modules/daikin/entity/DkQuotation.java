@@ -26,6 +26,8 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 	private String address;		// 联系地址
 	private DkMember dkMember;		// 会员ID
 	private Double totalFee;		// 合同总金额
+	private Double signFee;			//签单价
+	private Double costFee;			//成本价
 	private String productType;		// 商品类型
 	private User tuser;		// 销售人员
 	private Double connectionRatio;		// 连接率
@@ -33,6 +35,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 	private User ruser;		// 审核者
 	private String remark;		// 备注
 	private String isReview;    //是否有审核记录(0-没有；1-有)
+	private String deleteIds;
 
 	private List<DkQuotationProduct> dkQuotationProductList = Lists.newArrayList();		// 子表列表
 	
@@ -89,8 +92,8 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.dkMember = dkMember;
 	}
 	
-	@NotNull(message="合同总金额不能为空")
-	@ExcelField(title="合同总金额", align=2, sort=5)
+	@NotNull(message="销售金额不能为空")
+	@ExcelField(title="销售金额", align=2, sort=5)
 	public Double getTotalFee() {
 		return totalFee;
 	}
@@ -99,7 +102,27 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.totalFee = totalFee;
 	}
 	
-	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=6)
+	@NotNull(message="成本价不能为空")
+	@ExcelField(title="成本价", align=2, sort=6)
+	public Double getCostFee() {
+		return costFee;
+	}
+
+	public void setCostFee(Double costFee) {
+		this.costFee = costFee;
+	}
+
+	@NotNull(message="签单价不能为空")
+	@ExcelField(title="签单价", align=2, sort=7)
+	public Double getSignFee() {
+		return signFee;
+	}
+
+	public void setSignFee(Double signFee) {
+		this.signFee = signFee;
+	}
+	
+	@ExcelField(title="商品类型", dictType="product_type", align=2, sort=8)
 	public String getProductType() {
 		return productType;
 	}
@@ -108,7 +131,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.productType = productType;
 	}
 	
-	@ExcelField(title="销售人员", fieldType=User.class, value="tuser.name", align=2, sort=7)
+	@ExcelField(title="销售人员", fieldType=User.class, value="tuser.name", align=2, sort=9)
 	public User getTuser() {
 		return tuser;
 	}
@@ -126,7 +149,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.connectionRatio = connectionRatio;
 	}
 	
-	@ExcelField(title="审核状态", dictType="review_status", align=2, sort=9)
+	@ExcelField(title="审核状态", dictType="review_status", align=2, sort=10)
 	public String getReviewStatus() {
 		return reviewStatus;
 	}
@@ -135,7 +158,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.reviewStatus = reviewStatus;
 	}
 	
-	@ExcelField(title="审核者", fieldType=User.class, value="ruser.name", align=2, sort=10)
+	@ExcelField(title="审核者", fieldType=User.class, value="ruser.name", align=2, sort=11)
 	public User getRuser() {
 		return ruser;
 	}
@@ -144,7 +167,7 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 		this.ruser = ruser;
 	}
 	
-	@ExcelField(title="备注", align=2, sort=11)
+	@ExcelField(title="备注", align=2, sort=12)
 	public String getRemark() {
 		return remark;
 	}
@@ -167,5 +190,13 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 
 	public void setDkQuotationProductList(List<DkQuotationProduct> dkQuotationProductList) {
 		this.dkQuotationProductList = dkQuotationProductList;
+	}
+
+	public String getDeleteIds() {
+		return deleteIds;
+	}
+
+	public void setDeleteIds(String deleteIds) {
+		this.deleteIds = deleteIds;
 	}
 }

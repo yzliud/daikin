@@ -113,6 +113,8 @@ public class AuthorizeController {
 			response.sendRedirect(Global.getFrontPath()+"/a/api/worker/unbind");
 		}else if("quotation".equals(cmethod)){
 			response.sendRedirect(Global.getFrontPath()+"/a/api/quotation/index");
+		}else if("member".equals(cmethod)){
+			response.sendRedirect(Global.getFrontPath()+"/a/api/member/index");
 		}else{
 			response.sendRedirect(Global.getFrontPath()+"/a/api/worker/index");
 		}

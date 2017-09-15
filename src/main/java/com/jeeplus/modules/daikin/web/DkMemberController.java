@@ -4,6 +4,7 @@
 package com.jeeplus.modules.daikin.web;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -247,5 +248,28 @@ public class DkMemberController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkMember/effective";
 	}
 	
+	/**
+	 * 判断名称是否重复
+	 */
+	@RequestMapping(value = {"checkAddress"})
+	public String checkAddress(DkMember dkMember, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
+		DkMember dq = dkMemberService.checkAddress(dkMember);
+    	String result = "";
+		
+		if(dq == null){
+			result = "{\"rtnCode\":0}";
+		}else{
+			result = "{\"rtnCode\":500}";
+		}
+		
+		response.reset();
+		response.setContentType("text/plain; charset=UTF-8");
+		response.setCharacterEncoding("utf-8");
+		response.getOutputStream().write(result.getBytes("utf-8"));
+		response.getOutputStream().flush();
+
+		return null;
+		
+	}
 
 }

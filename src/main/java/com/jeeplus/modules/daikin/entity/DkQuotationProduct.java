@@ -25,6 +25,7 @@ public class DkQuotationProduct extends DataEntity<DkQuotationProduct> {
 	private Double price;		// 单价
 	private Double costPrice;		// 成本价
 	private Integer amount;		// 数量
+	private Double totalCostPrice;		// 成本总价
 	private Double totalPrice;		// 总价
 	private String classifyId;		// 分类
 	private Double power;		// 功率
@@ -224,6 +225,14 @@ public class DkQuotationProduct extends DataEntity<DkQuotationProduct> {
 
 	public void setCostPrice(Double costPrice) {
 		this.costPrice = costPrice;
+	}
+
+	public Double getTotalCostPrice() {
+		return totalCostPrice;
+	}
+
+	public void setTotalCostPrice(Double totalCostPrice) {
+		this.totalCostPrice = totalCostPrice;
 	}
 	
 }

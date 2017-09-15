@@ -17,7 +17,10 @@
 		a.total_fee AS "totalFee",
 		a.total_cost_fee AS "totalCostFee",
 		a.cost_fee AS "costFee",
+		a.total_sign_fee AS "totalSignFee",
+		a.sign_fee AS "signFee",
 		a.arrive_fee AS "arriveFee",
+		IF(a.contract_flag = 0, a.total_sign_fee - a.arrive_fee, 0) As "noPayFee",
 		a.connection_ratio AS "connectionRatio",
 		a.install_by AS "installUser.id",
 		a.sale_by AS "saleUser.id",
@@ -127,8 +130,8 @@
 			</if>
 			
 			<if test="isPay != null and isPay != ''">
-				<if test="isPay == '1'.toString()">AND a.total_fee = a.arrive_fee AND a.contract_flag = 0</if>
-				<if test="isPay == '2'.toString()">AND a.total_fee != a.arrive_fee AND a.contract_flag = 0</if>
+				<if test="isPay == '1'.toString()">AND a.total_sign_fee = a.arrive_fee AND a.contract_flag = 0</if>
+				<if test="isPay == '2'.toString()">AND a.total_sign_fee != a.arrive_fee AND a.contract_flag = 0</if>
 			</if>
 			
 			<!-- 数据范围过滤 -->
@@ -176,6 +179,8 @@
 			member_id,
 			contract_fee,
 			total_fee,
+			sign_fee,
+			total_sign_fee,
 			arrive_fee,
 			connection_ratio,
 			install_by,
@@ -205,6 +210,8 @@
 			#{dkMember.id},
 			#{contractFee},
 			#{totalFee},
+			#{signFee},
+			#{totalSignFee},
 			#{arriveFee},
 			#{connectionRatio},
 			#{installUser.id},
@@ -237,6 +244,8 @@
 			member_id = #{dkMember.id},
 			contract_fee = #{contractFee},
 			total_fee = #{contractFee},
+			sign_fee = #{signFee},
+			total_sign_fee = #{totalSignFee},
 			arrive_fee = #{arriveFee},
 			connection_ratio = #{connectionRatio},
 			install_by = #{installUser.id},
@@ -371,6 +380,8 @@
 			arrive_fee,
 			cost_fee,
 			total_cost_fee,
+			sign_fee,
+			total_sign_fee,
 			connection_ratio,
 			sale_by,
 			product_type,
@@ -396,7 +407,9 @@
 				total_fee,
 				total_fee,
 				0,
+				cost_fee,
 				0,
+				sign_fee,
 				0,
 				connection_ratio,
 				sale_by,
@@ -461,18 +474,20 @@
 	</update>
 	
 	<update id="updateContractTotalFee">
-		UPDATE dk_contract 
-			SET     total_fee = 
-(SELECT a.totalFee FROM (SELECT IFNULL(SUM(contract_fee ),0) totalFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) a ) ,
-total_cost_fee = 
-(SELECT b.costFee FROM (SELECT IFNULL(SUM(cost_fee ),0) costFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) b ) 
+		UPDATE dk_contract  SET 
+		    total_fee = 
+					(SELECT a.totalFee FROM (SELECT IFNULL(SUM(contract_fee ),0) totalFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) a ) ,
+			total_cost_fee = 
+					(SELECT b.costFee FROM (SELECT IFNULL(SUM(cost_fee ),0) costFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) b ) ,
+			total_sign_fee = 
+					(SELECT b.signFee FROM (SELECT IFNULL(SUM(sign_fee ),0) signFee FROM dk_contract WHERE parent_id = #{parent.id} AND review_status = 9) b ) 
 		WHERE id  = #{parent.id}
 	</update>
 	
 	<update id="updateContractCostFee">
-		UPDATE dk_contract a 
-			SET     cost_fee = 
-(SELECT sum(IFNULL(cost_price,0)*amount) FROM dk_contract_product b WHERE b.contract_id = #{id} ) 
+		UPDATE dk_contract a SET    
+			 cost_fee = 
+				(SELECT sum(IFNULL(cost_price,0)*amount) FROM dk_contract_product b WHERE b.contract_id = #{id} ) 
 		WHERE id  = #{id}
 	</update>
 </mapper>

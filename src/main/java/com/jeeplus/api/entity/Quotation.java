@@ -1,11 +1,16 @@
 package com.jeeplus.api.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
-public class Quotation {
+public class Quotation implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7333935793462012306L;
 	private String id;
 	private String name;
 	private String member_name;
@@ -13,6 +18,8 @@ public class Quotation {
 	private String address;
 	private String member_id;
 	private Double total_fee;
+	private Double sign_fee;
+	private Double cost_fee;
 	private String product_type;
 	private String sale_by;
 	private String connection_ratio;
@@ -147,6 +154,18 @@ public class Quotation {
 	}
 	public void setDel_flag(String del_flag) {
 		this.del_flag = del_flag;
+	}
+	public Double getSign_fee() {
+		return sign_fee;
+	}
+	public void setSign_fee(Double sign_fee) {
+		this.sign_fee = sign_fee;
+	}
+	public Double getCost_fee() {
+		return cost_fee;
+	}
+	public void setCost_fee(Double cost_fee) {
+		this.cost_fee = cost_fee;
 	}
 	
 	

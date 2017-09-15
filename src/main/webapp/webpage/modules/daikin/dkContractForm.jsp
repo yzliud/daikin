@@ -56,6 +56,7 @@
 <body class="hideScroll">
 	<form:form id="inputForm" modelAttribute="dkContract" action="${ctx}/daikin/dkContract/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="deleteIds"/>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
@@ -105,9 +106,19 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同金额：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>签单价：</label></td>
 					<td class="width-35">
-						<form:input path="contractFee" htmlEscape="false"    class="form-control required number" />
+						<form:input path="signFee" htmlEscape="false"    class="form-control required number" />
+					</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>成本价：</label></td>
+					<td class="width-35">
+						<form:input path="costFee" htmlEscape="false"    class="form-control required number" readonly="true"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>销售金额：</label></td>
+					<td class="width-35">
+						<form:input path="contractFee" htmlEscape="false"    class="form-control required number" readonly="true"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">工程监理：</label></td>
 					<td class="width-35">
@@ -165,9 +176,11 @@
 						<th class="hide"></th>
 						
 						<th>商品</th>
-						<th>单价</th>
+						<th>成本价</th>
+						<th>销售价</th>
 						<th>数量</th>
-						<th>总价</th>
+						<th>成本总价</th>
+						<th>销售总价</th>
 						<th>功率</th>
 						<th width="100">楼层</th>
 						<th>位置</th>
@@ -189,8 +202,12 @@
 					<td>
 						<dk:gridProduct url="${ctx}/daikin/dkCommon/selectdkProduct" 
                             id="dkContractProductList{{idx}}_productId" name="dkContractProductList[{{idx}}].productId"  value="{{row.productId}}"  title="选择商品" labelName="dkProduct.name" 
-						    labelValue="{{row.name}}" cssClass="form-control required" fieldLabels="名称|型号|单价|功率"
-                          fieldKeys="name|model|price|power" searchLabel="商品名称" searchKey="name" rowkeys="dkContractProductList{{idx}}" feekeys="contractFee"></dk:gridProduct>
+						    labelValue="{{row.name}}" cssClass="form-control required" fieldLabels="名称|型号|单价|功率|成本价"
+                          fieldKeys="name|model|price|power|costPrice" searchLabel="商品名称" searchKey="name" rowkeys="dkContractProductList{{idx}}" feekeys="contractFee"></dk:gridProduct>
+					</td>
+
+					<td>
+						<input id="dkContractProductList{{idx}}_costPrice" readonly name="dkContractProductList[{{idx}}].costPrice" type="text" value="{{row.costPrice}}"   max="100000"   onchange="" class="form-control required number"/>
 					</td>	
 					
 					<td>
@@ -202,6 +219,9 @@
 						<input id="dkContractProductList{{idx}}_amount" name="dkContractProductList[{{idx}}].amount" type="text" value="{{row.amount}}" onchange="priceChange('dkContractProductList{{idx}}');"   max="1000"  min="1" class="form-control required digits"/>
 					</td>
 					
+					<td>
+						<input id="dkContractProductList{{idx}}_totalCostPrice" readonly name="dkContractProductList[{{idx}}].totalCostPrice" type="text" value="{{row.totalCostPrice}}"   max="100000" class="form-control number"/>
+					</td>	
 					
 					<td>
 						<input id="dkContractProductList{{idx}}_totalPrice" name="dkContractProductList[{{idx}}].totalPrice" readonly type="text" value="{{row.totalPrice}}"   max="10000000"   class="form-control required number"/>
@@ -237,7 +257,7 @@
 					</td>
 					
 					<td class="text-center" width="10">
-						{{#delBtn}}<span class="close" onclick="delRow(this, '#dkContractProductList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+						{{#delBtn}}<span class="close" onclick="delRow_rewrite(this, '#dkContractProductList{{idx}}', '{{row.id}}')" title="删除">&times;</span>{{/delBtn}}
 					</td>
 				</tr>//-->
 			</script>
@@ -254,7 +274,10 @@
 			
 			<script type="text/javascript">
 				
-				function delRow_rewrite(str,strvalue){
+				function delRow_rewrite(str,strvalue, delids){
+					delRow(str, strvalue);
+					$("#deleteIds").val($("#deleteIds").val() + delids);
+					
 					//设置总价
 					var sum=0;
 					$("input[id$='_totalPrice']").each(function(){
@@ -263,15 +286,27 @@
 						}
 					})
 					$("#contractFee").val(sum);
-					delRow(str, strvalue);
+					
+					var costsum=0;
+					$("input[id$='_totalCostPrice']").each(function(){
+						if($(this).val()!=""){
+							costsum = parseFloat(costsum) + parseFloat($(this).val());
+						}
+					})
+					$("#costFee").val(costsum);
+					
 				}
 				
 				function priceChange(idstr){
+
+					var price = $('#'+idstr+'_price').val();
+					var num = $('#'+idstr+'_amount').val();
+					var totalprice = num * price * 10000 / 10000;
+					$('#'+idstr+'_totalPrice').val(totalprice);
 					
-					var num1 = $('#'+idstr+'_price').val();
-					var num2 = $('#'+idstr+'_amount').val();
-					var num3 = num1 * num2 * 10000 / 10000;
-					$('#'+idstr+'_totalPrice').val(num3);
+					var costPrice = $('#'+idstr+'_costPrice').val();
+					var totalCostPrice = costPrice * num * 10000 / 10000;
+					$('#'+idstr+'_totalCostPrice').val(totalCostPrice);
 					
 					//设置总价
 					var sum=0;
@@ -281,6 +316,14 @@
 						}
 					})
 					$("#contractFee").val(sum);
+					
+					var costsum=0;
+					$("input[id$='_totalCostPrice']").each(function(){
+						if($(this).val()!=""){
+							costsum = parseFloat(costsum) + parseFloat($(this).val());
+						}
+					})
+					$("#costFee").val(costsum);
 				}
 			</script>
 			</div>

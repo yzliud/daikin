@@ -84,7 +84,9 @@
 				<th  class="sort-column memberName">顾客名称</th>
 				<th  class="sort-column mobile">联系方式</th>
 				<th  class="sort-column address">联系地址</th>
-				<th  class="sort-column totalFee">金额</th>
+				<th  class="sort-column totalFee">销售额</th>
+				<th  class="sort-column costFee">成本价</th>
+				<th  class="sort-column signFee">签单价</th>
 				<th  class="sort-column productType">商品类型</th>
 				<th  class="sort-column tuser.name">销售人员</th>
 				<th  class="sort-column connectionRatio">连接率</th>
@@ -112,6 +114,12 @@
 				</td>
 				<td>
 					${dkQuotation.totalFee}
+				</td>
+				<td>
+					${dkQuotation.costFee}
+				</td>
+				<td>
+					${dkQuotation.signFee}
 				</td>
 				<td>
 					${fns:getDictLabel(dkQuotation.productType, 'product_type', '')}

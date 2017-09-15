@@ -255,12 +255,14 @@ public class LoginController extends BaseController{
 		// 默认风格
 		String indexStyle = "default";
 		Cookie[] cookies = request.getCookies();
-		for (Cookie cookie : cookies) {
-			if (cookie == null || StringUtils.isEmpty(cookie.getName())) {
-				continue;
-			}
-			if (cookie.getName().equalsIgnoreCase("theme")) {
-				indexStyle = cookie.getValue();
+		if(null != cookies){
+			for (Cookie cookie : cookies) {
+				if (cookie == null || StringUtils.isEmpty(cookie.getName())) {
+					continue;
+				}
+				if (cookie.getName().equalsIgnoreCase("theme")) {
+					indexStyle = cookie.getValue();
+				}
 			}
 		}
 		// 要添加自己的风格，复制下面三行即可

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.service.CrudService;
-import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.Consts;
 import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.dao.DkAuditRecordDao;
@@ -61,8 +60,13 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 	@Transactional(readOnly = false)
 	public void save(DkContract dkContract) {
 		super.save(dkContract);
+		
+		DkContractProduct dcpEntity = new DkContractProduct();
+		dcpEntity.setContractId(dkContract.getId());
+		dkContractProductDao.delete(dcpEntity);
+		
 		for (DkContractProduct dkContractProduct : dkContract.getDkContractProductList()){
-			if (dkContractProduct.getId() == null){
+			/*if (dkContractProduct.getId() == null){
 				continue;
 			}
 			DkProduct dkProduct = dkProductDao.get(dkContractProduct.getProductId());
@@ -86,6 +90,23 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 				}
 			}else{
 				dkContractProductDao.delete(dkContractProduct);
+			}*/
+			if(dkContractProduct.getProductId() != null && !dkContractProduct.getProductId().equals("") ){
+				if(dkContract.getDeleteIds().equals("") ||( !dkContract.getDeleteIds().contains(dkContractProduct.getId()) )){
+					DkProduct dkProduct = dkProductDao.get(dkContractProduct.getProductId());
+					dkContractProduct.setBrandId(dkProduct.getBrandId());
+					dkContractProduct.setClassifyId(dkProduct.getClassifyId());
+					dkContractProduct.setModel(dkProduct.getModel());
+					dkContractProduct.setCapacityModel(dkProduct.getCapacityModel());
+					dkContractProduct.setName(dkProduct.getName());
+					dkContractProduct.setPlace(dkProduct.getPlace());
+					dkContractProduct.setUnit(dkProduct.getUnit());
+					dkContractProduct.setProductType(dkProduct.getProductType());
+					dkContractProduct.setId("");
+					dkContractProduct.setContractId(dkContract.getId());
+					dkContractProduct.preInsert();
+					dkContractProductDao.insert(dkContractProduct);
+				}
 			}
 		}
 		
@@ -134,7 +155,7 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 		
 		dao.add(dkContract);
 		dkContractProductDao.add(dkContract);
-		dao.updateContractCostFee(dkContract);
+		//dao.updateContractCostFee(dkContract);
 	}
 	
 	public DkContract getSingle(DkContract dc) {
@@ -154,14 +175,15 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 			dkAuditRecord.setTuser(UserUtils.getUser());
 			dkAuditRecord.preInsert();
 			dkAuditRecordDao.insert(dkAuditRecord);
-			
-			if(dc.getReviewStatus().equals(Consts.ReviewStatus_9)){
-				DkContract d = new DkContract();
-				d.setParent(dc.getParent());
-				dao.updateContractTotalFee(d);
-			}
+		
 		}
 		dao.reviewContract(dc);
+		
+		if(dc.getReviewStatus().equals(Consts.ReviewStatus_9)){
+			DkContract d = new DkContract();
+			d.setParent(dc.getParent());
+			dao.updateContractTotalFee(d);
+		}
 	}
 	
 	@Transactional(readOnly = false)

@@ -24,7 +24,8 @@
 			<ul id="space">
 				
 			</ul>
-			<div class="shopPrice">总计：￥<span class="shop-total-amount ShopTotal" id="AllTotal">0.00</span></div>
+			<div class="shopPrice">成本价：￥<span class="shop-total-amount ShopTotal" id="costTotal">0.00</span></div>
+			<div class="shopPrice">销售价：￥<span class="shop-total-amount ShopTotal" id="saleTotal">0.00</span></div>
 		</div>
 	</div>
 <div class="payment-bar">
@@ -53,7 +54,8 @@
 							"</div></div></div> ";
 						$("#space").append(div);
 					}
-					$("#AllTotal").html(data.totalFee);
+					$("#costTotal").html(data.costFee);
+					$("#saleTotal").html(data.totalFee);
 					$(".membername").html("顾客:"+data.memberName +"-" + data.mobile);
 				},
 				error: function() {}

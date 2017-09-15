@@ -37,7 +37,8 @@
 				var label1 = $("#contentTable tbody tr td input.i-checks:checkbox:checked").parent().parent().parent().find(".codelabel1").html();
 				var label2 = $("#contentTable tbody tr td input.i-checks:checkbox:checked").parent().parent().parent().find(".codelabel2").html();
 				var label3 = $("#contentTable tbody tr td input.i-checks:checkbox:checked").parent().parent().parent().find(".codelabel3").html();
-				return id+"_item_"+label+"_item_"+label1+"_item_"+label2+"_item_"+label3;
+				var label4 = $("#contentTable tbody tr td input.i-checks:checkbox:checked").parent().parent().parent().find(".codelabel4").html();
+				return id+"_item_"+label+"_item_"+label1+"_item_"+label2+"_item_"+label3+"_item_"+label4;
 		}
 		function page(n,s){
 			if(n) $("#pageNo").val(n);

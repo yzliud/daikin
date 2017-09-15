@@ -41,6 +41,10 @@
 				<form:input path="mobile" htmlEscape="false" maxlength="32"  class=" form-control input-sm"/>
 			<span>联系地址：</span>
 				<form:input path="address" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
+			<span>录入者：</span>
+				<sys:treeselect id="recordBy" name="recordBy.id" value="${dkMember.recordBy.id}" labelName="recordBy.name" labelValue="${dkMember.recordBy.name}"
+					title="录入者" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
+			<br>
 		 </div>	
 	</form:form>
 	<br/>

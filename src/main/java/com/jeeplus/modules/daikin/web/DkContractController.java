@@ -457,7 +457,7 @@ public class DkContractController extends BaseController {
 		List<DkContractPay> dspList =  dkContractPayService.findList(dkContractPay);
 		model.addAttribute("contractPayList", dspList);
 		
-		double payCent = dkContract.getArriveFee()/dkContract.getTotalFee()*100;
+		double payCent = dkContract.getArriveFee()/dkContract.getTotalSignFee()*100;
 		model.addAttribute("payCent", String.format("%.2f", payCent));
 		
 		//安装付款

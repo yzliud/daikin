@@ -87,6 +87,7 @@
 <body class="hideScroll">
 	<form:form id="inputForm" modelAttribute="dkQuotation" action="${ctx}/daikin/dkQuotation/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="deleteIds"/>
 		<form:hidden path="reviewStatus"/>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
@@ -118,9 +119,19 @@
 					<td class="width-35">
 						<form:input path="name" htmlEscape="false"    class="form-control required"/>
 					</td>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同总金额：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>销售金额：</label></td>
 					<td class="width-35">
 						<form:input path="totalFee" htmlEscape="false"    class="form-control required number" readonly="true"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>成本价：</label></td>
+					<td class="width-35">
+						<form:input path="costFee" htmlEscape="false"    class="form-control required number" readonly="true"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>签单价：</label></td>
+					<td class="width-35">
+						<form:input path="signFee" htmlEscape="false"    class="form-control required number"/>
 					</td>
 				</tr>
 				<tr>
@@ -171,9 +182,11 @@
 					<tr>
 						<th class="hide"></th>
 						<th>商品</th>
-						<th>单价</th>
+						<th>成本价</th>
+						<th>销售价</th>
 						<th>数量</th>
-						<th>总价</th>
+						<th>成本总价</th>
+						<th>销售总价</th>
 						<th>功率</th>
 						<th width="100">楼层</th>
 						<th>位置</th>
@@ -195,13 +208,16 @@
 					<td>
 						<dk:gridProduct url="${ctx}/daikin/dkCommon/selectdkProduct" 
                             id="dkQuotationProductList{{idx}}_productId" name="dkQuotationProductList[{{idx}}].productId"  value="{{row.productId}}"  title="选择商品" labelName="dkProduct.name" 
-						    labelValue="{{row.name}}" cssClass="form-control required" fieldLabels="名称|型号|单价|功率"
-                          fieldKeys="name|model|price|power" searchLabel="商品名称" searchKey="name" rowkeys="dkQuotationProductList{{idx}}" feekeys="totalFee"></dk:gridProduct>
+						    labelValue="{{row.name}}" cssClass="form-control required" fieldLabels="名称|型号|销售价|功率|成本价"
+                          fieldKeys="name|model|price|power|costPrice" searchLabel="商品名称" searchKey="name" rowkeys="dkQuotationProductList{{idx}}" feekeys="totalFee"></dk:gridProduct>
 					</td>
 					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_costPrice" readonly name="dkQuotationProductList[{{idx}}].costPrice" type="text" value="{{row.costPrice}}"   max="100000"   onchange="" class="form-control required number"/>
+					</td>
 
 					<td>
-						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="100000"   onchange="" class="form-control required number"/>
+						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="100000" class="form-control required number"/>
 					</td>
 					
 					
@@ -209,7 +225,10 @@
 						<input id="dkQuotationProductList{{idx}}_amount" name="dkQuotationProductList[{{idx}}].amount" type="text" value="{{row.amount}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="1000"  min="1" class="form-control required digits"/>
 					</td>
 					
-					
+					<td>
+						<input id="dkQuotationProductList{{idx}}_totalCostPrice" readonly name="dkQuotationProductList[{{idx}}].totalCostPrice" type="text" value="{{row.totalCostPrice}}"   max="100000" class="form-control number"/>
+					</td>					
+
 					<td>
 						<input id="dkQuotationProductList{{idx}}_totalPrice" readonly name="dkQuotationProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="1000000"  class="form-control  number"/>
 					</td>
@@ -242,7 +261,7 @@
 					</td>
 					
 					<td class="text-center" width="10">
-						{{#delBtn}}<span class="close" onclick="delRow_rewrite(this, '#dkQuotationProductList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+						{{#delBtn}}<span class="close" onclick="delRow_rewrite(this, '#dkQuotationProductList{{idx}}', '{{row.id}}')" title="删除">&times;</span>{{/delBtn}}
 					</td>
 				</tr>//-->
 			</script>
@@ -272,23 +291,11 @@
 					}
 				}
 				
-				function delRow_rewrite(str,strvalue){
-					//设置总价
-					var sum=0;
-					$("input[id$='_totalPrice']").each(function(){
-						if($(this).val()!=""){
-							sum = parseFloat(sum) + parseFloat($(this).val());
-						}
-					})
-					$("#totalFee").val(sum);
+				function delRow_rewrite(str,strvalue, delids){
+					
 					delRow(str, strvalue);
-				}
-				
-				function priceChange(idstr){
-					var num1 = $('#'+idstr+'_price').val();
-					var num2 = $('#'+idstr+'_amount').val();
-					var num3 = num1 * num2 * 10000 / 10000;
-					$('#'+idstr+'_totalPrice').val(num3);
+					
+					$("#deleteIds").val($("#deleteIds").val() + delids);
 					
 					//设置总价
 					var sum=0;
@@ -298,6 +305,42 @@
 						}
 					})
 					$("#totalFee").val(sum);
+					
+					var costsum=0;
+					$("input[id$='_totalCostPrice']").each(function(){
+						if($(this).val()!=""){
+							costsum = parseFloat(costsum) + parseFloat($(this).val());
+						}
+					})
+					$("#costFee").val(costsum);
+				}
+				
+				function priceChange(idstr){
+					var price = $('#'+idstr+'_price').val();
+					var num = $('#'+idstr+'_amount').val();
+					var totalprice = num * price * 10000 / 10000;
+					$('#'+idstr+'_totalPrice').val(totalprice);
+					
+					var costPrice = $('#'+idstr+'_costPrice').val();
+					var totalCostPrice = costPrice * num * 10000 / 10000;
+					$('#'+idstr+'_totalCostPrice').val(totalCostPrice);
+					//设置总价
+					var sum=0;
+					$("input[id$='_totalPrice']").each(function(){
+						if($(this).val()!=""){
+							sum = parseFloat(sum) + parseFloat($(this).val());
+						}
+					})
+					$("#totalFee").val(sum);
+					
+					var costsum=0;
+					$("input[id$='_totalCostPrice']").each(function(){
+						if($(this).val()!=""){
+							costsum = parseFloat(costsum) + parseFloat($(this).val());
+						}
+					})
+					$("#costFee").val(costsum);
+					$("#signFee").val(sum);
 				}
 			</script>
 			
