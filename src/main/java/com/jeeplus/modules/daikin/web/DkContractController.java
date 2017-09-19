@@ -563,13 +563,21 @@ public class DkContractController extends BaseController {
 		model.addAttribute("dkContract", dkContract);
 		Map<String, Object> dataMap = new HashMap<String, Object>(); 
 		dataMap.put("address", dkContract.getAddress());
-		dataMap.put("installUserName", dkContract.getInstallUser().getName());
+		if( dkContract.getInstallUser() != null ){
+			dataMap.put("installUserName", dkContract.getInstallUser().getName());
+		}else{
+			dataMap.put("installUserName", "");
+		}
 		dataMap.put("memberName", dkContract.getMemberName());
 		dataMap.put("mobile", dkContract.getMobile());
 		dataMap.put("contractName", dkContract.getName());
 		dataMap.put("dkContractProductList", dkContract.getDkContractProductList());
 		dataMap.put("saleUserName", dkContract.getSaleUser().getName());
-		dataMap.put("supervisionUserName", dkContract.getSupervisionUser().getName());
+		if( dkContract.getSupervisionUser() != null ){
+			dataMap.put("supervisionUserName", dkContract.getSupervisionUser().getName());
+		}else{
+			dataMap.put("supervisionUserName", "");
+		}
 		
 		String projectName = request.getContextPath();
 		model.addAttribute("projectName", projectName);
