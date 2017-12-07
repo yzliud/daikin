@@ -127,10 +127,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">连接率：</label></td>
-					<td class="width-35">
-						<form:input path="connectionRatio" htmlEscape="false"    class="form-control "/>
-					</td>
 					<td class="width-15 active"><label class="pull-right">安装人员：</label></td>
 					<td class="width-35">
 						<sys:treeselect id="installUser" name="installUser.id" value="${dkContract.installUser.id}" labelName="installUser.name" labelValue="${dkContract.installUser.name}"
@@ -153,11 +149,9 @@
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">备注：</label></td>
-					<td class="width-35">
+					<td class="width-35" colspan=3>
 						<form:input path="remark" htmlEscape="false"    class="form-control "/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
 		  		</tr>
 		 	</tbody>
 		</table>
@@ -181,10 +175,6 @@
 						<th>数量</th>
 						<th>成本总价</th>
 						<th>销售总价</th>
-						<th>功率</th>
-						<th width="100">楼层</th>
-						<th>位置</th>
-						<th>需求面积</th>
 						<th>描述</th>
 						<th width="10">&nbsp;</th>
 					</tr>
@@ -207,11 +197,11 @@
 					</td>
 
 					<td>
-						<input id="dkContractProductList{{idx}}_costPrice" readonly name="dkContractProductList[{{idx}}].costPrice" type="text" value="{{row.costPrice}}"   max="100000"   onchange="" class="form-control required number"/>
+						<input id="dkContractProductList{{idx}}_costPrice" readonly name="dkContractProductList[{{idx}}].costPrice" type="text" value="{{row.costPrice}}"   max="10000000"   onchange="" class="form-control required number"/>
 					</td>	
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_price" name="dkContractProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkContractProductList{{idx}}');"  max="1000000"  class="form-control required number"/>
+						<input id="dkContractProductList{{idx}}_price" name="dkContractProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkContractProductList{{idx}}');"  max="10000000"  class="form-control required number"/>
 					</td>
 					
 					
@@ -220,35 +210,11 @@
 					</td>
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_totalCostPrice" readonly name="dkContractProductList[{{idx}}].totalCostPrice" type="text" value="{{row.totalCostPrice}}"   max="100000" class="form-control number"/>
+						<input id="dkContractProductList{{idx}}_totalCostPrice" readonly name="dkContractProductList[{{idx}}].totalCostPrice" type="text" value="{{row.totalCostPrice}}"   max="100000000" class="form-control number"/>
 					</td>	
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_totalPrice" name="dkContractProductList[{{idx}}].totalPrice" readonly type="text" value="{{row.totalPrice}}"   max="10000000"   class="form-control required number"/>
-					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_power" name="dkContractProductList[{{idx}}].power" type="text" value="{{row.power}}" maxlength="10"    class="form-control  number"/>
-					</td>
-
-					<td>
-						<select id="dkContractProductList{{idx}}_floor" name="dkContractProductList[{{idx}}].floor" data-value="{{row.floor}}" class="form-control m-b  ">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('floor')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
-					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_position" name="dkContractProductList[{{idx}}].position" type="text" value="{{row.position}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkContractProductList{{idx}}_demandArea" name="dkContractProductList[{{idx}}].demandArea" type="text" value="{{row.demandArea}}" maxlength="10"    class="form-control  number"/>
+						<input id="dkContractProductList{{idx}}_totalPrice" name="dkContractProductList[{{idx}}].totalPrice" readonly type="text" value="{{row.totalPrice}}"   max="100000000"   class="form-control required number"/>
 					</td>
 					
 					

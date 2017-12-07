@@ -43,8 +43,13 @@
 				<form:input path="address" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
 			<span>录入者：</span>
 				<sys:treeselect id="recordBy" name="recordBy.id" value="${dkMember.recordBy.id}" labelName="recordBy.name" labelValue="${dkMember.recordBy.name}"
-					title="录入者" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
+					title="录入者" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" />
 			<br>
+			<span>信息来源：</span>
+				<form:select path="sourceInfo"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('source_info')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 		 </div>	
 	</form:form>
 	<br/>
@@ -88,7 +93,8 @@
 				<th  class="sort-column name">姓名</th>
 				<th  class="sort-column mobile">手机号</th>
 				<th  class="sort-column address">联系地址</th>
-				<th  class="sort-column remark">信息来源</th>
+				<th  class="sort-column sourceInfo">信息来源</th>
+				<th  class="sort-column remark">备注</th>
 				<th  class="sort-column recordBy.name">录入者</th>
 				<th  class="sort-column updateDate">更新时间</th>
 				<th>操作</th>
@@ -106,6 +112,9 @@
 				</td>
 				<td>
 					${dkMember.address}
+				</td>
+				<td>
+					${fns:getDictLabel(dkMember.sourceInfo, 'source_info', '')}
 				</td>
 				<td>
 					${dkMember.remark}

@@ -87,10 +87,6 @@
 				rules: {
 					    name:{
 							 checkContractName: true
-			            },
-			            contractNumber:{
-							 checkSel: true,
-							 checkContractNumber: true
 			            }
 			        },
 			        
@@ -139,10 +135,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>合同号：</label></td>
-					<td class="width-35">
-						<form:input path="contractNumber" htmlEscape="false"    class="form-control"/>
-					</td>
+					<form:input path="contractNumber" htmlEscape="false"  style="display:none"  class="form-control"/>
 					<td class="width-15 active" name="td_contract"><label class="pull-right">主合同：</label></td>
 					<td class="width-35" name="td_contract">
 						<dk:gridSelectFour url="${ctx}/daikin/dkContract/selectparent" id="parent" name="parent.id"  value="${dkContract.parent.id}"  title="选择主合同ID" labelName="parent.name" 
@@ -161,12 +154,11 @@ selChange();
 function selChange(){
 	if($("#contractFlag").val() == '0'){
 		$("*[name='td_contract']").hide();
-		$("#contractNumber").val('');
-		$("#contractNumber").removeAttr("readonly"); 
+		$("#parentName").removeClass("required");
 	}else{
 		$("*[name='td_contract']").show();
-		$("#contractNumber").val('');
-		$("#contractNumber").attr("readonly",true);
+		alert("11");
+		$("#parentName").addClass("required");
 	}
 }
 </script>

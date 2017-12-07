@@ -109,6 +109,16 @@
                                 </dl>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <dl class="dl-horizontal">
+                                    <dt>备注</dt>
+                                    <dd>
+                                        ${dkContract.remark }
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
                         <div class="row m-t-sm">
                             <div class="col-sm-12">
                                 <div class="panel blank-panel">
@@ -149,10 +159,6 @@
 															<th>销售总价</th>
 															<c:choose> 
 															  <c:when test="${dkContract.productType == '0' }">   
-															    <th>功率</th>
-																<th>楼层</th>
-																<th>位置</th>
-																<th>需求面积</th>
 																<th>室内机容量型号</th>
 															  </c:when> 
 															  <c:otherwise>   
@@ -179,10 +185,6 @@
 							                                      <td>&yen;${item.totalPrice }</td>
 							                                      <c:choose> 
 																	  <c:when test="${dkContract.productType == '0' }">   
-																	      <td>${item.power }</td>
-									                                      <td>${fns:getDictLabel(item.floor,'floor','')}</td>
-									                                      <td>${item.position }</td>
-									                                      <td>${item.demandArea }</td>
 									                                      <td>
 									                                      <c:if test="${item.capacityModel != null }">
 																				<c:forTokens items="${item.capacityModel}" delims="," var="itemCapacityModel">
@@ -244,10 +246,6 @@
 															<th>销售总价</th>
 															<c:choose> 
 															  <c:when test="${dkContract.productType == '0' }">   
-															    <th>功率</th>
-																<th>楼层</th>
-																<th>位置</th>
-																<th>需求面积</th>
 																<th>室内机容量型号</th>
 																
 															  </c:when> 
@@ -275,10 +273,6 @@
 							                                      <td>&yen;${subitemPro.totalPrice }</td>
 							                                      <c:choose> 
 																	  <c:when test="${dkContract.productType == '0' }">   
-																	      <td>${subitemPro.power }</td>
-									                                      <td>${fns:getDictLabel(subitemPro.floor,'floor','')}</td>
-									                                      <td>${subitemPro.position }</td>
-									                                      <td>${subitemPro.demandArea }</td>
 									                                      <td>
 									                                        <c:if test="${subitemPro.capacityModel != null }">
 																				<c:forTokens items="${subitemPro.capacityModel}" delims="," var="itemCapacityModel">

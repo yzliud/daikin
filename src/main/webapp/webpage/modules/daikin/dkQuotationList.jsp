@@ -49,8 +49,8 @@
 					<form:options items="${fns:getDictList('product_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select><br>
 			<span>销售人员：</span>
-				<sys:treeselect id="suser" name="suser.id" value="${dkContract.suser.id}" labelName="suser.name" labelValue="${dkContract.suser.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
+				<sys:treeselect id="tuser" name="tuser.id" value="${dkQuotation.tuser.id}" labelName="tuser.name" labelValue="${dkQuotation.tuser.name}"
+					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true"/>
 			<span>审核状态：</span>
 				<form:select path="reviewStatus"  class="form-control m-b">
 					<form:option value="" label=""/>
@@ -100,7 +100,6 @@
 				<th  class="sort-column signFee">签单价</th>
 				<th  class="sort-column productType">商品类型</th>
 				<th  class="sort-column tuser.name">销售人员</th>
-				<th  class="sort-column connectionRatio">连接率</th>
 				<th  class="sort-column reviewStatus">审核状态</th>
 				<th  class="sort-column ruser.name">审核者</th>
 				<th  class="sort-column updateDate">update_date</th>
@@ -137,9 +136,6 @@
 				</td>
 				<td>
 					${dkQuotation.tuser.name}
-				</td>
-				<td>
-					${dkQuotation.connectionRatio}
 				</td>
 				<td>
 					${fns:getDictLabel(dkQuotation.reviewStatus, 'review_status', '')}

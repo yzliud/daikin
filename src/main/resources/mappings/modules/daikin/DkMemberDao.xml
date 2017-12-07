@@ -7,6 +7,7 @@
 		a.name AS "name",
 		a.mobile AS "mobile",
 		a.address AS "address",
+		a.source_info AS "sourceInfo",
 		a.remark AS "remark",
 		a.record_by AS "recordBy.id",
 		a.create_by AS "createBy.id",
@@ -58,8 +59,17 @@
 					<if test="dbName == 'mssql'">'%'+#{address}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{address},'%')</if>
 			</if>
+			<if test="sourceInfo != null and sourceInfo != ''">
+				AND a.source_info = #{sourceInfo}
+			</if>
 			<if test="recordBy != null and recordBy.id != null and recordBy.id != ''">
-				AND a.record_by = #{recordBy.id}
+				AND 				
+				(a.record_by = #{recordBy.id}
+						OR
+					o.id = #{recordBy.id}
+						OR
+					FIND_IN_SET(#{recordBy.id},o.parent_ids) > 0
+				) 
 			</if>
 			
 			<!-- 数据范围过滤 -->
@@ -99,6 +109,7 @@
 			name,
 			mobile,
 			address,
+			source_info,
 			remark,
 			record_by,
 			create_by,
@@ -111,6 +122,7 @@
 			#{name},
 			#{mobile},
 			#{address},
+			#{sourceInfo},
 			#{remark},
 			#{recordBy.id},
 			#{createBy.id},
@@ -126,6 +138,7 @@
 			name = #{name},
 			mobile = #{mobile},
 			address = #{address},
+			source_info = #{sourceInfo},
 			remark = #{remark},
 			record_by = #{recordBy.id},
 			update_by = #{updateBy.id},

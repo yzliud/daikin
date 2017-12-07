@@ -59,10 +59,10 @@
 					labelValue="${dkContract.dkQuotation.name}" cssClass="form-control required" fieldLabels="名称|顾客姓名|联系方式|联系地址|金额" fieldKeys="name|memberName|mobile|address|totalFee" searchLabel="名称" searchKey="name" ></sys:gridselect>
 			<span>安装人员：</span>
 				<sys:treeselect id="installUser" name="installUser.id" value="${dkContract.installUser.id}" labelName="installUser.name" labelValue="${dkContract.installUser.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
+					title="安装人员" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
 			<span>销售人员：</span>
 				<sys:treeselect id="saleUser" name="saleUser.id" value="${dkContract.saleUser.id}" labelName="saleUser.name" labelValue="${dkContract.saleUser.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" notAllowSelectParent="true"/>
+					title="销售人员" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" />
 			<br>
 			<span>顾客名称：</span>
 				<form:input path="memberName" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
@@ -171,7 +171,7 @@
 						<a href="#" onclick="openDialogView('查看合同', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="daikin:dkContract:edit">
-    					<c:if test="${dkContract.reviewStatus == '0' }">
+    					<c:if test="${dkContract.reviewStatus == '0' || dkContract.reviewStatus == '2' }">
 						<a href="#" onclick="openDialog_check('合同提交审核', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-danger btn-xs" ><i class="fa fa-edit"></i> 提交审核</a>
     					</c:if>
     				</shiro:hasPermission>
@@ -180,8 +180,12 @@
 						<a href="${ctx}/daikin/dkContract/delete?id=${dkContract.id}" onclick="return confirmx('确认要删除该合同吗？', this.href)"   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</a>
 						</c:if>
 					</shiro:hasPermission>
+					
 					<c:if test="${ dkContract.isReview == 1}">
-					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
+						<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
+					</c:if>
+					<c:if test="${dkContract.reviewStatus == '2'}">
+						<a href="#" onclick="openDialog('修改合同', '${ctx}/daikin/dkContract/form?id=${dkContract.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
 					</c:if>
 				</td>
 			</tr>

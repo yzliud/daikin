@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,7 +20,9 @@ import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.entity.DkWorker;
 import com.jeeplus.modules.daikin.service.DkMemberService;
 import com.jeeplus.modules.daikin.service.DkWorkerService;
+import com.jeeplus.modules.sys.entity.Dict;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.DictUtils;
 
 @Controller
 @RequestMapping(value = "${adminPath}/api/member")
@@ -38,11 +41,13 @@ public class MemberController {
 	public String index(HttpServletRequest request, HttpServletResponse response) {
 		String openId = (String) request.getSession().getAttribute("openId");
 		System.out.println("-----m------"+openId);
+		
 		if (openId == null) {
 			return "redirect:../../../webpage/api/getOpen.html?cmethod=member";
 		} else {
 			DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
 			String workerMobile = worker.getMobile();
+			List<Dict> dlist = DictUtils.getDictList("source_info");
 			if (workerMobile != null && !workerMobile.equals("")) {
 				request.getSession().setAttribute("sysId", worker.getSysUserId());
 				return "redirect:../../../webpage/api/member.html";
@@ -58,15 +63,16 @@ public class MemberController {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
        
-//		String openId = (String) request.getSession().getAttribute("openId");
-//		DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
-//		User createBy = new User();
-//		createBy.setId(worker.getSysUserId());
+		String openId = (String) request.getSession().getAttribute("openId");
+		DkWorker worker = workerService.findUniqueByProperty("open_id", openId);
+		User createBy = new User();
+		createBy.setId(worker.getSysUserId());
 		dkMember.setIsNewRecord(true);
 		dkMember.setId(UUID.randomUUID().toString().replace("-", ""));
-//		dkMember.setRecordBy(createBy);
-//		dkMember.setCreateBy(createBy);
-//		dkMember.setUpdateBy(createBy);
+		dkMember.setRecordBy(createBy);
+		dkMember.setCreateBy(createBy);
+		dkMember.setUpdateBy(createBy);
+		
 		dkMemberService.save(dkMember);//保存
 		Gson gson = new Gson();
 		Map<String, String> map = new HashMap<String, String>();
@@ -96,6 +102,27 @@ public class MemberController {
 		}
 		
 		writer.println(gson.toJson(map));
+		writer.flush();
+		writer.close();
+		
+	}
+	
+	/**
+	 * 判断名称是否重复
+	 */
+	@RequestMapping(value = {"getSourceInfo"})
+	public void getSourceInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
+		
+		System.out.println("------------------------");
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter writer = response.getWriter();
+		
+		List<Dict> lt = DictUtils.getDictList("source_info");	
+		
+		Gson gson = new Gson();
+		System.out.println("------------------------"+ gson.toJson(lt));
+		writer.println(gson.toJson(lt));
 		writer.flush();
 		writer.close();
 		

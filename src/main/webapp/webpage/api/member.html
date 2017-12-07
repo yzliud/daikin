@@ -5,9 +5,6 @@
 <title>新增会员</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <link rel="stylesheet" href="css/new_weui/weui.css" />
-<link rel="stylesheet" href="css/new_weui/weui2.css" />
-<link rel="stylesheet" href="css/new_weui/weui3.css" />
-<script src="js/zepto.min.js"></script>
 </head>
 
 <body style="background-color: #f8f8f8;">
@@ -50,8 +47,21 @@
 					<label class="weui_label">信息来源</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
+					<select class="weui-select" style="height:30px;width:100%" name="sourceInfo" id="sourceInfo">
+
+                    </select>
+				</div>
+			</div>
+			
+			
+			
+			<div class="weui_cell">
+				<div class="weui_cell_hd">
+					<label class="weui_label">备注</label>
+				</div>
+				<div class="weui_cell_bd weui_cell_primary">
 					<input id="remark" name="remark" class="weui_input" type="text" maxlength="100"
-						placeholder="请输入信息来源,是否有介绍费">
+						placeholder="是否有介绍费">
 				</div>
 			</div>
 		</div>
@@ -65,6 +75,24 @@
 	<script src="js/weui.min.js"></script>
 	<script src="js/mui.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
+	function load(){
+		$.ajax({
+	    	url:"../../a/api/member/getSourceInfo",
+	    	data:'',
+	   		type:"post",
+	    	dataType: 'json',
+	   		async: false,
+	   		success:function(data){//ajax返回的数据
+	   			for(var i = 0; i < data.length; i++) {
+					var hh = "<option value="+data[i].value+">"+data[i].label+"</option>";
+					$("#sourceInfo").append(hh);
+				}
+	   		},
+	        error:function(data,status,e){ 
+	       }     	     				
+		});
+	}
+	load();
 
     function nextStep(){
     	
@@ -75,7 +103,7 @@
     	}else if($("#address").val() ==""){
     		alert("请输入顾客地址");
     	}else if($("#remark").val() ==""){
-    		alert("请输入信息来源");
+    		alert("请输入备注");
     	}else{
     		var result = isPhoneNum();
     		if (result) {

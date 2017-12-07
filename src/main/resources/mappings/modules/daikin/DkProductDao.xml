@@ -186,7 +186,8 @@
 	
 	<update id="updateProductStock">
 		UPDATE dk_product SET 	
-			stock = #{stock}
+			stock = #{stock},
+			update_date = NOW()
 		WHERE id = #{id}
 	</update>
 	

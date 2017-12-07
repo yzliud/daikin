@@ -156,8 +156,10 @@ public class DkContractController extends BaseController {
 		addMessage(redirectAttributes, "保存合同成功");
 		if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_9)){
 			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/checkPass";
-		}else{
+		}else if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_1)){
 			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/uncheck";
+		}else{
+			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/list";
 		}
 	}
 	
@@ -566,7 +568,7 @@ public class DkContractController extends BaseController {
 		if( dkContract.getInstallUser() != null ){
 			dataMap.put("installUserName", dkContract.getInstallUser().getName());
 		}else{
-			dataMap.put("installUserName", "");
+			dataMap.put("installUserName", " ");
 		}
 		dataMap.put("memberName", dkContract.getMemberName());
 		dataMap.put("mobile", dkContract.getMobile());
@@ -576,8 +578,9 @@ public class DkContractController extends BaseController {
 		if( dkContract.getSupervisionUser() != null ){
 			dataMap.put("supervisionUserName", dkContract.getSupervisionUser().getName());
 		}else{
-			dataMap.put("supervisionUserName", "");
+			dataMap.put("supervisionUserName", " ");
 		}
+		dataMap.put("remark", dkContract.getRemark());
 		
 		String projectName = request.getContextPath();
 		model.addAttribute("projectName", projectName);
@@ -610,5 +613,17 @@ public class DkContractController extends BaseController {
 		}*/
 		return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/?repage";
     }
+    
+    /**
+	 * 审核通过合同
+	 */
+	@RequiresPermissions("daikin:dkContract:jobList")
+	@RequestMapping(value = {"jobList"})
+	public String jobList(DkContract dkContract, HttpServletRequest request, HttpServletResponse response, Model model) {
+		dkContract.setContractFlag("0");
+		Page<DkContract> page = dkContractService.findPage(new Page<DkContract>(request, response), dkContract); 
+		model.addAttribute("page", page);
+		return "modules/daikin/dkContractJobList";
+	}
 
 }

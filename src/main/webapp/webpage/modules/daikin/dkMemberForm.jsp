@@ -18,7 +18,9 @@
 			jQuery.validator.addMethod("isMobile", function(value, element) {
 				var length = value.length;
 				var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
-				return this.optional(element) || (length == 11 && mobile.test(value));
+				
+				var tel = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+				return this.optional(element) || tel.test(value) || (length == 11 && mobile.test(value)) ;
 			}, "请正确填写您的手机号码");
 			
 			jQuery.validator.addMethod("checkAddress", function(value, element) {
@@ -90,13 +92,22 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>信息来源：</label></td>
+					<td class="width-35" colspan=3>
+						<form:select path="sourceInfo" class="form-control required">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('source_info')}" itemLabel="label" itemValue="value" htmlEscape="false" readonly="true"/>
+						</form:select>
+					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>联系地址：</label></td>
 					<td class="width-35" colspan=3>
 						<form:input path="address" htmlEscape="false" maxlength="100"  minlength="1"   class="form-control required"/>
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>信息来源：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>备注：</label></td>
 					<td class="width-35" colspan=3>
 						<form:input path="remark" htmlEscape="false" maxlength="200"  placeholder="请填写有无介绍费"  class="form-control required"/>
 					</td>

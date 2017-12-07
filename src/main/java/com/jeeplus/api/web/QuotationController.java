@@ -158,6 +158,7 @@ public class QuotationController {
 			String member_name = request.getParameter("member_name");
 			String mobile = request.getParameter("mobile");
 			String address = request.getParameter("address");
+			String sourceInfo = request.getParameter("sourceInfo");
 			String remark = request.getParameter("remark");
 			String product_type = request.getParameter("product_type");
 			String products_str = request.getParameter("product");//id:数量,id:数量,
@@ -182,6 +183,7 @@ public class QuotationController {
 				member.setName(member_name);
 				member.setMobile(mobile);
 				member.setAddress(address);
+				member.setSourceInfo(sourceInfo);
 				member.setRemark(remark);
 				member.setRecordBy(createBy);
 				member.setCreateBy(createBy);

@@ -155,15 +155,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">连接率：</label></td>
-					<td class="width-35">
-						<form:input path="connectionRatio" htmlEscape="false"    class="form-control  number"/>
-					</td>
-				</tr>
-				<tr>
-					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>备注：</label></td>
 					<td class="width-35" colspan = 3>
-						<form:input path="remark" htmlEscape="false"     class="form-control "/>
+						<form:input path="remark" htmlEscape="false"     class="form-control required"/>
 					</td>
 		  		</tr>
 		 	</tbody>
@@ -187,10 +181,6 @@
 						<th>数量</th>
 						<th>成本总价</th>
 						<th>销售总价</th>
-						<th>功率</th>
-						<th width="100">楼层</th>
-						<th>位置</th>
-						<th>需求面积</th>
 						<th>描述</th>
 						<th width="10">&nbsp;</th>
 					</tr>
@@ -217,7 +207,7 @@
 					</td>
 
 					<td>
-						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="100000" class="form-control required number"/>
+						<input id="dkQuotationProductList{{idx}}_price" name="dkQuotationProductList[{{idx}}].price" type="text" value="{{row.price}}" onchange="priceChange('dkQuotationProductList{{idx}}');"  max="1000000" class="form-control required number"/>
 					</td>
 					
 					
@@ -226,35 +216,15 @@
 					</td>
 					
 					<td>
-						<input id="dkQuotationProductList{{idx}}_totalCostPrice" readonly name="dkQuotationProductList[{{idx}}].totalCostPrice" type="text" value="{{row.totalCostPrice}}"   max="100000" class="form-control number"/>
+						<input id="dkQuotationProductList{{idx}}_totalCostPrice" readonly name="dkQuotationProductList[{{idx}}].totalCostPrice" type="text" value="{{row.totalCostPrice}}"   max="10000000" class="form-control number"/>
 					</td>					
 
 					<td>
-						<input id="dkQuotationProductList{{idx}}_totalPrice" readonly name="dkQuotationProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="1000000"  class="form-control  number"/>
+						<input id="dkQuotationProductList{{idx}}_totalPrice" readonly name="dkQuotationProductList[{{idx}}].totalPrice" type="text" value="{{row.totalPrice}}"   max="100000000"  class="form-control  number"/>
 					</td>
 					
 					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_power" name="dkQuotationProductList[{{idx}}].power" type="text" value="{{row.power}}" maxlength="10"    class="form-control  number"/>
-					</td>
 					
-					<td>
-						<select id="dkQuotationProductList{{idx}}_floor" name="dkQuotationProductList[{{idx}}].floor" data-value="{{row.floor}}" class="form-control m-b  ">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('floor')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
-					</td>
-
-					<td>
-						<input id="dkQuotationProductList{{idx}}_position" name="dkQuotationProductList[{{idx}}].position" type="text" value="{{row.position}}" maxlength="10"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="dkQuotationProductList{{idx}}_demandArea" name="dkQuotationProductList[{{idx}}].demandArea" type="text" value="{{row.demandArea}}" maxlength="8"    class="form-control  number"/>
-					</td>
 
 					<td>
 						<input id="dkQuotationProductList{{idx}}_descript" name="dkQuotationProductList[{{idx}}].descript" type="text" value="{{row.descript}}" maxlength="100"    class="form-control "/>

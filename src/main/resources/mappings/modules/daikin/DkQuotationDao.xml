@@ -73,6 +73,15 @@
 			<if test="productType != null and productType != ''">
 				AND a.product_type = #{productType}
 			</if>
+			<if test="tuser != null and tuser.id != null and tuser.id != ''">
+				AND 
+				(a.sale_by = #{tuser.id}
+						OR
+					o.id = #{tuser.id}
+						OR
+					FIND_IN_SET(#{tuser.id},o.parent_ids) > 0
+				) 
+			</if>
 			<!-- 数据范围过滤 -->
 			${sqlMap.dsf}
 			

@@ -83,6 +83,13 @@
 						
 					</td>
 				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-35" colspan = 3>
+						${dkContract.remark}
+					</td>
+					
+				</tr>
 		 	</tbody>
 		</table>
 <script language="javascript">

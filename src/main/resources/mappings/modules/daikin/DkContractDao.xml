@@ -109,7 +109,13 @@
 				AND a.install_by = #{installUser.id}
 			</if>
 			<if test="saleUser != null and saleUser.id != null and saleUser.id != ''">
-				AND a.sale_by = #{saleUser.id}
+				AND 
+				(a.sale_by = #{saleUser.id}
+						OR
+					o.id = #{saleUser.id}
+						OR
+					FIND_IN_SET(#{saleUser.id},o.parent_ids) > 0
+				) 
 			</if>
 			<if test="productType != null and productType != ''">
 				AND a.product_type = #{productType}
@@ -399,7 +405,9 @@
 				#{parent.id},
 				#{contractFlag},
 				#{dkQuotation.id},
-				#{contractNumber},
+				if(#{contractFlag} = 0,
+					IFNULL((SELECT MAX(contract_number)+1 FROM dk_contract WHERE contract_number LIKE CONCAT(DATE_FORMAT(NOW(), '%Y%m%d'),'%')), CONCAT(DATE_FORMAT(NOW(), '%Y%m%d') , '001')),
+					#{contractNumber}),
 				member_name,
 				mobile,
 				address,

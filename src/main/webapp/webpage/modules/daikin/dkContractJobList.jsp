@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>合同管理</title>
+	<title>派工</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -28,7 +28,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="ibox">
 	<div class="ibox-title">
-		<h5>正式合同 </h5>
+		<h5>派工 </h5>
 		<div class="ibox-tools">
 			<a class="collapse-link">
 				<i class="fa fa-chevron-up"></i>
@@ -45,7 +45,7 @@
 	<!--查询条件-->
 	<div class="row">
 	<div class="col-sm-12">
-	<form:form id="searchForm" modelAttribute="dkContract" action="${ctx}/daikin/dkContract/checkPass" method="post" class="form-inline">
+	<form:form id="searchForm" modelAttribute="dkContract" action="${ctx}/daikin/dkContract/jobList" method="post" class="form-inline">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<form:hidden path="reviewStatus" value="9"/>
@@ -53,11 +53,6 @@
 		<div class="form-group">
 			<span>名称：</span>
 				<form:input path="name" htmlEscape="false" maxlength="100"  class=" form-control input-sm"/>
-			<span>合同类型：</span>
-				<form:select path="contractFlag"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('contract_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
 			<span>合同号：</span>
 				<form:input path="contractNumber" htmlEscape="false" maxlength="50"  class=" form-control input-sm"/>
 			<span>商品类型：</span>
@@ -77,11 +72,6 @@
 					value="<fmt:formatDate value="${dkContract.beginDate}" pattern="yyyy-MM-dd"/>"/> - 
 				<input id="endDate" name="endDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
 					value="<fmt:formatDate value="${dkContract.endDate}" pattern="yyyy-MM-dd"/>"/>
-			<span>回款状态：</span>
-				<form:select path="isPay"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('contract_is_pay')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
 			<span>销售人员：</span>
 				<sys:treeselect id="saleUser" name="saleUser.id" value="${dkContract.saleUser.id}" labelName="saleUser.name" labelValue="${dkContract.saleUser.name}"
 					title="销售人员" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" />
@@ -95,12 +85,7 @@
 	<div class="row">
 	<div class="col-sm-12">
 		<div class="pull-left">
-			<shiro:hasPermission name="daikin:dkContract:export">
-	       		<table:exportExcel url="${ctx}/daikin/dkContract/export"></table:exportExcel><!-- 导出按钮 -->
-	       	</shiro:hasPermission>
-	       	<shiro:hasPermission name="daikin:dkContract:import">
-				<table:importExcel url="${ctx}/daikin/dkContract/import"></table:importExcel><!-- 导入按钮 -->
-			</shiro:hasPermission>
+
 	       <button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="sortOrRefresh()" title="刷新"><i class="glyphicon glyphicon-repeat"></i> 刷新</button>
 		
 			</div>
@@ -116,19 +101,17 @@
 		<thead>
 			<tr>
 				<th  class="sort-column name">名称</th>
-				<th  class="sort-column contractFlag">合同类型</th>
-				<th  class="sort-column dkQuotation.id">报价单</th>
 				<th  class="sort-column contractNumber">合同号</th>
 				<th  class="sort-column memberName">顾客名称</th>
 				<th  class="sort-column mobile">联系方式</th>
 				<th  class="sort-column address">地址</th>
-				<th  class="sort-column costFee">成本价</th>
-				<th  class="sort-column contractFee">销售价</th>
 				<th  class="sort-column signFee">签单价</th>
-				<th  class="sort-column noPayFee">尾款</th>
 				<th  class="sort-column saleUser.name">销售人员</th>
+				<th  class="sort-column installUser.name">安装人员</th>
+				<th  class="sort-column supervisionUser.name">工程监理</th>
 				<th  class="sort-column productType">商品类型</th>
 				<th  class="sort-column reviewTime">签订日期</th>
+				<th  class="sort-column reviewStatus">审核状态</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -137,12 +120,6 @@
 			<tr>
 				<td>
 					${dkContract.name}
-				</td>
-				<td>
-					${fns:getDictLabel(dkContract.contractFlag, 'contract_flag', '')}
-				</td>
-				<td>
-					${dkContract.dkQuotation.name}
 				</td>
 				<td>
 					${dkContract.contractNumber}
@@ -157,19 +134,16 @@
 					${dkContract.address}
 				</td>
 				<td>
-					${dkContract.costFee}
-				</td>
-				<td>
-					${dkContract.contractFee}
-				</td>
-				<td>
 					${dkContract.signFee}
 				</td>
 				<td>
-					${dkContract.noPayFee}
+					${dkContract.saleUser.name}
 				</td>
 				<td>
-					${dkContract.saleUser.name}
+					${dkContract.installUser.name}
+				</td>
+				<td>
+					${dkContract.supervisionUser.name}
 				</td>
 				<td>
 					${fns:getDictLabel(dkContract.productType, 'product_type', '')}
@@ -177,21 +151,12 @@
 				<td>
 					<fmt:formatDate value="${dkContract.reviewTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
+				<td>
+					${fns:getDictLabel(dkContract.reviewStatus, 'review_status', '')}
+				</td>
 				<td>				
-					<a href="#" onclick="openDialogView('查看合同', '${ctx}/daikin/dkContract/detail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 查看</a>
-					<c:if test="${dkContract.contractFlag == '0'  }">
-						<a href="#" onclick="openDialog('详细信息', '${ctx}/daikin/dkContract/totalDetail?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 合同详细</a>
-						<shiro:hasPermission name="daikin:dkContract:assign">
-							<a href="#" onclick="openDialog('设置安装人员', '${ctx}/daikin/dkContract/forwardAssign?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 安装人员</a>
-						</shiro:hasPermission>
-					</c:if>
-					<shiro:hasPermission name="daikin:dkContract:checkContract">
-						<a href="#" onclick="openDialog('修改合同', '${ctx}/daikin/dkContract/form?id=${dkContract.id}','800px', '500px')" class="btn btn-success btn-xs" ><i class="fa fa-edit"></i> 修改</a>
-					</shiro:hasPermission>
-						<c:if test="${dkContract.installUser!= null }">
-							<a href="#" onclick="openDialog_print('派工单', '${ctx}/daikin/dkContract/forwardWorkOrder?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-print"></i> 下载派工单</a>
-						</c:if>
-					<a href="#" onclick="openDialogView('查看审核记录', '${ctx}/daikin/dkAuditRecord/list?recordId=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 审核记录</a>
+					<a href="#" onclick="openDialog('设置安装人员', '${ctx}/daikin/dkContract/forwardAssign?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-search-plus"></i> 安装人员</a>
+					<a href="#" onclick="openDialog_print('派工单', '${ctx}/daikin/dkContract/forwardWorkOrder?id=${dkContract.id}','800px', '500px')" class="btn btn-info btn-xs" ><i class="fa fa-print"></i> 下载派工单</a>
 				</td>
 			</tr>
 		</c:forEach>

@@ -11,7 +11,10 @@ import java.io.Writer;
 import java.util.Map;  
   
 
+
 import javax.servlet.http.HttpServletRequest;
+
+import com.jeeplus.common.utils.FileUtils;
 
 import freemarker.template.Configuration;  
 import freemarker.template.Template;  
@@ -41,6 +44,7 @@ public class DocumentHandler {
         }  
         //输出文档路径及名称  
         File outFile = new File(fileName);  
+        FileUtils.delFile(fileName);
         Writer out = null;  
         FileOutputStream fos=null;  
         try {  

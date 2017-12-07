@@ -22,6 +22,7 @@ public class DkMember extends DataEntity<DkMember> implements Serializable {
 	private String name;		// 姓名
 	private String mobile;		// 手机号
 	private String address;		// 联系地址
+	private String sourceInfo;  // 信息来源
 	private String remark;		// 备注
 	
 	private String beginTime;
@@ -84,7 +85,7 @@ public class DkMember extends DataEntity<DkMember> implements Serializable {
 		this.address = address;
 	}
 	
-	@ExcelField(title="信息来源", align=2, sort=4)
+	@ExcelField(title="备注", align=2, sort=5)
 	public String getRemark() {
 		return remark;
 	}
@@ -108,6 +109,15 @@ public class DkMember extends DataEntity<DkMember> implements Serializable {
 
 	public void setRecordBy(User recordBy) {
 		this.recordBy = recordBy;
+	}
+
+	@ExcelField(title="信息来源", dictType="source_info", align=2, sort=4)
+	public String getSourceInfo() {
+		return sourceInfo;
+	}
+
+	public void setSourceInfo(String sourceInfo) {
+		this.sourceInfo = sourceInfo;
 	}
 	
 }

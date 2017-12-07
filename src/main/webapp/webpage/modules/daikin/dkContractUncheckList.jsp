@@ -59,6 +59,9 @@
 				<form:input path="memberName" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
 			<span>联系方式：</span>
 				<form:input path="mobile" htmlEscape="false" maxlength="20"  class=" form-control input-sm"/>
+			<span>销售人员：</span>
+				<sys:treeselect id="saleUser" name="saleUser.id" value="${dkContract.saleUser.id}" labelName="saleUser.name" labelValue="${dkContract.saleUser.name}"
+					title="销售人员" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" />
 		 </div>	
 	</form:form>
 	<br/>
