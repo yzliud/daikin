@@ -135,6 +135,10 @@
 				AND a.review_time BETWEEN #{beginDate} AND DATE_ADD(#{endDate}, INTERVAL 1 DAY)
 			</if>
 			
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.review_time BETWEEN #{beginCreateDate} AND DATE_ADD(#{endCreateDate}, INTERVAL 1 DAY)
+			</if>
+			
 			<if test="isPay != null and isPay != ''">
 				<if test="isPay == '1'.toString()">AND a.total_sign_fee = a.arrive_fee AND a.contract_flag = 0</if>
 				<if test="isPay == '2'.toString()">AND a.total_sign_fee != a.arrive_fee AND a.contract_flag = 0</if>

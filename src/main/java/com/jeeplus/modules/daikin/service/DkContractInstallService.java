@@ -32,6 +32,7 @@ public class DkContractInstallService extends CrudService<DkContractInstallDao, 
 	}
 	
 	public Page<DkContractInstall> findPage(Page<DkContractInstall> page, DkContractInstall dkContractInstall) {
+		dkContractInstall.getSqlMap().put("dsf", dataScopeFilter(dkContractInstall.getCurrentUser(), "o", "saleUser"));
 		return super.findPage(page, dkContractInstall);
 	}
 	
@@ -47,6 +48,7 @@ public class DkContractInstallService extends CrudService<DkContractInstallDao, 
 	
 	public Page<DkContract> findPageBydkContract(Page<DkContract> page, DkContract dkContract) {
 		dkContract.setPage(page);
+		dkContract.getSqlMap().put("dsf", dataScopeFilter(dkContract.getCurrentUser(), "o", "saleUser"));
 		page.setList(dao.findListBydkContract(dkContract));
 		return page;
 	}

@@ -73,6 +73,9 @@
 			<if test="productType != null and productType != ''">
 				AND a.product_type = #{productType}
 			</if>
+			<if test="beginTime != null and endTime != null and beginTime != '' and endTime != ''">
+				AND a.create_date BETWEEN #{beginTime} AND DATE_ADD(#{endTime}, INTERVAL 1 DAY)
+			</if>
 			<if test="tuser != null and tuser.id != null and tuser.id != ''">
 				AND 
 				(a.sale_by = #{tuser.id}

@@ -7,11 +7,11 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 	        laydate({
-	            elem: '#beginDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+	            elem: '#beginCreateDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
 	            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
 	        });
 	        laydate({
-	            elem: '#endDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+	            elem: '#endCreateDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
 	            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
 	        });
 					
@@ -75,6 +75,11 @@
 			<span>销售人员：</span>
 				<sys:treeselect id="saleUser" name="saleUser.id" value="${dkContract.saleUser.id}" labelName="saleUser.name" labelValue="${dkContract.saleUser.name}"
 					title="销售人员" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" />
+			<span>创建时间：</span>
+				<input id="beginCreateDate" name="beginCreateDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkContract.beginCreateDate}" pattern="yyyy-MM-dd"/>"/> - 
+				<input id="endCreateDate" name="endCreateDate" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkContract.endCreateDate}" pattern="yyyy-MM-dd"/>"/>
 		 </div>	
 	</form:form>
 	<br/>

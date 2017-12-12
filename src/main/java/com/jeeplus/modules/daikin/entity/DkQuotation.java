@@ -4,11 +4,15 @@
 package com.jeeplus.modules.daikin.entity;
 
 import com.jeeplus.modules.daikin.entity.DkMember;
-import javax.validation.constraints.NotNull;
-import com.jeeplus.modules.sys.entity.User;
-import java.util.List;
-import com.google.common.collect.Lists;
 
+import javax.validation.constraints.NotNull;
+
+import com.jeeplus.modules.sys.entity.User;
+
+import java.util.Date;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.jeeplus.common.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
@@ -36,8 +40,27 @@ public class DkQuotation extends DataEntity<DkQuotation> {
 	private String remark;		// 备注
 	private String isReview;    //是否有审核记录(0-没有；1-有)
 	private String deleteIds;
-
+	
+	private Date beginTime;
+	private Date endTime;
+	
 	private List<DkQuotationProduct> dkQuotationProductList = Lists.newArrayList();		// 子表列表
+	
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 	
 	public DkQuotation() {
 		super();

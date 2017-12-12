@@ -63,6 +63,25 @@ public class DkContract extends DataEntity<DkContract> {
 	private Double noPayFee;      //待支付金额
 	private String deleteIds;
 	
+	private Date beginCreateDate;		// 开始 时间
+	private Date endCreateDate;		// 结束 时间
+	
+	public Date getBeginCreateDate() {
+		return beginCreateDate;
+	}
+
+	public void setBeginCreateDate(Date beginCreateDate) {
+		this.beginCreateDate = beginCreateDate;
+	}
+
+	public Date getEndCreateDate() {
+		return endCreateDate;
+	}
+
+	public void setEndCreateDate(Date endCreateDate) {
+		this.endCreateDate = endCreateDate;
+	}
+
 	public Date getBeginDate() {
 		return beginDate;
 	}

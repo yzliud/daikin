@@ -62,6 +62,9 @@
 			<if test="sourceInfo != null and sourceInfo != ''">
 				AND a.source_info = #{sourceInfo}
 			</if>
+			<if test="beginTime != null and endTime != null and beginTime != '' and endTime != ''">
+				AND a.create_date BETWEEN #{beginTime} AND DATE_ADD(#{endTime}, INTERVAL 1 DAY)
+			</if>
 			<if test="recordBy != null and recordBy.id != null and recordBy.id != ''">
 				AND 				
 				(a.record_by = #{recordBy.id}

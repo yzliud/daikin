@@ -17,6 +17,8 @@
 	
 	<sql id="dkContractInstallJoins">
 		LEFT JOIN dk_contract dkContract ON dkContract.id = a.contract_id
+		LEFT JOIN sys_user saleUser ON saleUser.id = dkContract.sale_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
 	</sql>
 	
     
@@ -39,8 +41,10 @@
 				AND a.contract_id = #{dkContract.id}
 			</if>
 			<if test="beginPayDate != null and endPayDate != null and beginPayDate != '' and endPayDate != ''">
-				AND a.pay_date BETWEEN #{beginPayDate} AND #{endPayDate}
+				AND a.pay_date BETWEEN #{beginPayDate} AND DATE_ADD(#{endPayDate}, INTERVAL 1 DAY)
 			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -126,8 +130,10 @@
 	
 	<select id="findListBydkContract" resultType="DkContract">
 		SELECT 
-			*
+			a.*
 		FROM dk_contract a
+		LEFT JOIN sys_user saleUser ON saleUser.id = a.sale_by
+		LEFT JOIN sys_office o ON o.id = saleUser.office_id
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="name != null and name != ''">
@@ -136,6 +142,8 @@
 				<if test="dbName == 'mssql'">#{name}+'%'</if>
 				<if test="dbName == 'mysql'">concat(#{name},'%')</if>
 			</if>
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

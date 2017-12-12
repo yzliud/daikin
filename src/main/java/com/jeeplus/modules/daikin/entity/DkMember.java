@@ -4,6 +4,7 @@
 package com.jeeplus.modules.daikin.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -25,25 +26,25 @@ public class DkMember extends DataEntity<DkMember> implements Serializable {
 	private String sourceInfo;  // 信息来源
 	private String remark;		// 备注
 	
-	private String beginTime;
-	private String endTime;
+	private Date beginTime;
+	private Date endTime;
 	private String productType;
 	
 	private User recordBy;		// 录入者
 	
-	public String getBeginTime() {
+	public Date getBeginTime() {
 		return beginTime;
 	}
 
-	public void setBeginTime(String beginTime) {
+	public void setBeginTime(Date beginTime) {
 		this.beginTime = beginTime;
 	}
 
-	public String getEndTime() {
+	public Date getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(String endTime) {
+	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
 

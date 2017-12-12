@@ -6,7 +6,14 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			laydate({
+	            elem: '#beginTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+	            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+	        });
+	        laydate({
+	            elem: '#endTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+	            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+	        });
 		});
 	</script>
 </head>
@@ -55,6 +62,11 @@
 			<span>销售人员：</span>
 				<sys:treeselect id="tuser" name="tuser.id" value="${dkQuotation.tuser.id}" labelName="tuser.name" labelValue="${dkQuotation.tuser.name}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="form-control input-sm" allowClear="true" />
+			<span>创建时间：</span>
+				<input id="beginTime" name="beginTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkQuotation.beginTime}" pattern="yyyy-MM-dd"/>"/> - 
+				<input id="endTime" name="endTime" type="text" maxlength="20" class="laydate-icon form-control layer-date input-sm"
+					value="<fmt:formatDate value="${dkQuotation.endTime}" pattern="yyyy-MM-dd"/>"/>
 		 </div>	
 	</form:form>
 	<br/>
