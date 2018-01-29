@@ -21,5 +21,6 @@ public interface DkContractProductDao extends CrudDao<DkContractProduct> {
 	public List<DkContract> findListBydkContract(DkContract dkContract);
 	public List<DkProduct> findListBydkProduct(DkProduct dkProduct);
 	public void add(DkContract dkContract);
+	public void updateStockOut(DkContractProduct dkContractProduct);
 	
 }

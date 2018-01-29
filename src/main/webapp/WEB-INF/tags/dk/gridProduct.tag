@@ -38,11 +38,14 @@ function searchGrid${id}(){
 	    	 $("#${rowkeys}_price").val(item.split('_item_')[3]);
 	    	 $("#${rowkeys}_power").val(item.split('_item_')[4]);
 	    	 $("#${rowkeys}_costPrice").val(item.split('_item_')[5]);
+	    	 $("#${rowkeys}_amount").val('');
 	    	 
 	    	 var num1 = $("#${rowkeys}_price").val();
 			 var num2 = $('#${rowkeys}_amount').val();
 			 var num3 = num1 * num2 * 10000 / 10000;
 			 $('#${rowkeys}_totalPrice').val(num3);
+			 var numcost = $("#${rowkeys}_costPrice").val() * num2 * 10000 / 10000;
+			 $('#${rowkeys}_totalCostPrice').val(numcost);
 				
 	    	 var sum=0;
 			 $("input[id$='_totalPrice']").each(function(){
@@ -51,6 +54,14 @@ function searchGrid${id}(){
 				}
 			 })
 			 $("#${feekeys}").val(sum);
+			 
+			 var costsum=0;
+			 $("input[id$='_totalCostPrice']").each(function(){
+				if($(this).val()!=""){
+					costsum = parseFloat(costsum) + parseFloat($(this).val());
+				}
+			 })
+			 $("#costFee").val(costsum);
 			 top.layer.close(index);//关闭对话框。
 		  },
 		  cancel: function(index){ 

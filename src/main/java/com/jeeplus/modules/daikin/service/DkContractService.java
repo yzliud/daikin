@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.daikin.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import com.jeeplus.modules.daikin.entity.DkContract;
 import com.jeeplus.modules.daikin.dao.DkAuditRecordDao;
 import com.jeeplus.modules.daikin.dao.DkContractDao;
 import com.jeeplus.modules.daikin.dao.DkProductDao;
+import com.jeeplus.modules.daikin.dao.DkProductStockRecordDao;
 import com.jeeplus.modules.daikin.entity.DkAuditRecord;
 import com.jeeplus.modules.daikin.entity.DkProduct;
+import com.jeeplus.modules.daikin.entity.DkProductStockRecord;
 import com.jeeplus.modules.daikin.entity.DkQuotation;
 import com.jeeplus.modules.daikin.entity.DkMember;
 import com.jeeplus.modules.daikin.entity.DkContractProduct;
@@ -41,6 +44,9 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 	
 	@Autowired
 	private DkProductDao dkProductDao;
+	
+	@Autowired
+	private DkProductStockRecordDao dkProductStockRecordDao;
 	
 	public DkContract get(String id) {
 		DkContract dkContract = super.get(id);
@@ -189,5 +195,43 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 	@Transactional(readOnly = false)
 	public void assignInstall(DkContract dc) {
 		dao.assignInstall(dc);
+	}
+	
+	@Transactional(readOnly = false)
+	public void stockSave(DkContract dkContract) {
+		
+		for (DkContractProduct dkContractProduct : dkContract.getDkContractProductList()){
+			if(dkContractProduct.getProductId() != null && !dkContractProduct.getProductId().equals("") ){
+				if(dkContract.getDeleteIds().equals("") ||( !dkContract.getDeleteIds().contains(dkContractProduct.getId()) )){
+					if(dkContractProduct.getNowStockOut() > 0){
+						//合同商品表处理
+						dkContractProduct.setStockOut(dkContractProduct.getStockOut() + dkContractProduct.getNowStockOut());
+						dkContractProductDao.updateStockOut(dkContractProduct);
+						
+						//商品表库存处理
+						DkProduct dp = dkProductDao.get(dkContractProduct.getProductId());
+						int oldStock = dp.getStock();
+						int nowStock  = oldStock - dkContractProduct.getNowStockOut();
+						DkProduct d = new DkProduct();
+						d.setId(dp.getId());
+						d.setStock(nowStock);
+						dkProductDao.updateProductStock(d);
+						
+						//商品出入口表添加出库数据
+						DkProductStockRecord dkProductStockRecord = new DkProductStockRecord();
+						dkProductStockRecord.setDkProduct(d);
+						dkProductStockRecord.setFlag(Consts.ProductStockFlag_1);
+						dkProductStockRecord.setAmount(dkContractProduct.getNowStockOut());
+						dkProductStockRecord.setStockAmount(nowStock);
+						dkProductStockRecord.setOperateTime(new Date());
+						dkProductStockRecord.setContractNum(dkContract.getContractNumber());
+						dkProductStockRecord.setTuser(UserUtils.getUser());
+						dkProductStockRecord.setRemark("商品出库");
+						dkProductStockRecord.preInsert();
+						dkProductStockRecordDao.insert(dkProductStockRecord);
+					}
+				}
+			}
+		}
 	}
 }

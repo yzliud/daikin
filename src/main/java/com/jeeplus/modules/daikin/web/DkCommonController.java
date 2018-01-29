@@ -40,6 +40,7 @@ public class DkCommonController extends BaseController{
 		model.addAttribute("labelNames", fieldLabels.split("\\|"));
 		model.addAttribute("labelValues", fieldKeys.split("\\|"));
 		model.addAttribute("fieldLabels", fieldLabels);
+		model.addAttribute("productType", dkProduct.getProductType());
 		model.addAttribute("fieldKeys", fieldKeys);
 		model.addAttribute("url", url);
 		model.addAttribute("searchLabel", searchLabel);

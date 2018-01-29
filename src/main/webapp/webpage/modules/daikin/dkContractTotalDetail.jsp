@@ -155,6 +155,7 @@
 						                                    <th>成本价</th>
 															<th>销售价</th>
 															<th>数量</th>
+															<th>已出库数量</th>
 															<th>成本总价</th>
 															<th>销售总价</th>
 															<c:choose> 
@@ -181,6 +182,7 @@
 							                                      <td>&yen;${item.costPrice }</td>
 							                                      <td>&yen;${item.price }</td>
 							                                      <td>${item.amount }</td>
+							                                      <td>${item.stockOut }</td>
 							                                      <td>&yen;${item.totalCostPrice }</td>
 							                                      <td>&yen;${item.totalPrice }</td>
 							                                      <c:choose> 
@@ -242,6 +244,7 @@
 						                                    <th>成本价</th>
 															<th>销售价</th>
 															<th>数量</th>
+															<th>已出库数量</th>
 															<th>成本总价</th>
 															<th>销售总价</th>
 															<c:choose> 
@@ -269,6 +272,7 @@
 							                                      <td>&yen;${subitemPro.costPrice }</td>
 							                                      <td>&yen;${subitemPro.price }</td>
 							                                      <td>${subitemPro.amount }</td>
+							                                      <td>${subitemPro.stockOut }</td>
 							                                      <td>&yen;${subitemPro.totalCostPrice }</td>
 							                                      <td>&yen;${subitemPro.totalPrice }</td>
 							                                      <c:choose> 

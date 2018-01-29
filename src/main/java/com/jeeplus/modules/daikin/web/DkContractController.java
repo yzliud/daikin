@@ -625,5 +625,33 @@ public class DkContractController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/daikin/dkContractJobList";
 	}
+	
+	/**
+	 * 出入库
+	 */
+	@RequiresPermissions(value={"daikin:dkContract:stockSave"})
+	@RequestMapping(value = "stockDetail")
+	public String stockDetail(DkContract dkContract, Model model) {
+		model.addAttribute("dkContract", dkContract);
+		return "modules/daikin/dkContractStockDetail";
+	}
+	
+	@RequiresPermissions(value={"daikin:dkContract:stockSave"})
+	@RequestMapping(value = "stockSave")
+	public String stockSave(DkContract dkContract, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		if (!beanValidator(model, dkContract)){
+			return form(dkContract, model);
+		}
 
+		dkContractService.stockSave(dkContract);//保存
+
+		addMessage(redirectAttributes, "保存合同商品出库成功");
+		if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_9)){
+			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/checkPass";
+		}else if(dkContract.getReviewStatus().equals(Consts.ReviewStatus_1)){
+			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/uncheck";
+		}else{
+			return "redirect:"+Global.getAdminPath()+"/daikin/dkContract/list";
+		}
+	}
 }

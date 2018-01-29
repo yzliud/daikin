@@ -83,6 +83,7 @@
 		<thead>
 			<tr>
 				<th  class="sort-column dkContract.id">合同</th>
+				<th  class="sort-column saleUser.name">销售员</th>
 				<th  class="sort-column payDate">支付时间</th>
 				<th  class="sort-column payFee">支付金额</th>
 				<th  class="sort-column remark">支付方式</th>
@@ -97,6 +98,9 @@
 			<tr>
 				<td>
 					${dkContractPay.dkContract.name}
+				</td>
+				<td>
+					${dkContractPay.saleUserName}
 				</td>
 				<td>
 					<fmt:formatDate value="${dkContractPay.payDate}" pattern="yyyy-MM-dd"/>

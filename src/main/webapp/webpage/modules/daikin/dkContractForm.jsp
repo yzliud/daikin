@@ -219,7 +219,7 @@
 					
 					
 					<td>
-						<input id="dkContractProductList{{idx}}_descript" name="dkContractProductList[{{idx}}].descript" type="text" value="{{row.descript}}" maxlength="50"    class="form-control "/>
+						1<input id="dkContractProductList{{idx}}_descript" name="dkContractProductList[{{idx}}].descript" type="text" value="{{row.descript}}" maxlength="50"    class="form-control "/>
 					</td>
 					
 					<td class="text-center" width="10">
@@ -264,12 +264,10 @@
 				}
 				
 				function priceChange(idstr){
-
 					var price = $('#'+idstr+'_price').val();
 					var num = $('#'+idstr+'_amount').val();
 					var totalprice = num * price * 10000 / 10000;
 					$('#'+idstr+'_totalPrice').val(totalprice);
-					
 					var costPrice = $('#'+idstr+'_costPrice').val();
 					var totalCostPrice = costPrice * num * 10000 / 10000;
 					$('#'+idstr+'_totalCostPrice').val(totalCostPrice);

@@ -27,6 +27,7 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 	private String reviewStatus;		// 审核状态（0-未提交 1-待审核  2-审核不通过 9-审核通过）
 	private String reviewBy;		// 审核者
 	private String reviewName;
+	private String saleUserName;
 	private String remark;		// 支付方式
 	private String isReview;
 	private Date beginPayDate;		// 开始 支付时间
@@ -131,6 +132,15 @@ public class DkContractPay extends DataEntity<DkContractPay> {
 
 	public void setReviewName(String reviewName) {
 		this.reviewName = reviewName;
+	}
+
+	@ExcelField(title="销售员", align=2, sort=7)
+	public String getSaleUserName() {
+		return saleUserName;
+	}
+
+	public void setSaleUserName(String saleUserName) {
+		this.saleUserName = saleUserName;
 	}
 		
 }

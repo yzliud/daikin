@@ -293,6 +293,7 @@
 					
 					var costPrice = $('#'+idstr+'_costPrice').val();
 					var totalCostPrice = costPrice * num * 10000 / 10000;
+					
 					$('#'+idstr+'_totalCostPrice').val(totalCostPrice);
 					//设置总价
 					var sum=0;

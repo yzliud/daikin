@@ -59,6 +59,7 @@
 		<input type="hidden" name="url" value="${url}"/>
 		<input type="hidden" name="fieldLabels" value="${fieldLabels}"/>
 		<input type="hidden" name="fieldKeys" value="${fieldKeys}"/>
+		<input type="hidden" name="productType" value="${productType}"/>
 		<input type="hidden" name="searchLabel" value="${searchLabel}"/>
 		<input type="hidden" name="searchKey" value="${searchKey}"/>
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

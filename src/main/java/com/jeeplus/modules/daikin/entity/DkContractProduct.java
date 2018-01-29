@@ -47,6 +47,10 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	private Double demandArea;		// 需求面积
 	private String descript;		// 描述
 	private String capacityModel;   //室内机容量型号
+	
+	private Integer stockOut;		//已出库数量
+	private Integer nowStockOut;	//填写的出库数量
+	
 
 	public DkContractProduct() {
 		super();
@@ -269,5 +273,21 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 
 	public void setTotalCostPrice(Double totalCostPrice) {
 		this.totalCostPrice = totalCostPrice;
+	}
+
+	public Integer getNowStockOut() {
+		return nowStockOut;
+	}
+
+	public void setNowStockOut(Integer nowStockOut) {
+		this.nowStockOut = nowStockOut;
+	}
+
+	public Integer getStockOut() {
+		return stockOut;
+	}
+
+	public void setStockOut(Integer stockOut) {
+		this.stockOut = stockOut;
 	}
 }

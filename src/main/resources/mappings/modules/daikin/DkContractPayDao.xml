@@ -10,6 +10,7 @@
 		a.review_status AS "reviewStatus",
 		a.review_by AS "reviewBy",
 		su.name AS "reviewName",
+		saleUser.name AS "saleUserName",
 		a.is_review AS "isReview",
 		a.remark AS "remark",
 		a.create_by AS "createBy.id",
