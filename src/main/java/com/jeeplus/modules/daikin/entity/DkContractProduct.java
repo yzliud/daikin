@@ -50,6 +50,7 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 	
 	private Integer stockOut;		//已出库数量
 	private Integer nowStockOut;	//填写的出库数量
+	private String  StockOutDes;    //出库描述
 	
 
 	public DkContractProduct() {
@@ -289,5 +290,13 @@ public class DkContractProduct extends DataEntity<DkContractProduct> {
 
 	public void setStockOut(Integer stockOut) {
 		this.stockOut = stockOut;
+	}
+
+	public String getStockOutDes() {
+		return StockOutDes;
+	}
+
+	public void setStockOutDes(String stockOutDes) {
+		StockOutDes = stockOutDes;
 	}
 }

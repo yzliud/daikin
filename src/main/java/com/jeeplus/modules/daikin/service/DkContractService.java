@@ -226,7 +226,7 @@ public class DkContractService extends CrudService<DkContractDao, DkContract> {
 						dkProductStockRecord.setOperateTime(new Date());
 						dkProductStockRecord.setContractNum(dkContract.getContractNumber());
 						dkProductStockRecord.setTuser(UserUtils.getUser());
-						dkProductStockRecord.setRemark(dkContract.getAddress());
+						dkProductStockRecord.setRemark(dkContract.getAddress()+":"+dkContractProduct.getStockOutDes());
 						dkProductStockRecord.preInsert();
 						dkProductStockRecordDao.insert(dkProductStockRecord);
 					}

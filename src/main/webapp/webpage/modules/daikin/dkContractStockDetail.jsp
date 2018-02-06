@@ -112,10 +112,10 @@
 						<th>销售数量</th>
 						<th>已出库数量</th>
 						<th>出库数量</th>
+						<th>出库备注</th>
 						<th>成本总价</th>
 						<th>销售总价</th>
 						<th>描述</th>
-						<th width="10">&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody id="dkContractProductList">
@@ -151,6 +151,9 @@
 
 					<td>
 						<input id="dkContractProductList{{idx}}_nowStockOut"  name="dkContractProductList[{{idx}}].nowStockOut" type="text" value="0" onchange="priceChange('dkContractProductList{{idx}}');"   max="1000"  min="0" class="form-control required digits"/>
+					</td>
+					<td>
+						<input id="dkContractProductList{{idx}}_StockOutDes"  name="dkContractProductList[{{idx}}].StockOutDes" type="text"   maxlength="200"  class="form-control"/>
 					</td>
 					
 					<td>
